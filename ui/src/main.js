@@ -10,11 +10,12 @@ import validation from './plugins/validation';
 
 Vue.config.productionTip = false;
 
+Vue.prototype.$http = http;
+Vuex.Store.prototype.$http = http;
+
 Vue.use(validation);
 Vue.use(Vuex);
 Vue.use(VueCookies);
-
-Vue.prototype.$http = http;
 
 new Vue({
   router,

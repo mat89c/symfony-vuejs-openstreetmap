@@ -33,4 +33,16 @@ const router = new VueRouter({
   routes,
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!window.$cookies.get('user_token')) {
+      next({ path: '/logowanie' });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
 export default router;

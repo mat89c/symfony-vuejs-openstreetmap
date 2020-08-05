@@ -11,7 +11,7 @@
           <v-text-field
             label="E-mail"
             v-model="username"
-            :rules="$rules.required"
+            :rules="$rules.required && $rules.email"
           ></v-text-field>
           <v-text-field
             label='Hasło'
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'LoginPage',
   data: () => ({
@@ -46,7 +48,18 @@ export default {
     showPassword: false,
   }),
   methods: {
+    ...mapActions({
+      login: 'user/login',
+    }),
     onSubmit() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
+
+      this.login({ username: this.username, password: this.password })
+        .then(() => {
+          this.$router.push('/');
+        });
     },
   },
 };
