@@ -16,6 +16,13 @@ const routes = [
           requiresAuth: false,
         },
       },
+      {
+        path: 'rejestracja',
+        component: () => import(/* webpackChunkName: 'front-pages */'@/views/frontend/RegistrationPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
     ],
   },
 ];

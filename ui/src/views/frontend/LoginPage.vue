@@ -5,12 +5,13 @@
         <h1>Zaloguj się</h1>
       </v-col>
     </v-row>
-    <v-form @submit="onSubmit">
+    <v-form @submit.prevent="onSubmit" ref="form">
       <v-row justify="center">
         <v-col cols="10" sm="6">
           <v-text-field
             label="E-mail"
             v-model="username"
+            :rules="$rules.required"
           ></v-text-field>
           <v-text-field
             label='Hasło'
@@ -18,6 +19,7 @@
             :type="showPassword ? 'text' : 'password'"
             @click:append="showPassword = !showPassword"
             v-model="password"
+            :rules="$rules.required"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -45,7 +47,6 @@ export default {
   }),
   methods: {
     onSubmit() {
-
     },
   },
 };
