@@ -8,6 +8,15 @@ const routes = [
   {
     path: '/',
     component: TheLayout,
+    children: [
+      {
+        path: 'logowanie',
+        component: () => import(/* webpackChunkName: 'front-pages' */'@/views/frontend/LoginPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+    ],
   },
 ];
 
