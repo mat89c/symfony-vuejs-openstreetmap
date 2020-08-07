@@ -1,7 +1,5 @@
-import http from '@/service/http';
-
 function login(username, password) {
-  return http({
+  return window.$http({
     url: '/api/login_check',
     method: 'post',
     data: {
