@@ -2,7 +2,7 @@
   <v-navigation-drawer
     app
     clipped
-    v-model="show"
+    v-model="visibility"
   >
     <v-list dense>
       <v-list-item
@@ -10,6 +10,7 @@
         :key="page.title"
         link
         :to="page.path"
+        @click="hideNavigation"
       >
         <v-list-item-action>
           <v-icon>{{ page.icon }}</v-icon>
@@ -27,8 +28,18 @@ import pages from '@/variables/pages';
 
 export default {
   name: 'TheNavigation',
+  computed: {
+    visibility: {
+      get() { return this.$store.getters['navigation/visibility']; },
+      set(visibility) { this.$store.dispatch('navigation/setVisibility', visibility); },
+    },
+  },
+  methods: {
+    hideNavigation() {
+      this.visibility = false;
+    },
+  },
   data: () => ({
-    show: true,
     pages,
   }),
 };
