@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import TheHeader from '@/views/frontend/layout/TheHeader.vue';
-import TheNavigation from '@/views/frontend/layout/TheNavigation.vue';
-import TheContent from '@/views/frontend/layout/TheContent.vue';
+import TheHeader from '@/views/layout/TheHeader.vue';
+import TheNavigation from '@/views/layout/TheNavigation.vue';
+import TheContent from '@/views/layout/TheContent.vue';
 import NotificationBar from '@/components/NotificationBar.vue';
 
 export default {
