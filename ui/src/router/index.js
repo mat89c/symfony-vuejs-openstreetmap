@@ -11,16 +11,23 @@ const routes = [
     children: [
       {
         path: 'logowanie',
-        component: () => import(/* webpackChunkName: 'front-pages' */'@/views/frontend/LoginPage.vue'),
+        component: () => import(/* webpackChunkName: 'front' */'@/views/frontend/LoginPage.vue'),
         meta: {
           requiresAuth: false,
         },
       },
       {
         path: 'rejestracja',
-        component: () => import(/* webpackChunkName: 'front-pages */'@/views/frontend/RegistrationPage.vue'),
+        component: () => import(/* webpackChunkName: 'front */'@/views/frontend/RegistrationPage.vue'),
         meta: {
           requiresAuth: false,
+        },
+      },
+      {
+        path: 'wyloguj',
+        component: () => import(/* webpackChunkName: 'front' */'@/views/frontend/LogoutPage.vue'),
+        meta: {
+          requiresAuth: true,
         },
       },
     ],

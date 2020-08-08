@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <TheHeader/>
-    <TheNavigation/>
+    <TheNavigation :key="navigationKey"/>
     <TheContent/>
     <NotificationBar/>
   </v-app>
@@ -20,6 +20,11 @@ export default {
     TheNavigation,
     TheContent,
     NotificationBar,
+  },
+  computed: {
+    navigationKey: {
+      get() { return this.$store.getters['navigation/key']; },
+    },
   },
 };
 </script>

@@ -38,8 +38,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-
 export default {
   name: 'LoginPage',
   data: () => ({
@@ -47,18 +45,21 @@ export default {
     password: '',
     showPassword: false,
   }),
+  computed: {
+    navigationKey: {
+      get() { return this.$store.getters['navigation/key']; },
+    },
+  },
   methods: {
-    ...mapActions({
-      login: 'user/login',
-    }),
     onSubmit() {
       if (!this.$refs.form.validate()) {
         return;
       }
 
-      this.login({ username: this.username, password: this.password })
+      this.$store.dispatch('user/login', { username: this.username, password: this.password })
         .then(() => {
           this.$router.push('/');
+          this.$store.dispatch('navigation/refresh', this.navigationKey + 1);
         });
     },
   },

@@ -6,7 +6,7 @@
   >
     <v-list dense>
       <v-list-item
-        v-for="page in pages"
+        v-for="page in filteredPages"
         :key="page.title"
         link
         :to="page.path"
@@ -32,6 +32,21 @@ export default {
     visibility: {
       get() { return this.$store.getters['navigation/visibility']; },
       set(visibility) { this.$store.dispatch('navigation/setVisibility', visibility); },
+    },
+    filteredPages() {
+      const userLogged = window.$cookies.get('user_token');
+      const filteredPages = this.pages.filter((page) => {
+        if ('showIfUserLogged' in page && !userLogged && page.showIfUserLogged) {
+          return false;
+        }
+
+        if ('showIfUserLogged' in page && userLogged && !page.showIfUserLogged) {
+          return false;
+        }
+        return page;
+      });
+
+      return filteredPages;
     },
   },
   methods: {

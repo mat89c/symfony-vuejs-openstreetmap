@@ -13,7 +13,7 @@ const actions = {
       commit('SET_TOKEN', response.data.token);
     }
   },
-  async logout({ commit }) {
+  logout({ commit }) {
     window.$cookies.remove('user_token');
     commit('SET_TOKEN', '');
   },
