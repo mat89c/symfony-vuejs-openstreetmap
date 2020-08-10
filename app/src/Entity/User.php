@@ -5,9 +5,15 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *   fields = {"email"},
+ *   message = "Podany adres email istnieje w bazie danych."
+ * )
  */
 class User implements UserInterface
 {
@@ -20,6 +26,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Pole email jest wymagane.")
+     * @Assert\Email(message="Nieprawidłowy adres email.")
      */
     private $email;
 
@@ -31,11 +39,17 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Pole hasło jest wymagane.")
+     * @Assert\Length(
+     *   min=6,
+     *   minMessage="Hasło powinno zawierać co najmniej 6 znaków."
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message = "Pole nazwa użytkownika jest wymagane.")
      */
     private $name;
 

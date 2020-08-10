@@ -17,9 +17,14 @@ export default function Http(store) {
   service.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response.status === 401) {
+      if (typeof error.response !== 'undefined' && error.response.status === 401) {
         store.dispatch('notificationbar/showNotification', { msg: 'Nieprawidłowe dane logowania', color: 'error', show: true });
+      } else if (typeof error.response.data.errors !== 'undefined') {
+        store.dispatch('notificationbar/showNotification', { msg: error.response.data.errors.message, color: 'error', show: true });
+      } else {
+        store.dispatch('notificationbar/showNotification', { msg: 'Nieznany błąd. Proszę skontaktować się z administratorem.', color: 'error', show: true });
       }
+
       return Promise.reject(error);
     },
   );

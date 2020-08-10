@@ -17,6 +17,8 @@
         "symfony/framework-bundle": "5.1.*",
         "symfony/messenger": "5.1.*",
         "symfony/security-bundle": "5.1.*",
+        "symfony/serializer": "5.1.*",
+        "symfony/validator": "5.1.*",
         "symfony/yaml": "5.1.*"
     },
     "require-dev": {

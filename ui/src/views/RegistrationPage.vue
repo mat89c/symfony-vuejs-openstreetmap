@@ -24,7 +24,7 @@
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'"
             @click:append="showPassword = !showPassword"
-            :rules="$rules.required"
+            :rules="$rules.required && $rules.minLength"
           ></v-text-field>
           <v-text-field
             label="Powtórz hasło"
@@ -44,7 +44,10 @@
     </v-form>
   </v-container>
 </template>
+
 <script>
+import register from '@/api/auth/register';
+
 export default {
   name: 'RegistrationPage',
   data() {
@@ -62,7 +65,11 @@ export default {
   },
   methods: {
     onSubmit() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
 
+      register(this.name, this.email, this.password);
     },
   },
 };

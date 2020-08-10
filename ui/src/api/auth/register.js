@@ -1,9 +1,10 @@
-function register(username, password) {
+function register(name, email, password) {
   window.$http({
-    url: 'api/register',
+    url: '/api/register',
     method: 'post',
     data: {
-      username,
+      name,
+      email,
       password,
     },
   });

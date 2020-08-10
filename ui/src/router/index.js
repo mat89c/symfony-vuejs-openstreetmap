@@ -18,7 +18,7 @@ const routes = [
       },
       {
         path: 'rejestracja',
-        component: () => import(/* webpackChunkName: 'front */'@/views/RegistrationPage.vue'),
+        component: () => import(/* webpackChunkName: 'front' */'@/views/RegistrationPage.vue'),
         meta: {
           requiresAuth: false,
         },
