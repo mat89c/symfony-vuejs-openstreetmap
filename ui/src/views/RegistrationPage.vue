@@ -69,7 +69,14 @@ export default {
         return;
       }
 
-      register(this.name, this.email, this.password);
+      register(this.name, this.email, this.password)
+        .then((response) => {
+          this.$router.push('/');
+          this.$store.dispatch('dialogpopup/show', {
+            title: response.data.title,
+            message: response.data.message,
+          });
+        });
     },
   },
 };

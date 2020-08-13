@@ -1,5 +1,5 @@
 function register(name, email, password) {
-  window.$http({
+  return window.$http({
     url: '/api/register',
     method: 'post',
     data: {
