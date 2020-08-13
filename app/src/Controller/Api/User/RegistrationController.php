@@ -10,6 +10,7 @@ use App\Messenger\Command\RegisterUserCommand;
 use App\Entity\User;
 use App\Service\ValidatorService;
 use App\Response\ApiResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/api/register", methods={"POST"})
@@ -20,10 +21,13 @@ final class RegistrationController extends AbstractController
 
     private $validatorService;
 
-    public function __construct(MessageBusInterface $commandBus, ValidatorService $validatorService)
+    private $translator;
+
+    public function __construct(MessageBusInterface $commandBus, ValidatorService $validatorService, TranslatorInterface $translator)
     {
         $this->commandBus = $commandBus;
         $this->validatorService = $validatorService;
+        $this->translator = $translator;
     }
 
     public function __invoke(Request $request): ApiResponse
@@ -39,8 +43,8 @@ final class RegistrationController extends AbstractController
         $this->commandBus->dispatch(new RegisterUserCommand($user));
 
         return new ApiResponse(
-            'Aby dokończyć rejestrację potwierdź swój adres email.',
-            'Dokończ rejestrację',
+            $this->translator->trans('confirm_email.message'),
+            $this->translator->trans('confirm_email.title'),
             null,
             [],
             201,
