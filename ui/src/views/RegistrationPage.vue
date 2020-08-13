@@ -69,6 +69,8 @@ export default {
         return;
       }
 
+      this.$store.dispatch('dialogloader/show', 'Proszę czekać, trwa rejestracja użytkownika.');
+
       register(this.name, this.email, this.password)
         .then((response) => {
           this.$router.push('/');
@@ -76,6 +78,9 @@ export default {
             title: response.data.title,
             message: response.data.message,
           });
+        })
+        .finally(() => {
+          this.$store.dispatch('dialogloader/hide');
         });
     },
   },

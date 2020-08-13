@@ -5,6 +5,7 @@
     <TheContent/>
     <NotificationBar/>
     <DialogPopup/>
+    <DialogLoader/>
   </v-app>
 </template>
 
@@ -14,6 +15,7 @@ import TheNavigation from '@/views/layout/TheNavigation.vue';
 import TheContent from '@/views/layout/TheContent.vue';
 import NotificationBar from '@/components/NotificationBar.vue';
 import DialogPopup from '@/components/DialogPopup.vue';
+import DialogLoader from '@/components/DialogLoader.vue';
 
 export default {
   name: 'TheLayout',
@@ -23,6 +25,7 @@ export default {
     TheContent,
     NotificationBar,
     DialogPopup,
+    DialogLoader,
   },
   computed: {
     navigationKey: {

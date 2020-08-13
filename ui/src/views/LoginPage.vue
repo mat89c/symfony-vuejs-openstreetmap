@@ -56,10 +56,15 @@ export default {
         return;
       }
 
+      this.$store.dispatch('dialogloader/show', 'Logowanie...');
+
       this.$store.dispatch('user/login', { username: this.username, password: this.password })
         .then(() => {
           this.$router.push('/');
           this.$store.dispatch('navigation/refresh', this.navigationKey + 1);
+        })
+        .finally(() => {
+          this.$store.dispatch('dialogloader/hide');
         });
     },
   },
