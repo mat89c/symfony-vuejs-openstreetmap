@@ -1,34 +1,19 @@
 <?php
 
 namespace App\Messenger\Event;
+use App\Entity\User;
 
 class UserRegisteredEvent
 {
-    private $name;
+    private $user;
 
-    private $email;
-
-    private $password;
-
-    public function __construct(string $name, string $email, string $password)
+    public function __construct(User $user)
     {
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
+        $this->user = $user;
     }
 
-    public function getName(): string
+    public function getUser(): User
     {
-        return $this->name;
-    }
-
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    public function getPassword(): string
-    {
-        return $this->password;
+        return $this->user;
     }
 }

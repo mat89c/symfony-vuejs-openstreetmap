@@ -13,6 +13,38 @@
         <source>confirm_email.title</source>
         <target>Dokończ rejestrację</target>
       </trans-unit>
+      <trans-unit id="xENYCRL" resname="registration_email.welcome">
+        <source>registration_email.welcome</source>
+        <target>Witaj</target>
+      </trans-unit>
+      <trans-unit id="FUq7q.a" resname="registration_email.line_1">
+        <source>registration_email.line_1</source>
+        <target>Ta wiadomość została wysłana ponieważ rejestrujesz się na DemoApp.</target>
+      </trans-unit>
+      <trans-unit id="NlYfIaU" resname="registration_email.line_2">
+        <source>registration_email.line_2</source>
+        <target>Jeśli chcesz kontynuować rejestrację kliknij na poniższy link.</target>
+      </trans-unit>
+      <trans-unit id="gPKVgO8" resname="registration_email.confirm">
+        <source>registration_email.confirm</source>
+        <target>Potwierdź rejestrację</target>
+      </trans-unit>
+      <trans-unit id="b2z1qRS" resname="registration_email.line_3">
+        <source>registration_email.line_3</source>
+        <target>Jeśli nie chcesz dokonać rejestracji zignoruj wiadomość lub ją skasuj.</target>
+      </trans-unit>
+      <trans-unit id="Sfh5kGw" resname="registration_email.footer_1">
+        <source>registration_email.footer_1</source>
+        <target>Pozdrawiamy</target>
+      </trans-unit>
+      <trans-unit id="98WUuxm" resname="registration_email.footer_2">
+        <source>registration_email.footer_2</source>
+        <target>Zespół</target>
+      </trans-unit>
+      <trans-unit id="MnaSkKG" resname="registration_email.subject">
+        <source>registration_email.subject</source>
+        <target>Rejestracja w DemoApp</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

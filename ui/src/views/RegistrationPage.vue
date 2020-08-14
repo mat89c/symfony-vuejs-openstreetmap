@@ -73,11 +73,13 @@ export default {
 
       register(this.name, this.email, this.password)
         .then((response) => {
-          this.$router.push('/');
-          this.$store.dispatch('dialogpopup/show', {
-            title: response.data.title,
-            message: response.data.message,
-          });
+          this.$router.push('/')
+            .then(() => {
+              this.$store.dispatch('dialogpopup/show', {
+                title: response.data.title,
+                message: response.data.message,
+              });
+            });
         })
         .finally(() => {
           this.$store.dispatch('dialogloader/hide');

@@ -1,0 +1,54 @@
+{% apply inky_to_html|inline_css(source('@styles/foundation-emails.css'), source('@styles/email.css')) %}
+    <container>
+        <row class="welcome">
+            <columns>
+                <spacer size="35"></spacer>
+                <h1>
+                    <center>
+                        {% trans %}registration_email.welcome{% endtrans %} {{ email.toName }}!
+                    </center>
+                </h1>
+                <spacer size="10"></spacer>
+            </columns>
+        </row>
+        <spacer size="30"></spacer>
+        <row>
+            <columns>
+                <p>
+                    {% trans %}registration_email.line_1{% endtrans %}
+                    {% trans %}registration_email.line_2{% endtrans %}
+                </p>
+            </columns>
+        </row>
+        <row>
+            <columns>
+                <center>
+                    <button href="#">{% trans %}registration_email.confirm{% endtrans %}</button>
+                </center>
+            </columns>
+        </row>
+        <row>
+            <columns>
+                <p>
+                    {% trans %}registration_email.line_3{% endtrans %}
+                </p>
+            </columns>
+        </row>
+        <row class="footer">
+            <columns>
+                <p>{% trans %}registration_email.footer_1{% endtrans %}</p>
+                <p>{% trans %}registration_email.footer_2{% endtrans %} <em>DemoApp</em></p>
+            </columns>
+        </row>
+        <row class="bottom">
+            <columns>
+                <center>
+                    <spacer size="20"></spacer>
+                    <div>
+                        Symfony + Vue.js Demo App
+                    </div>
+                </center>
+            </columns>
+        </row>
+    </container>
+{% endapply %}
