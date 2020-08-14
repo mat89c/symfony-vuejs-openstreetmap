@@ -37,10 +37,10 @@ services:
     #     resource: '../src/Messenger/QueryHandler'
     #     autoconfigure: false
     #     tags: [{ name: messenger.message_handler, bus: query.bus }]
-    # App\Messenger\EventHandler\:
-    #     resource: '../src/Messenger/EventHandler'
-    #     autoconfigure: false
-    #     tags: [{ name: messenger.message_handler, bus: event.bus }]
+    App\Messenger\EventHandler\:
+        resource: '../src/Messenger/EventHandler'
+        autoconfigure: false
+        tags: [{ name: messenger.message_handler, bus: event.bus }]
 
 
     App\EventListener\ExceptionListener:
