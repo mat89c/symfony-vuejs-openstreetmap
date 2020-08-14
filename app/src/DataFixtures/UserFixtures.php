@@ -24,6 +24,7 @@ class UserFixtures extends Fixture
         $password = $this->userPasswordEncoder->encodePassword($user, 'admin1234');
         $user->setPassword($password);
         $user->setRoles(['ROLE_ADMIN']);
+        $user->setIsActive(true);
 
         $manager->persist($user);
         $manager->flush();
@@ -34,6 +35,7 @@ class UserFixtures extends Fixture
         $password = $this->userPasswordEncoder->encodePassword($user, 'user1234');
         $user->setPassword($password);
         $user->setRoles(['ROLE_USER']);
+        $user->setIsActive(true);
 
         $manager->persist($user);
         $manager->flush();
