@@ -37,6 +37,7 @@ final class RegistrationController extends AbstractController
         $user->setName($params['name']);
         $user->setEmail($params['email']);
         $user->setPassword($params['password']);
+        $user->setRoles(['ROLE_USER']);
 
         $this->validatorService->validate($user);
 
