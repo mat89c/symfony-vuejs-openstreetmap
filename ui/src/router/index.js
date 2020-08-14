@@ -30,6 +30,13 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: 'aktywuj-konto',
+        component: () => import(/* webpackChunkName: 'front' */'@/views/UserNotActivatedPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
     ],
   },
 ];
@@ -41,6 +48,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.path === '/aktywuj-konto' && from.path !== '/logowanie') {
+    next({ path: '/' });
+  }
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!window.$cookies.get('user_token')) {
       next({ path: '/logowanie' });

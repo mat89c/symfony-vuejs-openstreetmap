@@ -14,7 +14,7 @@ Vue.use(validation);
 Vue.use(Vuex);
 Vue.use(VueCookies);
 
-window.$http = new Http(store);
+window.$http = new Http(store, router);
 
 new Vue({
   router,
