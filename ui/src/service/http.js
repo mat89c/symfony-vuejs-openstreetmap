@@ -20,7 +20,7 @@ export default function Http(store, router) {
       if (typeof error.response !== 'undefined' && error.response.status === 401) {
         store.dispatch('notificationbar/showNotification', { msg: 'Nieprawidłowe dane logowania', color: 'error', show: true });
       } else if (typeof error.response !== 'undefined' && error.response.status === 403) {
-        router.push('/aktywuj-konto');
+        router.push('/konto-nieaktywne');
       } else if (typeof error.response !== 'undefined' && typeof error.response.data.errors !== 'undefined') {
         store.dispatch('notificationbar/showNotification', { msg: error.response.data.errors.message, color: 'error', show: true });
       } else {

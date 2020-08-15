@@ -25,8 +25,12 @@ class MailerService
             ->from(new Address($_ENV['SENDER_EMAIL'], 'Demp App'))
             ->to(new Address($user->getEmail(), $user->getName()))
             ->subject($this->translator->trans('registration_email.subject'))
-            ->htmlTemplate('email/registration.html.twig');
+            ->htmlTemplate('email/registration.html.twig')
+            ->context([
+                'token' => $user->getToken(),
+                'appUrl' => $_ENV['FRONTEND_APP_URL'],
+            ]);
 
-            $this->mailer->send($email);
+        $this->mailer->send($email);
     }
 }

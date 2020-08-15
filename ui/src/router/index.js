@@ -31,8 +31,15 @@ const routes = [
         },
       },
       {
-        path: 'aktywuj-konto',
+        path: 'konto-nieaktywne',
         component: () => import(/* webpackChunkName: 'front' */'@/views/UserNotActivatedPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+      {
+        path: 'aktywuj-konto/:token',
+        component: () => import(/* webpackChunkName: 'front */'@/views/UserActivatedPage.vue'),
         meta: {
           requiresAuth: false,
         },
@@ -48,7 +55,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/aktywuj-konto' && from.path !== '/logowanie') {
+  if (to.path === '/konto-nieaktywne' && from.path !== '/logowanie') {
     next({ path: '/' });
   }
 

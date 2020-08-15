@@ -11,6 +11,8 @@ use App\Entity\User;
 use App\Service\ValidatorService;
 use App\Response\ApiResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/api/register", methods={"POST"})
@@ -23,11 +25,22 @@ final class RegistrationController extends AbstractController
 
     private $translator;
 
-    public function __construct(MessageBusInterface $commandBus, ValidatorService $validatorService, TranslatorInterface $translator)
+    private $tokenGenerator;
+
+    private $passwordEncoder;
+
+    public function __construct(
+        MessageBusInterface $commandBus,
+        ValidatorService $validatorService,
+        TranslatorInterface $translator,
+        TokenGeneratorInterface $tokenGenerator,
+        UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->commandBus = $commandBus;
         $this->validatorService = $validatorService;
         $this->translator = $translator;
+        $this->tokenGenerator = $tokenGenerator;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function __invoke(Request $request): ApiResponse
@@ -36,8 +49,11 @@ final class RegistrationController extends AbstractController
         $user = new User();
         $user->setName($params['name']);
         $user->setEmail($params['email']);
-        $user->setPassword($params['password']);
+        $password = $this->passwordEncoder->encodePassword($user, $params['password']);
+        $user->setPassword($password);
         $user->setRoles(['ROLE_USER']);
+        $user->setIsActive(false);
+        $user->setToken($this->tokenGenerator->generateToken());
 
         $this->validatorService->validate($user);
 

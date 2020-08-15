@@ -45,6 +45,22 @@
         <source>registration_email.subject</source>
         <target>Rejestracja w DemoApp</target>
       </trans-unit>
+      <trans-unit id="pu40PjQ" resname="invalid token">
+        <source>invalid token</source>
+        <target>Nieprawidłowy token.</target>
+      </trans-unit>
+      <trans-unit id="y.4Nvfu" resname="user account activated">
+        <source>user account activated</source>
+        <target>Konto użytkownika zostało aktywowane.</target>
+      </trans-unit>
+      <trans-unit id="W1RmUCP" resname="user.not_logged">
+        <source>user.not_logged</source>
+        <target>Użytkownik nie jest zalogowany.</target>
+      </trans-unit>
+      <trans-unit id="A2kyiR." resname="user not found">
+        <source>user not found</source>
+        <target>Nie znaleziono użytkownika.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

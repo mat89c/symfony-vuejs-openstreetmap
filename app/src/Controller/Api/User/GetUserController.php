@@ -23,7 +23,7 @@ final class GetUserController extends AbstractController
     public function __invoke(): ApiResponse
     {
         if (!$this->getUser())
-            throw new ApiException($this->translator->trans('user.not_logged'));
+            throw new ApiException($this->translator->trans('user.not_logged'), 400);
 
         $user = $this->getUser();
 

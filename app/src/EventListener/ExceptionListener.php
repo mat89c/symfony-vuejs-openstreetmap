@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\Exception\ApiException;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use App\Response\ApiResponse;
+use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 class ExceptionListener
 {
@@ -12,7 +13,7 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
 
-        if ($exception instanceof ApiException) {
+        if ($exception instanceof ApiException || $exception instanceof HandlerFailedException) {
             $response = new ApiResponse(
                 '',
                 '',
