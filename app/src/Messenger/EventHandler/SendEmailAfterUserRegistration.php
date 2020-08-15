@@ -15,7 +15,7 @@ class SendEmailAfterUserRegistration implements MessageHandlerInterface
         $this->mailerService = $mailerService;
     }
 
-    public function __invoke(UserRegisteredEvent $userRegisteredEvent)
+    public function __invoke(UserRegisteredEvent $userRegisteredEvent): void
     {
         $user = $userRegisteredEvent->getUser();
         $this->mailerService->userRegistered($user);
