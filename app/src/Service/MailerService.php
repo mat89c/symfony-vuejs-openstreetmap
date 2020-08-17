@@ -17,18 +17,38 @@ class MailerService
     {
         $this->mailer = $mailer;
         $this->translator = $translator;
+        $this->sender = $_ENV['SENDER_EMAIL'];
+        $this->appName = $_ENV['APP_NAME'];
+        $this->appUrl = $_ENV['FRONTEND_APP_URL'];
     }
 
-    public function     userRegistered(User $user): void
+    public function userRegistered(User $user): void
     {
         $email = (new TemplatedEmail())
-            ->from(new Address($_ENV['SENDER_EMAIL'], 'Demp App'))
+            ->from(new Address($this->sender, $this->appName))
             ->to(new Address($user->getEmail(), $user->getName()))
-            ->subject($this->translator->trans('email.registration.subject'))
+            ->subject($this->translator->trans('email.registration.subject', ['%appName%' => $this->appName]))
             ->htmlTemplate('email/registration.html.twig')
             ->context([
                 'token' => $user->getToken(),
-                'appUrl' => $_ENV['FRONTEND_APP_URL'],
+                'appUrl' => $this->appUrl,
+                'appName' => $this->appName,
+            ]);
+
+        $this->mailer->send($email);
+    }
+
+    public function resetPassword(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->sender, $this->appName))
+            ->to(new Address($user->getEmail(), $user->getName()))
+            ->subject($this->translator->trans('email.reset_password.subject', ['%appName%' => $this->appName]))
+            ->htmlTemplate('email/reset_password.html.twig')
+            ->context([
+                'token' => $user->getToken(),
+                'appUrl' => $this->appUrl,
+                'appName' => $this->appName,
             ]);
 
         $this->mailer->send($email);

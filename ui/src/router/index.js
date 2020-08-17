@@ -46,6 +46,13 @@ const routes = [
           requiresAuth: false,
         },
       },
+      {
+        path: 'ustawienia',
+        component: () => import(/* webpackChunkName: 'front' */'@/views/UserAccountPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
     ],
   },
 ];

@@ -14,12 +14,27 @@ registration:
     message: Aby dokończyć rejestrację potwierdź swój adres email.
 
 
+reset_password:
+  email_sended:
+    title: Potwierdź zmianę hasła.
+    message: Aby potwierdzić zmianę hasła kliknij w link, który wysłaliśmy na Twój adres e-mail.
+
+
 email:
+  greetings: Pozdrawiamy
+  team: Zespół
+
   registration:
-    subject: Rejestracja w DemoApp
+    subject: Rejestracja w %appName%
     welcome: Witaj
-    header: Ta wiadomość została wysłana ponieważ rejestrujesz się na DemoApp. Jeśli chcesz kontynuować rejestrację kliknij na poniższy link.
+    header: Ta wiadomość została wysłana ponieważ rejestrujesz się na %appName%. Jeśli chcesz kontynuować rejestrację kliknij na poniższy link.
     confirm: Potwierdź rejestrację
     footer: Jeśli nie chcesz dokonać rejestracji zignoruj wiadomość lub ją skasuj.
-    greetings: Pozdrawiamy
-    team: Zespół
+
+  reset_password:
+    subject: Zmiana hasła w %appName%
+    welcome: Zmiana hasła
+    header: Ta wiadomość została wysłana ponieważ poprosiłeś o zmianę hasła na %appName%. Jeśli chcesz kontynuwać zmianę hasła kliknij na poniższy link.
+    confirm: Potwierdź zmianę hasła
+    footer: Jeśli nie chcesz zmieniać hasła zignoruj wiadomość lub ją skasuj.
+
