@@ -8,8 +8,7 @@ use App\Response\ApiResponse;
 use App\Exception\ApiException;
 use App\Messenger\Query\GetLoggedUserQuery;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
+use App\MessageBus\QueryBus;
 
 /**
  * @Route("/api/get-user", methods={"GET"})
@@ -20,7 +19,7 @@ final class GetUserController extends AbstractController
 
     private $translator;
 
-    public function __construct(TranslatorInterface $translator, MessageBusInterface $queryBus)
+    public function __construct(TranslatorInterface $translator, QueryBus $queryBus)
     {
         $this->translator = $translator;
         $this->queryBus = $queryBus;
@@ -31,11 +30,7 @@ final class GetUserController extends AbstractController
         if (!$this->getUser())
             throw new ApiException($this->translator->trans('user.not_logged'), 400);
 
-        $user = $this->getUser();
-        $envelope = $this->queryBus->dispatch(new GetLoggedUserQuery($user));
-        /** @var HandledStamp $handled */
-        $handled = $envelope->last(HandledStamp::class);
-        $user = $handled->getResult();
+        $user = $this->queryBus->query(new GetLoggedUserQuery($this->getUser()));
 
         return new ApiResponse(
             '',

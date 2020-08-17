@@ -63,6 +63,16 @@ export default {
           this.$router.push('/');
           this.$store.dispatch('navigation/refresh', this.navigationKey + 1);
         })
+        .catch((error) => {
+          if (error.response.status === 403) {
+            this.$router.push({
+              name: 'UserNotActivatedPage',
+              params: {
+                email: this.username,
+              },
+            });
+          }
+        })
         .finally(() => {
           this.$store.dispatch('dialogloader/hide');
         });

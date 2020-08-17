@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h1>Aktywuj konto użytkownika </h1>
+        <h1>Aktywuj konto użytkownika.</h1>
       </v-col>
     </v-row>
     <v-row>

@@ -31,11 +31,13 @@ const routes = [
         },
       },
       {
+        name: 'UserNotActivatedPage',
         path: 'konto-nieaktywne',
         component: () => import(/* webpackChunkName: 'front' */'@/views/UserNotActivatedPage.vue'),
         meta: {
           requiresAuth: false,
         },
+        props: true,
       },
       {
         path: 'aktywuj-konto/:token',

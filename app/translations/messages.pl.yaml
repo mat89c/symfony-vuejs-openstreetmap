@@ -1,0 +1,25 @@
+user:
+  account_activated: Konto użytkownika zostało aktywowane.
+  not_logged: Użytkownik nie jest zalogowany.
+  not_found: Nie znaleziono użytkownika.
+
+
+error:
+  invalid_token: Nieprawidłowy token.
+
+
+registration:
+  email_sended:
+    title: Dokończ rejestrację.
+    message: Aby dokończyć rejestrację potwierdź swój adres email.
+
+
+email:
+  registration:
+    subject: Rejestracja w DemoApp
+    welcome: Witaj
+    header: Ta wiadomość została wysłana ponieważ rejestrujesz się na DemoApp. Jeśli chcesz kontynuować rejestrację kliknij na poniższy link.
+    confirm: Potwierdź rejestrację
+    footer: Jeśli nie chcesz dokonać rejestracji zignoruj wiadomość lub ją skasuj.
+    greetings: Pozdrawiamy
+    team: Zespół

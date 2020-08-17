@@ -5,7 +5,7 @@
                 <spacer size="35"></spacer>
                 <h1>
                     <center>
-                        {% trans %}registration_email.welcome{% endtrans %} {{ email.toName }}!
+                        {% trans %}email.registration.welcome{% endtrans %} {{ email.toName }}!
                     </center>
                 </h1>
                 <spacer size="10"></spacer>
@@ -15,29 +15,28 @@
         <row>
             <columns>
                 <p>
-                    {% trans %}registration_email.line_1{% endtrans %}
-                    {% trans %}registration_email.line_2{% endtrans %}
+                    {% trans %}email.registration.header{% endtrans %}
                 </p>
             </columns>
         </row>
         <row>
             <columns>
                 <center>
-                    <button href="{{ appUrl }}/aktywuj-konto/{{ token }}">{% trans %}registration_email.confirm{% endtrans %}</button>
+                    <button href="{{ appUrl }}/aktywuj-konto/{{ token }}">{% trans %}email.registration.confirm{% endtrans %}</button>
                 </center>
             </columns>
         </row>
         <row>
             <columns>
                 <p>
-                    {% trans %}registration_email.line_3{% endtrans %}
+                    {% trans %}email.registration.footer{% endtrans %}
                 </p>
             </columns>
         </row>
         <row class="footer">
             <columns>
-                <p>{% trans %}registration_email.footer_1{% endtrans %}</p>
-                <p>{% trans %}registration_email.footer_2{% endtrans %} <em>DemoApp</em></p>
+                <p>{% trans %}email.registration.greetings{% endtrans %}</p>
+                <p>{% trans %}email.registration.team{% endtrans %} <em>DemoApp</em></p>
             </columns>
         </row>
         <row class="bottom">

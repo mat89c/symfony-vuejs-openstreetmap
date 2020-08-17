@@ -3,13 +3,13 @@
 namespace App\Messenger\QueryHandler;
 
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use App\Messenger\Query\GetUserByTokenQuery;
-use App\Repository\UserRepository;
+use App\Messenger\Query\GetUserByEmailQuery;
 use App\Entity\User;
-use App\Exception\ApiException;
+use App\Repository\UserRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Exception\ApiException;
 
-class GetUserByTokenQueryHandler implements MessageHandlerInterface
+class GetUserByEmailQueryHandler implements MessageHandlerInterface
 {
     private $userRepository;
 
@@ -21,9 +21,9 @@ class GetUserByTokenQueryHandler implements MessageHandlerInterface
         $this->translator = $translator;
     }
 
-    public function __invoke(GetUserByTokenQuery $getUserByTokenQuery): User
+    public function __invoke(GetUserByEmailQuery $getUserByEmailQuery): User
     {
-        $user = $this->userRepository->findOneBy(['token' => $getUserByTokenQuery->getToken()]);
+        $user = $this->userRepository->findOneBy(['email' => $getUserByEmailQuery->getEmail()]);
 
         if (!$user)
             throw new ApiException($this->translator->trans('user.not_found'), 404);

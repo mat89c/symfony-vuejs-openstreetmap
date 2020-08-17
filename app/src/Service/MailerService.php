@@ -19,12 +19,12 @@ class MailerService
         $this->translator = $translator;
     }
 
-    public function userRegistered(User $user): void
+    public function     userRegistered(User $user): void
     {
         $email = (new TemplatedEmail())
             ->from(new Address($_ENV['SENDER_EMAIL'], 'Demp App'))
             ->to(new Address($user->getEmail(), $user->getName()))
-            ->subject($this->translator->trans('registration_email.subject'))
+            ->subject($this->translator->trans('email.registration.subject'))
             ->htmlTemplate('email/registration.html.twig')
             ->context([
                 'token' => $user->getToken(),

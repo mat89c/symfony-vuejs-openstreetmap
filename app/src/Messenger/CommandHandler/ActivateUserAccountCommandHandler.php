@@ -6,7 +6,7 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use App\Messenger\Command\ActivateUserAccountCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
-class ActivateuserAccountCommandHandler implements MessageHandlerInterface
+class ActivateUserAccountCommandHandler implements MessageHandlerInterface
 {
     private $em;
 
@@ -20,7 +20,6 @@ class ActivateuserAccountCommandHandler implements MessageHandlerInterface
         $user = $activateUserAccountCommand->getUser();
         $user->setToken('');
         $user->setIsActive(true);
-        $this->em->persist($user);
         $this->em->flush();
     }
 }

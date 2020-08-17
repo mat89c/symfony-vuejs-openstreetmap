@@ -19,7 +19,7 @@ class UserChecker implements UserCheckerInterface
         return;
 
         if (!$user->getIsActive()) {
-            throw new ApiException('User not activated', 403);
+            throw new ApiException('user.not_activated', 403);
         }
     }
 }

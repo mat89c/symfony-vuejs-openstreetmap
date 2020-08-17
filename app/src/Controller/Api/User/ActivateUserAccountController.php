@@ -8,13 +8,13 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use App\Exception\ApiException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Messenger\Query\GetUserByTokenQuery;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 use App\Messenger\Command\ActivateUserAccountCommand;
+use App\MessageBus\QueryBus;
 
 /**
  * @Route("/api/activate-account", methods={"PATCH"})
  */
-class ActivateUserAccountController
+final class ActivateUserAccountController
 {
     private $queryBus;
 
@@ -23,7 +23,7 @@ class ActivateUserAccountController
     private $translator;
 
     public function __construct(
-        MessageBusInterface $queryBus,
+        QueryBus $queryBus,
         MessageBusInterface $commandBus,
         TranslatorInterface $translator
     )
@@ -38,17 +38,14 @@ class ActivateUserAccountController
         $params = json_decode($request->getContent(), true);
 
         if (!isset($params['token']))
-            throw new ApiException($this->translator->trans('invalid token'), 400);
+            throw new ApiException($this->translator->trans('error.invalid_token'), 400);
 
-        $envelope = $this->queryBus->dispatch(new GetUserByTokenQuery(($params['token'])));
-        /** @var HandledStamp $handled */
-        $handled = $envelope->last(HandledStamp::class);
-        $user = $handled->getResult();
+        $user = $this->queryBus->query(new GetUserByTokenQuery(($params['token'])));
 
         $this->commandBus->dispatch(new ActivateUserAccountCommand($user));
 
         return new ApiResponse(
-            $this->translator->trans('user account activated'),
+            $this->translator->trans('user.account_activated'),
             '',
             null,
             [],

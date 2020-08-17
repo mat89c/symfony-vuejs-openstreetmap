@@ -60,8 +60,8 @@ final class RegistrationController extends AbstractController
         $this->commandBus->dispatch(new RegisterUserCommand($user));
 
         return new ApiResponse(
-            $this->translator->trans('confirm_email.message'),
-            $this->translator->trans('confirm_email.title'),
+            $this->translator->trans('registration.email_sended.message'),
+            $this->translator->trans('registration.email_sended.title'),
             null,
             [],
             201,
