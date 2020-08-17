@@ -14,7 +14,6 @@ const actions = {
     const response = await apiLogin(username, password);
 
     if (response) {
-      window.$cookies.set('user_token', response.data.token, 3600);
       commit('SET_TOKEN', response.data.token);
       apiGetUser().then((user) => {
         commit('SET_USER', user.data);
@@ -22,7 +21,6 @@ const actions = {
     }
   },
   logout({ commit }) {
-    window.$cookies.remove('user_token');
     commit('LOGOUT');
   },
 };

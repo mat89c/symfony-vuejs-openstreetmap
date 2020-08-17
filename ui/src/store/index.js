@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import user from '@/store/modules/user.module';
 import notificationbar from '@/store/modules/notificationbar.module';
 import navigation from '@/store/modules/navigation.module';
@@ -16,4 +17,7 @@ export default new Vuex.Store({
     dialogpopup,
     dialogloader,
   },
+  plugins: [createPersistedState({
+    paths: ['user'],
+  })],
 });

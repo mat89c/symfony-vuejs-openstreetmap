@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TheLayout from '@/views/layout/TheLayout.vue';
+import store from '@/store';
 
 Vue.use(VueRouter);
 
@@ -69,7 +70,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!window.$cookies.get('user_token')) {
+    if (!store.getters['user/token']) {
       next({ path: '/logowanie' });
     } else {
       next();

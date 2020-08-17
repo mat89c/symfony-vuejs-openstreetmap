@@ -7,9 +7,9 @@ export default function Http(store) {
   });
 
   service.interceptors.request.use((config) => {
-    if (window.$cookies.isKey('user_token')) {
+    if (store.getters['user/token'] !== '') {
       /* eslint no-param-reassign: "error" */
-      config.headers.Authorization = `Bearer ${window.$cookies.get('user_token')}`;
+      config.headers.Authorization = `Bearer ${store.getters['user/token']}`;
     }
     return config;
   });

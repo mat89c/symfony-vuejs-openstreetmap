@@ -34,13 +34,13 @@ export default {
       set(visibility) { this.$store.dispatch('navigation/setVisibility', visibility); },
     },
     filteredPages() {
-      const userLogged = window.$cookies.get('user_token');
+      const userLogged = this.$store.getters['user/token'];
       const filteredPages = this.pages.filter((page) => {
-        if ('showIfUserLogged' in page && !userLogged && page.showIfUserLogged) {
+        if ('showIfUserLogged' in page && userLogged === '' && page.showIfUserLogged) {
           return false;
         }
 
-        if ('showIfUserLogged' in page && userLogged && !page.showIfUserLogged) {
+        if ('showIfUserLogged' in page && userLogged !== '' && !page.showIfUserLogged) {
           return false;
         }
         return page;

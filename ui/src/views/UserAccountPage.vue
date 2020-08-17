@@ -23,7 +23,6 @@ export default {
   methods: {
     onSendResetPasswordEmail() {
       this.$store.dispatch('dialogloader/show', 'Proszę czekać, trwa wysyłanie wiadomości e-mail.');
-      console.log(this.$store.getters[['user/email']]);
       sendResetPasswordEmail(this.$store.getters['user/email'])
         .then((response) => {
           this.$router.push('/')
