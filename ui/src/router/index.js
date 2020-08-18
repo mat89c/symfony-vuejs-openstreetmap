@@ -76,7 +76,18 @@ const routes = [
           requiresAuth: false,
         },
       },
+      {
+        path: '404',
+        component: () => import(/* webpackChunkName: 'front' */'@/views/NotFoundPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
     ],
+  },
+  {
+    path: '*',
+    redirect: '/404',
   },
 ];
 
