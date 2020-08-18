@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -62,6 +64,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $token;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MapPoint::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $mapPoint;
+
+    public function __construct()
+    {
+        $this->mapPoint = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -173,6 +185,37 @@ class User implements UserInterface
     public function setToken(string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MapPoint[]
+     */
+    public function getMapPoint(): Collection
+    {
+        return $this->mapPoint;
+    }
+
+    public function addMapPoint(MapPoint $mapPoint): self
+    {
+        if (!$this->mapPoint->contains($mapPoint)) {
+            $this->mapPoint[] = $mapPoint;
+            $mapPoint->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMapPoint(MapPoint $mapPoint): self
+    {
+        if ($this->mapPoint->contains($mapPoint)) {
+            $this->mapPoint->removeElement($mapPoint);
+            // set the owning side to null (unless already changed)
+            if ($mapPoint->getUser() === $this) {
+                $mapPoint->setUser(null);
+            }
+        }
 
         return $this;
     }
