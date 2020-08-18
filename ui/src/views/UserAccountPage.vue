@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col>
-        <h1>Ustawienia</h1>
+        <h1>Moje konto</h1>
       </v-col>
     </v-row>
     <v-row>

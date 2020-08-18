@@ -53,4 +53,18 @@ class MailerService
 
         $this->mailer->send($email);
     }
+
+    public function userPasswordChanged(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->sender, $this->appName))
+            ->to(new Address($user->getEmail(), $user->getName()))
+            ->subject($this->translator->trans('email.reset_password.subject', ['%appName%' => $this->appName]))
+            ->htmlTemplate('email/user_password_changed.html.twig')
+            ->context([
+                'appName' => $this->appName
+            ]);
+
+        $this->mailer->send($email);
+    }
 }

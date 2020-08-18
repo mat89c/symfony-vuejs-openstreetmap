@@ -30,7 +30,8 @@
       </v-row>
       <v-row justify="center">
         <v-col class="text-right" cols="10" sm="6">
-         <v-btn small text to="/rejestracja">Utwórz konto</v-btn>
+          <v-btn small text to="/zapomnialem-haslo">Zapomniałem hasło</v-btn>
+          <v-btn small text to="/rejestracja">Utwórz konto</v-btn>
         </v-col>
       </v-row>
     </v-form>

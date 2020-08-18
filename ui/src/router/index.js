@@ -12,21 +12,21 @@ const routes = [
     children: [
       {
         path: 'logowanie',
-        component: () => import(/* webpackChunkName: 'front' */'@/views/LoginPage.vue'),
+        component: () => import(/* webpackChunkName: 'user' */'@/views/LoginPage.vue'),
         meta: {
           requiresAuth: false,
         },
       },
       {
         path: 'rejestracja',
-        component: () => import(/* webpackChunkName: 'front' */'@/views/RegistrationPage.vue'),
+        component: () => import(/* webpackChunkName: 'auth' */'@/views/RegistrationPage.vue'),
         meta: {
           requiresAuth: false,
         },
       },
       {
         path: 'wyloguj',
-        component: () => import(/* webpackChunkName: 'front' */'@/views/LogoutPage.vue'),
+        component: () => import(/* webpackChunkName: 'user' */'@/views/LogoutPage.vue'),
         meta: {
           requiresAuth: true,
         },
@@ -34,7 +34,7 @@ const routes = [
       {
         name: 'UserNotActivatedPage',
         path: 'konto-nieaktywne',
-        component: () => import(/* webpackChunkName: 'front' */'@/views/UserNotActivatedPage.vue'),
+        component: () => import(/* webpackChunkName: 'auth' */'@/views/UserNotActivatedPage.vue'),
         meta: {
           requiresAuth: false,
         },
@@ -42,14 +42,36 @@ const routes = [
       },
       {
         path: 'aktywuj-konto/:token',
-        component: () => import(/* webpackChunkName: 'front */'@/views/UserActivatedPage.vue'),
+        component: () => import(/* webpackChunkName: 'auth' */'@/views/UserActivatedPage.vue'),
         meta: {
           requiresAuth: false,
         },
       },
       {
-        path: 'ustawienia',
-        component: () => import(/* webpackChunkName: 'front' */'@/views/UserAccountPage.vue'),
+        path: 'moje-konto',
+        component: () => import(/* webpackChunkName: 'user' */'@/views/UserAccountPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+      {
+        path: 'resetuj-haslo/:token',
+        component: () => import(/* webpackChunkName: 'auth' */'@/views/UserResetPasswordPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+      },
+      {
+        path: 'resetuj-haslo',
+        component: () => import(/* webpackChunkName: 'auth' */'@/views/UserResetPasswordPage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+        props: true,
+      },
+      {
+        path: 'zapomnialem-haslo',
+        component: () => import(/* webpackChunkName: 'auth' */'@/views/UserForgotPasswordPage.vue'),
         meta: {
           requiresAuth: false,
         },
@@ -69,8 +91,12 @@ router.beforeEach((to, from, next) => {
     next({ path: '/' });
   }
 
+  if ((to.path === '/logowanie' || to.path === '/rejestracja') && store.getters['user/token'] !== '') {
+    next({ path: '/moje-konto' });
+  }
+
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.getters['user/token']) {
+    if (store.getters['user/token'] === '') {
       next({ path: '/logowanie' });
     } else {
       next();

@@ -29,7 +29,7 @@ final class SendRegistrationEmailController
         $this->translator = $translator;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): ApiResponse
     {
         $params = json_decode($request->getContent(), true);
 

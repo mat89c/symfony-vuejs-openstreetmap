@@ -12,8 +12,8 @@ const pages = [
     showIfUserLogged: false,
   },
   {
-    title: 'Ustawienia',
-    path: '/ustawienia',
+    title: 'Moje konto',
+    path: '/moje-konto',
     icon: 'mdi-account-cog',
     showIfUserLogged: true,
   },

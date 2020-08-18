@@ -35,7 +35,6 @@ export default {
         });
       })
       .catch((error) => {
-        console.log(error.response);
         this.msg = `
           Weryfikacja nie powiodła się.
           ${error.response.data.errors.message}
