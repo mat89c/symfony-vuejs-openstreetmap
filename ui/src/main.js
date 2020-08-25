@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import Http from './service/http';
+import 'leaflet/dist/leaflet.css';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -11,8 +13,9 @@ Vue.config.productionTip = false;
 
 Vue.use(validation);
 Vue.use(Vuex);
+Vue.use(CKEditor);
 
-window.$http = new Http(store);
+window.$http = new Http(store, router);
 
 new Vue({
   router,

@@ -7,6 +7,7 @@ const getters = {
   email: (state) => state.email,
   roles: (state) => state.roles,
   isActive: (state) => state.isActive,
+  expiriesDate: (state) => state.expiriesDate,
 };
 
 const actions = {
@@ -15,6 +16,7 @@ const actions = {
 
     if (response) {
       commit('SET_TOKEN', response.data.token);
+
       apiGetUser().then((user) => {
         commit('SET_USER', user.data);
       });
@@ -32,6 +34,7 @@ const mutations = {
     state.email = user.data.email;
     state.roles = user.data.roles;
     state.isActive = user.data.isActive;
+    state.expiriesDate = user.data.expiriesDate;
   },
   LOGOUT: (state) => {
     state.name = '';
@@ -39,6 +42,7 @@ const mutations = {
     state.roles = [];
     state.isActive = false;
     state.token = '';
+    state.expiriesDate = '';
   },
 };
 
@@ -48,6 +52,7 @@ const state = {
   roles: [],
   isActive: false,
   token: '',
+  expiriesDate: '',
 };
 
 export default {

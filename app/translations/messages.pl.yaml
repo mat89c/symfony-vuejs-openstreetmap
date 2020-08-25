@@ -45,3 +45,7 @@ email:
     welcome: Hasło zostało zmienione
     header: Ta wiadomość została wysłana ponieważ zmieniono hasło na stronie %appName%.
 
+map_point:
+  created:
+    title: Dodano nowy punkt.
+    message: Dodałeś nowy punkt. Po weryfikacji przez administratora zostanie wyświetlony na mapie.

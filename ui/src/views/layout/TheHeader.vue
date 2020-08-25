@@ -5,7 +5,7 @@
     dense
   >
     <v-app-bar-nav-icon @click="toggleNavigationVisibility"/>
-    <v-toolbar-title>Demo</v-toolbar-title>
+    <v-toolbar-title><strong>DemoApp</strong></v-toolbar-title>
   </v-app-bar>
 </template>
 

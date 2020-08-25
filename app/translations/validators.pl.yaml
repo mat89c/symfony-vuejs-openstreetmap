@@ -93,3 +93,38 @@ Error: Błąd
 'The number of elements in this collection should be a multiple of {{ compared_value }}.': 'Liczba elementów w tym zbiorze powinna być wielokrotnością {{ compared_value }}.'
 'This value should satisfy at least one of the following constraints:': 'Ta wartość powinna spełniać co najmniej jedną z następujących reguł:'
 'Each element of this collection should satisfy its own set of constraints.': 'Każdy element w tym zbiorze powinien spełniać własny zestaw reguł.'
+
+map_point:
+  title:
+    not_blank: Pole tytuł jest wymagane.
+  description:
+    not_blank: Pole opis jest wymagane.
+  lat:
+    not_blank: Nieprawidłowe współrzędne na mapie.
+  lng:
+    not_blank: Nieprawidłowe współrzędne na mapie.
+  color:
+    not_blank: Proszę wybrać kolor punktu na mapie.
+  postcode:
+    not_blank: Pole kod pocztowy nie może być puste
+  city:
+    not_blank: Pole miasto nie może być puste.
+  street:
+    not_blank: Pole ulica nie może być puste.
+  logo:
+    not_blank: Logo jest wymagane.
+  file:
+    max_size: Wielkość pliku nie może być większa niż 2MB.
+    mime_types: Nieprawidłowy format pliku. Prześlij jpg, jpeg lub png.
+
+
+
+user:
+  email:
+    email: Nieprawidłowy adres email.
+    not_blank: Pole email jest wymagane.
+  password:
+    not_blank: Pole hasło jest wymagane.
+    min_length: Hasło powinno zawierać co najmniej 6 znaków.
+  name:
+    not_blank: Pole nazwa użytkownika jest wymagane.

@@ -28,8 +28,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="Pole email jest wymagane.")
-     * @Assert\Email(message="Nieprawidłowy adres email.")
+     * @Assert\NotBlank(message="user.email.not_blank")
+     * @Assert\Email(message="user.email.email")
      */
     private $email;
 
@@ -41,17 +41,17 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Pole hasło jest wymagane.")
+     * @Assert\NotBlank(message="user.password.not_blank")
      * @Assert\Length(
      *   min=6,
-     *   minMessage="Hasło powinno zawierać co najmniej 6 znaków."
+     *   minMessage="user.password.min_length"
      * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message = "Pole nazwa użytkownika jest wymagane.")
+     * @Assert\NotBlank(message="user.name.not_blank")
      */
     private $name;
 

@@ -25,6 +25,7 @@
 
 <script>
 import pages from '@/variables/pages';
+import checkTokenExpiriesDate from '@/helper/checkTokenExpiriesDate';
 
 export default {
   name: 'TheNavigation',
@@ -33,14 +34,17 @@ export default {
       get() { return this.$store.getters['navigation/visibility']; },
       set(visibility) { this.$store.dispatch('navigation/setVisibility', visibility); },
     },
+    tokenExpiriesDate: {
+      get() { return this.$store.getters['user/expiriesDate']; },
+    },
     filteredPages() {
-      const userLogged = this.$store.getters['user/token'];
+      const userLogged = checkTokenExpiriesDate(this.tokenExpiriesDate);
       const filteredPages = this.pages.filter((page) => {
-        if ('showIfUserLogged' in page && userLogged === '' && page.showIfUserLogged) {
+        if ('showIfUserLogged' in page && !userLogged && page.showIfUserLogged) {
           return false;
         }
 
-        if ('showIfUserLogged' in page && userLogged !== '' && !page.showIfUserLogged) {
+        if ('showIfUserLogged' in page && userLogged && !page.showIfUserLogged) {
           return false;
         }
         return page;

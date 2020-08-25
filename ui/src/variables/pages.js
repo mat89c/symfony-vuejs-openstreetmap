@@ -1,5 +1,16 @@
 const pages = [
   {
+    title: 'Home',
+    path: '/',
+    icon: 'mdi-navigation',
+  },
+  {
+    title: 'Dodaj punkt',
+    path: '/dodaj-punkt',
+    icon: 'mdi-map-marker-plus',
+    showIfUserLogged: true,
+  },
+  {
     title: 'Zaloguj się',
     path: '/logowanie',
     icon: 'mdi-account-circle',

@@ -14,6 +14,10 @@ class ExceptionListener
         $exception = $event->getThrowable();
 
         if ($exception instanceof ApiException || $exception instanceof HandlerFailedException) {
+
+            if ($exception->getCode() === 0)
+                return;
+
             $response = new ApiResponse(
                 '',
                 '',

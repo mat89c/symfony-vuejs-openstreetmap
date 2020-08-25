@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\MapPointRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MapPointRepository::class)
@@ -19,46 +22,56 @@ class MapPoint
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="map_point.title.not_blank")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank(message="map_point.description.not_blank")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="map_point.lat.not_blank")
      */
     private $lat;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="map_point.lng.not_blank")
      */
     private $lng;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\NotBlank(message="map_point.color.not_blank")
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\NotBlank(message="map_point.postcode.not_blank")
      */
     private $postcode;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="map_point.city.not_blank")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="map_point.street.not_blank")
      */
     private $street;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="map_point.logo.not_blank")
+     * )
      */
     private $logo;
 
@@ -67,6 +80,21 @@ class MapPoint
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MapPointImage::class, mappedBy="mapPoint", cascade={"persist", "remove"})
+     */
+    private $mapPointImage;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $uploadDir;
+
+    public function __construct()
+    {
+        $this->mapPointImage = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -189,6 +217,49 @@ class MapPoint
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MapPointImage[]
+     */
+    public function getMapPointImage(): Collection
+    {
+        return $this->mapPointImage;
+    }
+
+    public function addMapPointImage(MapPointImage $mapPointImage): self
+    {
+        if (!$this->mapPointImage->contains($mapPointImage)) {
+            $this->mapPointImage[] = $mapPointImage;
+            $mapPointImage->setMapPoint($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMapPointImage(MapPointImage $mapPointImage): self
+    {
+        if ($this->mapPointImage->contains($mapPointImage)) {
+            $this->mapPointImage->removeElement($mapPointImage);
+            // set the owning side to null (unless already changed)
+            if ($mapPointImage->getMapPoint() === $this) {
+                $mapPointImage->setMapPoint(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUploadDir(): ?string
+    {
+        return $this->uploadDir;
+    }
+
+    public function setUploadDir(string $uploadDir): self
+    {
+        $this->uploadDir = $uploadDir;
 
         return $this;
     }

@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TheLayout from '@/views/layout/TheLayout.vue';
-import store from '@/store';
+import checkTokenExpiriesDate from '@/helper/checkTokenExpiriesDate';
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -10,6 +11,22 @@ const routes = [
     path: '/',
     component: TheLayout,
     children: [
+      {
+        path: '',
+        component: () => import(/* webpackChunkName: 'front' */'@/views/HomePage.vue'),
+        meta: {
+          requiresAuth: false,
+        },
+        children: [
+          {
+            path: '',
+            component: () => import(/* webpackChunkName: 'front' */'@/components/HomePointList.vue'),
+            meta: {
+              requiresAuth: false,
+            },
+          },
+        ],
+      },
       {
         path: 'logowanie',
         component: () => import(/* webpackChunkName: 'user' */'@/views/LoginPage.vue'),
@@ -51,7 +68,7 @@ const routes = [
         path: 'moje-konto',
         component: () => import(/* webpackChunkName: 'user' */'@/views/UserAccountPage.vue'),
         meta: {
-          requiresAuth: false,
+          requiresAuth: true,
         },
       },
       {
@@ -74,6 +91,13 @@ const routes = [
         component: () => import(/* webpackChunkName: 'auth' */'@/views/UserForgotPasswordPage.vue'),
         meta: {
           requiresAuth: false,
+        },
+      },
+      {
+        path: 'dodaj-punkt',
+        component: () => import(/* webpackChunkName: 'front' */'@/views/MapPointCreatePage.vue'),
+        meta: {
+          requiresAuth: true,
         },
       },
       {
@@ -102,12 +126,12 @@ router.beforeEach((to, from, next) => {
     next({ path: '/' });
   }
 
-  if ((to.path === '/logowanie' || to.path === '/rejestracja') && store.getters['user/token'] !== '') {
+  if ((to.path === '/logowanie' || to.path === '/rejestracja') && checkTokenExpiriesDate(store.getters['user/expiriesDate'])) {
     next({ path: '/moje-konto' });
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.getters['user/token'] === '') {
+    if (!checkTokenExpiriesDate(store.getters['user/expiriesDate'])) {
       next({ path: '/logowanie' });
     } else {
       next();
