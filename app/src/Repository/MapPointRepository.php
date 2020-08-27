@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MapPoint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @method MapPoint|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,29 @@ class MapPointRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MapPoint::class);
+    }
+
+    public function getAllMapPoints()
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.id', 'u.id as userId', 'm.title', 'm.description', 'm.lat', 'm.lng', 'm.color', 'm.logo', 'm.uploadDir')
+            ->innerJoin('m.user', 'u')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getMapPointById(int $id)
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m', 'i', 'partial u.{id}')
+            ->innerJoin('m.user', 'u')
+            ->leftJoin('m.mapPointImage', 'i')
+            ->where('m.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getArrayResult()
+        ;
     }
 
     // /**

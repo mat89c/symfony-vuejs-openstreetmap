@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller\Api\MapPoint;
+
 use App\Response\ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;

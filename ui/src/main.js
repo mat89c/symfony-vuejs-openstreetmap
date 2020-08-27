@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import VueLazyLoad from 'vue-lazyload';
 import Http from './service/http';
 import 'leaflet/dist/leaflet.css';
 import App from './App.vue';
@@ -14,6 +15,7 @@ Vue.config.productionTip = false;
 Vue.use(validation);
 Vue.use(Vuex);
 Vue.use(CKEditor);
+Vue.use(VueLazyLoad);
 
 window.$http = new Http(store, router);
 

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import { LMap, LTileLayer } from 'vue2-leaflet';
 import HomePointMapMarker from '@/components/HomePointMapMarker.vue';
 
@@ -31,11 +31,6 @@ export default {
     }),
   },
   methods: {
-    ...mapActions({
-      fetchPoints: 'point/fetchPoints',
-      loadingStop: 'map/loadingStop',
-      loadingStart: 'map/loadingStart',
-    }),
     boundsUpdated() {
       if (this.timeout) clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
@@ -53,7 +48,8 @@ export default {
     };
   },
   created() {
-    this.fetchPoints();
+    this.$store.dispatch('point/loading', true);
+    this.$store.dispatch('point/getAllMapPoints').then(() => this.$store.dispatch('point/loading', false));
   },
 };
 </script>

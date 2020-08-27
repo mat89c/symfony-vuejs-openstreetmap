@@ -20,6 +20,7 @@ export default {
     },
     visibility: {
       get() { return this.$store.getters['dialogloader/visibility']; },
+      set(value) { this.$store.dispatch('dialogloader/visibility', value); },
     },
   },
 };

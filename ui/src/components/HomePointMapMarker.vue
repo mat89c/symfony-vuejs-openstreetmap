@@ -5,7 +5,7 @@
         :key="point.id"
         :lat-lng="[point.lat, point.lng]"
         @click="toPointPage(point.id)"
-        @mouseover="onHover(point.id, point.mapPointLogo)"
+        @mouseover="onHover(point.id, point.logo)"
       >
         <LIcon
           :icon-anchor="[0, 22.5]"
@@ -21,7 +21,7 @@
         <LTooltip class="tooltip">
             <img
               class="tooltip__image"
-              :data-src="point.mapPointLogo"
+              :data-src="point.logo"
               :alt="point.title"
               :id="imageId(point.id)"
             >
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     toPointPage(id) {
-      this.$router.push({ name: 'showPoint', params: { id } });
+      this.$router.push({ name: 'MapPointPage', params: { id } });
     },
     imageId(id) {
       return `image-${id}`;

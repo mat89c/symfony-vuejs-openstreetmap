@@ -16,6 +16,7 @@
         md="9"
         :class="{narrow: narrow == true, 'd-none': !mobileShowMap}"
       >
+        <HomePointMap />
       </v-col>
     </v-row>
 
@@ -34,18 +35,26 @@
 </template>
 
 <script>
+import HomePointMap from '@/components/HomePointMap.vue';
 
 export default {
   name: 'HomePage',
+  components: {
+    HomePointMap,
+  },
   methods: {
     toggleMobileView() {
       this.mobileShowMap = !this.mobileShowMap;
     },
   },
+  computed: {
+    narrow: {
+      get() { return this.$store.getters['map/narrow']; },
+    },
+  },
   data() {
     return {
       mobileShowMap: false,
-      narrow: true,
     };
   },
 };

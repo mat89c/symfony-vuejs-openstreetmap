@@ -6,12 +6,10 @@
     <v-progress-linear
       v-if="loading"
       indeterminate
-      color="#ffaa00"
     ></v-progress-linear>
     <v-progress-linear
       v-if="loading"
       indeterminate
-      color="#ffaa00"
     ></v-progress-linear>
     <v-list-item
       v-else
@@ -22,7 +20,7 @@
       :key="point.id"
       @mouseenter="setActive(point.id)"
       @mouseleave="setActive(null)"
-      :to="{ name: 'showPoint', params: { id: point.id } }"
+      :to="{ name: 'MapPointPage', params: { id: point.id } }"
     >
       <v-list-item-content>
         <v-list-item-title>{{ point.title }}</v-list-item-title>
@@ -33,7 +31,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'HomePointList',
@@ -45,11 +43,18 @@ export default {
       mapCenter: 'map/mapCenter',
     }),
   },
-  computed: mapGetters({
-    points: 'point/points',
-    loading: 'point/loading',
-    narrow: 'map/narrow',
-  }),
+  computed: {
+    points: {
+      get() { return this.$store.getters['point/points']; },
+    },
+    narrow: {
+      get() { return this.$store.getters['map/narrow']; },
+    },
+    loading: {
+      get() { return this.$store.getters['point/loading']; },
+      set(value) { this.$store.dispatch('point/loading', value); },
+    },
+  },
   created() {
     this.mapNarrow(false);
     this.mapZoom(7);

@@ -13,12 +13,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 export default {
   name: 'NotificationBar',
   computed: {
-    ...mapGetters('notificationbar', ['msg', 'color', 'show']),
+    msg: {
+      get() { return this.$store.getters['notificationbar/msg']; },
+    },
+    color: {
+      get() { return this.$store.getters['notificationbar/color']; },
+    },
     show: {
       get() { return this.$store.getters['notificationbar/show']; },
       set(value) { this.$store.dispatch('notificationbar/hideNotification', value); },

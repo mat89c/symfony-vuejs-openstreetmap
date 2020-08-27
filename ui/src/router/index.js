@@ -25,6 +25,14 @@ const routes = [
               requiresAuth: false,
             },
           },
+          {
+            name: 'MapPointPage',
+            path: 'point/:id',
+            component: () => import(/* webpackChunkName: 'front-pages' */'@/views/MapPointPage.vue'),
+            meta: {
+              requiresAuth: false,
+            },
+          },
         ],
       },
       {
