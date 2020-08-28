@@ -20,6 +20,9 @@ export default {
       imagesSize: [
         (files) => !files || !files.some((file) => file.size > 2097152) || 'Wielkość każdego pliku nie powinna przekraczać 2MB.',
       ],
+      comboboxRequired: [
+        (v) => v.length !== 0 || 'Proszę wybrać kategorię.',
+      ],
     };
     /* eslint-enable no-param-reassign */
   },

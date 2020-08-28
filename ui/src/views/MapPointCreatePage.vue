@@ -45,6 +45,31 @@
               v-model="pointDescription"
               :config="editorConfig"
             ></ckeditor>
+            <v-combobox
+              v-model="pointCategory"
+              :items="pointCategories"
+              :search-input.sync="pointCategorySearch"
+              hide-selected
+              clearable
+              hint="Jeśli kategoria której szukasz nie istnieje, możesz dodać nową."
+              label="Dodaj powiązane kategorie."
+              multiple
+              persistent-hint
+              small-chips
+              class="mt-8"
+              :rules="$rules.comboboxRequired"
+            >
+              <template v-slot:no-data>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Nie znaleziono kategorii "<strong>{{ pointCategorySearch }}</strong>".
+                      Naciśnij <kbd>enter</kbd>, aby dodać nową kategorię.
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </template>
+            </v-combobox>
             <v-file-input
               class="mt-10"
               label="Logo/zdjęcie główne"
@@ -141,6 +166,9 @@ export default {
       pointPostCode: '',
       pointCity: '',
       pointDescription: '',
+      pointCategorySearch: null,
+      pointCategories: [],
+      pointCategory: [],
       pointLatLng: {
         lat: 52.302,
         lng: 19.281,
