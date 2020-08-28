@@ -25,6 +25,7 @@ class MapPointRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->select('m.id', 'u.id as userId', 'm.title', 'm.description', 'm.lat', 'm.lng', 'm.color', 'm.logo', 'm.uploadDir')
             ->innerJoin('m.user', 'u')
+            ->where('m.isActive = 1')
             ->getQuery()
             ->getResult()
         ;
@@ -37,6 +38,7 @@ class MapPointRepository extends ServiceEntityRepository
             ->innerJoin('m.user', 'u')
             ->leftJoin('m.mapPointImage', 'i')
             ->where('m.id = :id')
+            ->andWhere('m.isActive = 1')
             ->setParameter('id', $id)
             ->getQuery()
             ->getArrayResult()

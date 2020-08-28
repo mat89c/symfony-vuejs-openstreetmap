@@ -49,6 +49,7 @@ final class CreateMapPointController extends AbstractController
         $mapPoint->setLat($request->request->get('lat'));
         $mapPoint->setLng($request->request->get('lng'));
         $mapPoint->setUploadDir(uniqid());
+        $mapPoint->setIsActive(false);
 
         $mapPointLogo = new MapPointFile($request->files->get('logo'));
         $mapPointImages = new MapPointFiles($request->files->get('images'));

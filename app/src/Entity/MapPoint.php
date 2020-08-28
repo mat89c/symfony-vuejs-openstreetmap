@@ -91,6 +91,11 @@ class MapPoint
      */
     private $uploadDir;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
+
     public function __construct()
     {
         $this->mapPointImage = new ArrayCollection();
@@ -260,6 +265,18 @@ class MapPoint
     public function setUploadDir(string $uploadDir): self
     {
         $this->uploadDir = $uploadDir;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

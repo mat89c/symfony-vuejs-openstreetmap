@@ -49,3 +49,4 @@ map_point:
   created:
     title: Dodano nowy punkt.
     message: Dodałeś nowy punkt. Po weryfikacji przez administratora zostanie wyświetlony na mapie.
+  not_found: Nie znaleziono punktu.
