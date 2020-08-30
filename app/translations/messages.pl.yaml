@@ -50,3 +50,9 @@ map_point:
     title: Dodano nowy punkt.
     message: Dodałeś nowy punkt. Po weryfikacji przez administratora zostanie wyświetlony na mapie.
   not_found: Nie znaleziono punktu.
+
+
+category:
+  max_qty: Wybrano zbyt wiele kategorii. Maksymalna ilość to 5.
+  not_blank: Proszę wybrać conajmniej jedną kategorię.
+  not_found: Wybrana kategoria nie została znaleziona.

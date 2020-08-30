@@ -14,7 +14,7 @@
     <v-list-item
       v-else
       class="py-0"
-      two-line
+      three-line
       link
       v-for="point in points"
       :key="point.id"
@@ -25,6 +25,14 @@
       <v-list-item-content>
         <v-list-item-title>{{ point.title }}</v-list-item-title>
           <v-list-item-subtitle>{{ point.description | stripTags }}</v-list-item-subtitle>
+          <v-list-item-subtitle>
+            <v-chip
+              x-small
+              class="mr-1"
+              v-for="category in point.mapPointCategories"
+              :key="category.id"
+            >{{ category.name }}</v-chip>
+          </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
   </div>

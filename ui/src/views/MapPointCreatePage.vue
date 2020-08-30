@@ -52,7 +52,7 @@
               hide-selected
               clearable
               hint="Jeśli kategoria której szukasz nie istnieje, możesz dodać nową."
-              label="Dodaj powiązane kategorie."
+              label="Dodaj powiązane kategorie. Maks 5 kategorii."
               multiple
               persistent-hint
               small-chips
@@ -168,6 +168,13 @@ export default {
           }));
         }
       });
+  },
+  watch: {
+    pointCategory(val) {
+      if (val.length > 5) {
+        this.$nextTick(() => this.pointCategory.pop());
+      }
+    },
   },
   data() {
     return {

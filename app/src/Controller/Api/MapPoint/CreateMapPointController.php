@@ -76,6 +76,10 @@ final class CreateMapPointController extends AbstractController
         if (!$categories)
             throw new ApiException($this->translator->trans('category.not_blank'), 400);
 
+        if (count($categories) > 5)
+            throw new ApiException($this->translator->trans('category.max_qty'), 400);
+
+
         foreach ($categories as $category) {
             if (is_array($category)) {
                 $mapPointCategory = $this->mapPointCategoryRepository->findOneBy(['id' => $category['id']]);
