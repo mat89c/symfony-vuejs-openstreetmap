@@ -128,3 +128,8 @@ user:
     min_length: Hasło powinno zawierać co najmniej 6 znaków.
   name:
     not_blank: Pole nazwa użytkownika jest wymagane.
+
+
+category:
+  not_blank: Proszę wybrać conajmniej jedną kategorię.
+  not_found: Wybrana kategoria nie została znaleziona.

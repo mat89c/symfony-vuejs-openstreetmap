@@ -57,7 +57,6 @@
               persistent-hint
               small-chips
               class="mt-8"
-              :rules="$rules.comboboxRequired"
             >
               <template v-slot:no-data>
                 <v-list-item>
@@ -146,6 +145,7 @@ import {
   LMarker,
   LIcon,
 } from 'vue2-leaflet';
+import getAllCategories from '@/api/category/getAllCategories';
 
 export default {
   name: 'MapPointCreatePage',
@@ -157,6 +157,17 @@ export default {
   },
   directives: {
     mask,
+  },
+  created() {
+    getAllCategories()
+      .then((response) => {
+        if (typeof response.data.data !== 'undefined') {
+          this.pointCategories = response.data.data.map(({ id, name }) => ({
+            value: id,
+            text: name,
+          }));
+        }
+      });
   },
   data() {
     return {
@@ -224,6 +235,7 @@ export default {
         lng: this.pointLatLng.lng,
         logo: this.pointLogoImage,
         images: this.pointImages,
+        categories: this.pointCategory,
       };
 
       createMapPoint(point)

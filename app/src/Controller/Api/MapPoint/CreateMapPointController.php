@@ -14,6 +14,9 @@ use App\Helper\MapPointFile;
 use App\Helper\MapPointFiles;
 use App\Service\ValidatorService;
 use App\Messenger\Command\CreateMapPointCommand;
+use App\Entity\MapPointCategory;
+use App\Exception\ApiException;
+use App\Repository\MapPointCategoryRepository;
 
 /**
  * @Route("/api/point/create", methods={"POST"})
@@ -26,14 +29,18 @@ final class CreateMapPointController extends AbstractController
 
     private $validatorService;
 
+    private $mapPointCategoryRepository;
+
     public function __construct(
         MessageBusInterface $commandBus,
         TranslatorInterface $translator,
-        ValidatorService $validatorService)
+        ValidatorService $validatorService,
+        MapPointCategoryRepository $mapPointCategoryRepository)
     {
         $this->commandBus = $commandBus;
         $this->translator = $translator;
         $this->validatorService = $validatorService;
+        $this->mapPointCategoryRepository = $mapPointCategoryRepository;
     }
 
     public function __invoke(Request $request): ApiResponse
@@ -62,6 +69,26 @@ final class CreateMapPointController extends AbstractController
             $mapPointImage->setMapPoint($mapPoint);
 
             $mapPoint->addMapPointImage($mapPointImage);
+        }
+
+        $categories = $request->request->get('categories');
+
+        if (!$categories)
+            throw new ApiException($this->translator->trans('category.not_blank'), 400);
+
+        foreach ($categories as $category) {
+            if (is_array($category)) {
+                $mapPointCategory = $this->mapPointCategoryRepository->findOneBy(['id' => $category['id']]);
+                if (!$mapPointCategory)
+                    throw new ApiException($this->translator->trans('category.not_found'), 400);
+            } else {
+                $mapPointCategory = new MapPointCategory();
+                $mapPointCategory->setName($category);
+                $mapPointCategory->setIsActive(false);
+            }
+            $mapPointCategory->addMapPoint($mapPoint);
+
+            $mapPoint->addMapPointCategory($mapPointCategory);
         }
 
         $this->validatorService->validate($mapPoint);

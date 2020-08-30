@@ -9,6 +9,14 @@ function createMapPoint(point) {
   formData.set('lat', point.lat);
   formData.set('lng', point.lng);
   formData.set('logo', point.logo);
+  point.categories.forEach((category, index) => {
+    if (typeof category.value !== 'undefined') {
+      formData.append(`categories[${index}][id]`, category.value);
+      formData.append(`categories[${index}][name]`, category.text);
+    } else {
+      formData.append('categories[]', category);
+    }
+  });
   point.images.forEach((image) => {
     formData.append('images[]', image);
   });

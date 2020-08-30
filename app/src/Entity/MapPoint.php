@@ -96,9 +96,15 @@ class MapPoint
      */
     private $isActive;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=MapPointCategory::class, inversedBy="mapPoints", cascade={"persist"})
+     */
+    private $mapPointCategories;
+
     public function __construct()
     {
         $this->mapPointImage = new ArrayCollection();
+        $this->mapPointCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -277,6 +283,32 @@ class MapPoint
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MapPointCategory[]
+     */
+    public function getMapPointCategories(): Collection
+    {
+        return $this->mapPointCategories;
+    }
+
+    public function addMapPointCategory(MapPointCategory $mapPointCategory): self
+    {
+        if (!$this->mapPointCategories->contains($mapPointCategory)) {
+            $this->mapPointCategories[] = $mapPointCategory;
+        }
+
+        return $this;
+    }
+
+    public function removeMapPointCategory(MapPointCategory $mapPointCategory): self
+    {
+        if ($this->mapPointCategories->contains($mapPointCategory)) {
+            $this->mapPointCategories->removeElement($mapPointCategory);
+        }
 
         return $this;
     }
