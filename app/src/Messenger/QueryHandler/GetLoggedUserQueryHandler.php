@@ -24,6 +24,7 @@ class GetLoggedUserQueryHandler implements MessageHandlerInterface
         $expiriesDate = $jws->getPayload()['exp'];
 
         return [
+            'id' => $user->getId(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),

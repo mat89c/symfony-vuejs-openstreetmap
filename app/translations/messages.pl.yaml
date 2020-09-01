@@ -6,6 +6,9 @@ user:
 
 error:
   invalid_token: Nieprawidłowy token.
+  review:
+    exists_and_inactive: Dodałeś już opinię, jednak nie została ona aktywowana.
+    exists: Dodałeś już opinię. Możesz dodać tylko jedną.
 
 
 registration:
@@ -24,7 +27,7 @@ reset_password:
 
 email:
   greetings: Pozdrawiamy
-  team: Zespół
+  team: Zespół %appName%
 
   registration:
     subject: Rejestracja w %appName%
@@ -45,6 +48,15 @@ email:
     welcome: Hasło zostało zmienione
     header: Ta wiadomość została wysłana ponieważ zmieniono hasło na stronie %appName%.
 
+  review:
+    created: Dodano nową opinię na %appName%
+    title: Dodano nową opinię
+    content: Dla punktu o nazwie %mapPointName% dodano nową opinię. Kliknij poniżej, aby wyświetlić stronę.
+    btn: Zobacz punkt
+    rating: Wystawiona ocena %rating% na 10.
+    review: '%review%'
+    createdBy: Dodano przez '%createdBy%'
+
 map_point:
   created:
     title: Dodano nowy punkt.
@@ -53,6 +65,12 @@ map_point:
 
 
 category:
-  max_qty: Wybrano zbyt wiele kategorii. Maksymalna ilość to 5.
-  not_blank: Proszę wybrać conajmniej jedną kategorię.
-  not_found: Wybrana kategoria nie została znaleziona.
+  max_qty: Wybrano zbyt wiele tagów. Maksymalna ilość to 5.
+  not_blank: Proszę wybrać conajmniej jeden tag.
+  not_found: Wybrany tag nie została znaleziony.
+
+
+review:
+  created:
+    title: Dodano nową opinię.
+    message: Dodałeś nową opinię. Zostanie wyświetlona po weryfikacji administratora.

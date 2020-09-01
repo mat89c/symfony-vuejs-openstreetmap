@@ -24,6 +24,7 @@ class MapPointCategoryRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->select('m.id', 'm.name')
             ->where('m.isActive = 1')
+            ->orderBy('m.name', 'ASC')
             ->getQuery()
             ->getArrayResult()
         ;

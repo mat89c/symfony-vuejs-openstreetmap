@@ -20,28 +20,33 @@ class MapPointRepository extends ServiceEntityRepository
         parent::__construct($registry, MapPoint::class);
     }
 
-    public function getAllMapPoints()
+    public function getAllMapPoints(?array $checkedCategories)
     {
-        return $this->createQueryBuilder('m')
+        $query =  $this->createQueryBuilder('m')
             ->select('partial m.{id, title, description, lat, lng, color, logo, uploadDir}', 'partial u.{id}', 'partial c.{id, name}')
             ->innerJoin('m.user', 'u')
-            ->leftJoin('m.mapPointCategories', 'c')
+            ->leftJoin('m.mapPointCategories', 'c', 'WITH', 'c.isActive = 1')
             ->where('m.isActive = 1')
-            ->andWhere('c.isActive = 1')
-            ->getQuery()
-            ->getArrayResult()
         ;
+
+        if (!empty($checkedCategories)) {
+            $query->andWhere('c.id IN(:categories)');
+            $query->setParameter('categories', $checkedCategories);
+        }
+
+        return $query->getQuery()->getArrayResult();
     }
 
     public function getMapPointById(int $id)
     {
         return $this->createQueryBuilder('m')
-            ->select('m', 'i', 'partial u.{id}', 'partial c.{id, name}')
+            ->select('m', 'i', 'partial u.{id, name}', 'partial c.{id, name}', 'partial r.{id, content, rating, createdAt}', 'partial ru.{id, name}')
             ->innerJoin('m.user', 'u')
             ->leftJoin('m.mapPointImage', 'i')
-            ->leftJoin('m.mapPointCategories', 'c')
+            ->leftJoin('m.mapPointCategories', 'c', 'WITH', 'c.isActive = 1')
+            ->leftJoin('m.reviews', 'r', 'WITH', 'r.isActive = 1')
+            ->leftJoin('r.user', 'ru')
             ->where('m.id = :id')
-            ->andWhere('c.isActive = 1')
             ->andWhere('m.isActive = 1')
             ->setParameter('id', $id)
             ->getQuery()

@@ -64,11 +64,16 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch('categories/showBtn');
+
     this.mapNarrow(false);
     this.mapZoom(7);
     this.mapCenter({
       latlng: [52.302, 19.281],
     });
+  },
+  destroyed() {
+    this.$store.dispatch('categories/hideBtn');
   },
   filters: {
     stripTags: (value) => {

@@ -51,8 +51,8 @@
               :search-input.sync="pointCategorySearch"
               hide-selected
               clearable
-              hint="Jeśli kategoria której szukasz nie istnieje, możesz dodać nową."
-              label="Dodaj powiązane kategorie. Maks 5 kategorii."
+              hint="Jeśli tag którego szukasz nie istnieje, możesz dodać nowy."
+              label="Dodaj powiązane tagi. Maks 5 tagów."
               multiple
               persistent-hint
               small-chips
@@ -62,8 +62,8 @@
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title>
-                      Nie znaleziono kategorii "<strong>{{ pointCategorySearch }}</strong>".
-                      Naciśnij <kbd>enter</kbd>, aby dodać nową kategorię.
+                      Nie znaleziono tagów "<strong>{{ pointCategorySearch }}</strong>".
+                      Naciśnij <kbd>enter</kbd>, aby dodać nowy tag.
                     </v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -71,7 +71,7 @@
             </v-combobox>
             <v-file-input
               class="mt-10"
-              label="Logo/zdjęcie główne"
+              label="Zdjęcie główne"
               accept="image/*"
               @change="processLogoImage"
               counter
@@ -298,27 +298,6 @@ export default {
       min-height: 400px;
     }
 
-    &__marker {
-      background: var(--bg-color);
-      width: 30px;
-      height: 30px;
-      border-radius: 50% 50% 50% 0;
-      position: absolute;
-      transform: rotate(-45deg);
-      left: 50%;
-      top: 50%;
-      margin: -20px 0 0 -20px;
-      &:after {
-        content: "";
-        width: 14px;
-        height: 14px;
-        margin: 8px 0 0 8px;
-        background: #e6e6e6;
-        position: absolute;
-        border-radius: 50%;
-      }
-    }
-
     &__info {
       color: rgba(255, 255, 255, 0.7);
       font-size: 14px;
@@ -331,30 +310,5 @@ export default {
   .row {
     position: relative;
     z-index:1;
-  }
-
-  .ck-content {
-    background-color: transparent!important;
-  }
-
-  .ck.ck-toolbar {
-    background-color: #363636!important;
-  }
-
-  .ck.ck-button {
-    color: rgba(255, 255, 255, 0.7);
-    &:hover, &:focus, &.ck-on {
-      background-color: #666!important;
-    }
-  }
-
-  .ck-editor__title {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 400;
-    margin-bottom: 4px;
-  }
-
-  .ck.ck-list {
-    background-color: #363636;
   }
 </style>

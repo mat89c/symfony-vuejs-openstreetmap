@@ -9,6 +9,7 @@ import dialogloader from '@/store/modules/dialogloader.module';
 import map from '@/store/modules/map.module';
 import mapmarker from '@/store/modules/mapmarker.module';
 import point from '@/store/modules/point.module';
+import categories from '@/store/modules/categories.module';
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     map,
     mapmarker,
     point,
+    categories,
   },
   plugins: [
     createPersistedState({

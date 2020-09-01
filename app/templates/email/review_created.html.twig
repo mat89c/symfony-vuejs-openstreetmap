@@ -5,7 +5,7 @@
                 <spacer size="35"></spacer>
                 <h1>
                     <center>
-                        {% trans %}email.reset_password.welcome{% endtrans %}
+                        {% trans %}email.review.title{% endtrans %} {{ email.toName }}!
                     </center>
                 </h1>
                 <spacer size="10"></spacer>
@@ -15,21 +15,33 @@
         <row>
             <columns>
                 <p>
-                    {% trans with {'%appName%': appName} %}email.reset_password.header{% endtrans %}
+                    {% trans with {'%mapPointName%': mapPointName } %}email.review.content{% endtrans %}
                 </p>
             </columns>
         </row>
         <row>
             <columns>
                 <center>
-                    <button href="{{ appUrl }}/resetuj-haslo/{{ token }}">{% trans %}email.reset_password.confirm{% endtrans %}</button>
+                    <button href="{{ mapPointUrl }}">{% trans %}email.review.btn{% endtrans %}</button>
                 </center>
             </columns>
         </row>
         <row>
             <columns>
                 <p>
-                    {% trans %}email.reset_password.footer{% endtrans %}
+                    {% trans with {'%rating%': rating} %}email.review.rating{% endtrans %}
+                </p>
+                <h-line></h-line>
+                <em>
+                    {% trans with {'%review%': review} %}email.review.review{% endtrans %}
+                </em>
+                <h-line></h-line>
+            </columns>
+        </row>
+        <row>
+            <columns>
+                <p>
+                    {% trans with {'%createdBy%': createdBy} %}email.review.createdBy{% endtrans %}
                 </p>
             </columns>
         </row>

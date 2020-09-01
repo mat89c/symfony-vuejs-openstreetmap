@@ -9,8 +9,8 @@ const getters = {
 };
 
 const actions = {
-  async getAllMapPoints({ commit }) {
-    const response = await apiGetAllMapPoints();
+  async getAllMapPoints({ commit }, checkedCategories) {
+    const response = await apiGetAllMapPoints(checkedCategories);
 
     if (response) {
       commit('SET_POINTS', response.data.data);

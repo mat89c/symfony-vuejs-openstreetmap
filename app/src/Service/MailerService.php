@@ -6,6 +6,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Entity\Review;
 
 class MailerService
 {
@@ -63,6 +64,25 @@ class MailerService
             ->htmlTemplate('email/user_password_changed.html.twig')
             ->context([
                 'appName' => $this->appName
+            ]);
+
+        $this->mailer->send($email);
+    }
+
+    public function reviewCreated(Review $review): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->sender, $this->appName))
+            ->to(new Address($this->sender, $this->appName))
+            ->subject($this->translator->trans('email.review.created', ['%appName%' => $this->appName]))
+            ->htmlTemplate('email/review_created.html.twig')
+            ->context([
+                'appName' => $this->appName,
+                'createdBy' => $review->getUser()->getEmail(),
+                'mapPointName' => $review->getMapPoint()->getTitle(),
+                'mapPointUrl' => $this->appUrl . '/point/' . $review->getMapPoint()->getId(),
+                'rating' => $review->getRating(),
+                'review' => $review->getContent()
             ]);
 
         $this->mailer->send($email);

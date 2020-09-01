@@ -112,7 +112,7 @@ map_point:
   street:
     not_blank: Pole ulica nie może być puste.
   logo:
-    not_blank: Logo jest wymagane.
+    not_blank: Zdjęcie główne jest wymagane.
   file:
     max_size: Wielkość pliku nie może być większa niż 2MB.
     mime_types: Nieprawidłowy format pliku. Prześlij jpg, jpeg lub png.
@@ -128,3 +128,15 @@ user:
     min_length: Hasło powinno zawierać co najmniej 6 znaków.
   name:
     not_blank: Pole nazwa użytkownika jest wymagane.
+
+
+
+review:
+  map_point:
+    not_blank: Nie znaleziono punktu na mapie.
+  user:
+    not_blank: Nie znaleziono użytkownika.
+  rating:
+    not_blank: Ocena jest wymagana.
+    greater_than: Minimalna ocena to 1.
+    less_than: Maksymalna ocena to 10.

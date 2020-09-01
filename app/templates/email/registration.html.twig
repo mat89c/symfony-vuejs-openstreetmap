@@ -36,7 +36,7 @@
         <row class="footer">
             <columns>
                 <p>{% trans %}email.greetings{% endtrans %}</p>
-                <p>{% trans %}email.team{% endtrans %} <em>DemoApp</em></p>
+                <p>{% trans with {'%appName%': appName} %}email.team{% endtrans %}</p>
             </columns>
         </row>
         <row class="bottom">
@@ -44,7 +44,7 @@
                 <center>
                     <spacer size="20"></spacer>
                     <div>
-                        Symfony + Vue.js Demo App
+                        Symfony + Vue.js
                     </div>
                 </center>
             </columns>

@@ -28,6 +28,7 @@ export default {
     ...mapGetters({
       zoom: 'map/zoom',
       center: 'map/center',
+      checkedCategories: 'categories/checkedCategories',
     }),
   },
   methods: {
@@ -49,7 +50,7 @@ export default {
   },
   created() {
     this.$store.dispatch('point/loading', true);
-    this.$store.dispatch('point/getAllMapPoints').then(() => this.$store.dispatch('point/loading', false));
+    this.$store.dispatch('point/getAllMapPoints', this.checkedCategories).then(() => this.$store.dispatch('point/loading', false));
   },
 };
 </script>

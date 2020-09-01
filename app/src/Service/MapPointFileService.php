@@ -24,11 +24,17 @@ class MapPointFileService
         $mapPointLogo->getFile()->move($this->uploadsPath . '/' . $mapPoint->getUploadDir(),  $mapPointLogo->getName());
 
         $image = $this->imageManager->make($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . $mapPointLogo->getName());
-        $image->resize(300, 300, function($constraint) {
+        $image->resize(1300, 1300, function($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         });
         $image->save($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . $mapPointLogo->getName());
+
+        $image->resize(300, 300, function($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+        $image->save($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . 'thumb-' . $mapPointLogo->getName());
     }
 
     public function handleImages(MapPoint $mapPoint, MapPointFiles $mapPointImages): void
@@ -37,11 +43,18 @@ class MapPointFileService
             $item->getFile()->move($this->uploadsPath . '/' . $mapPoint->getUploadDir(), $item->getName());
 
             $image = $this->imageManager->make($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . $item->getName());
-            $image->resize(1000, 1000, function($constraint) {
+            $image->resize(1920, 1920, function($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
             $image->save($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . $item->getName());
+
+            $image = $this->imageManager->make($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . $item->getName());
+            $image->resize(768, 768, function($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+            $image->save($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . 'thumb-' . $item->getName());
         }
     }
 }

@@ -24,7 +24,7 @@ class GetAllMapPointsQueryHandler implements MessageHandlerInterface
 
     public function __invoke(GetAllMapPointsQuery $getAllMapPointsQuery): array
     {
-        $mapPoints =  $this->mapPointRepository->getAllMapPoints();
+        $mapPoints =  $this->mapPointRepository->getAllMapPoints($getAllMapPointsQuery->getCheckedCategories());
 
         foreach ($mapPoints as $key => $mapPoint) {
             $mapPoints[$key]['logo'] = $this->baseUrlService->getBaseUrl() . '/' . $this->uploadsDir . '/' . $mapPoint['uploadDir'] . '/' . $mapPoint['logo'] ;

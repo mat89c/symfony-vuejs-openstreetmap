@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import TheLayout from '@/views/layout/TheLayout.vue';
 import checkTokenExpiriesDate from '@/helper/checkTokenExpiriesDate';
-import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -19,6 +18,7 @@ const routes = [
         },
         children: [
           {
+            name: 'HomePointList',
             path: '',
             component: () => import(/* webpackChunkName: 'front' */'@/components/HomePointList.vue'),
             meta: {
@@ -134,12 +134,12 @@ router.beforeEach((to, from, next) => {
     next({ path: '/' });
   }
 
-  if ((to.path === '/logowanie' || to.path === '/rejestracja') && checkTokenExpiriesDate(store.getters['user/expiriesDate'])) {
+  if ((to.path === '/logowanie' || to.path === '/rejestracja') && checkTokenExpiriesDate()) {
     next({ path: '/moje-konto' });
   }
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!checkTokenExpiriesDate(store.getters['user/expiriesDate'])) {
+    if (!checkTokenExpiriesDate()) {
       next({ path: '/logowanie' });
     } else {
       next();

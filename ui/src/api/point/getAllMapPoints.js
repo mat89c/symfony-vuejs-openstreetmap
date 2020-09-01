@@ -1,7 +1,10 @@
-function getAllMapPoints() {
+function getAllMapPoints(checkedCategories) {
   return window.$http({
     url: '/api/points',
     method: 'get',
+    params: {
+      checkedCategories,
+    },
   });
 }
 

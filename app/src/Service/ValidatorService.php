@@ -7,6 +7,9 @@ use App\Helper\MapPointFile;
 use App\Helper\MapPointFiles;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Entity\User;
+use App\Entity\MapPoint;
+use App\Repository\ReviewRepository;
 
 class ValidatorService
 {
@@ -14,10 +17,16 @@ class ValidatorService
 
     private $translator;
 
-    public function __construct(ValidatorInterface $validator, TranslatorInterface $translator)
+    private $reviewRepository;
+
+    public function __construct(
+        ValidatorInterface $validator,
+        TranslatorInterface $translator,
+        ReviewRepository $reviewRepository)
     {
         $this->validator = $validator;
         $this->translator = $translator;
+        $this->reviewRepository = $reviewRepository;
     }
 
     public function validate(Object $object): void
@@ -50,5 +59,16 @@ class ValidatorService
         foreach ($mapPointFiles->getFiles() as $file) {
             $this->validateMapPointFile($file);
         }
+    }
+
+    public function validateUserAlreadyPublishedReview(User $user, MapPoint $mapPoint): void
+    {
+        $review = $this->reviewRepository->findOneBy(['user' => $user, 'mapPoint' => $mapPoint]);
+
+        if ($review && !$review->getIsActive())
+            throw new ApiException($this->translator->trans('error.review.exists_and_inactive'), 400);
+
+        if ($review)
+            throw new ApiException($this->translator->trans('error.review.exists'), 400);
     }
 }

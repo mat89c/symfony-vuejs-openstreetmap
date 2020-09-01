@@ -21,7 +21,7 @@
         <LTooltip class="tooltip">
             <img
               class="tooltip__image"
-              :data-src="point.logo"
+              :data-src="point.logo.thumb"
               :alt="point.title"
               :id="imageId(point.id)"
             >
@@ -74,27 +74,6 @@ export default {
 </script>
 
 <style lang="scss">
-.pin {
-  background: var(--bg-color);
-  width: 30px;
-  height: 30px;
-  border-radius: 50% 50% 50% 0;
-  position: absolute;
-  transform: rotate(-45deg);
-  left: 50%;
-  top: 50%;
-  margin: -20px 0 0 -20px;
-  &:after {
-    content: "";
-    width: 14px;
-    height: 14px;
-    margin: 8px 0 0 8px;
-    background: #e6e6e6;
-    position: absolute;
-    border-radius: 50%;
-  }
-}
-
 .pulse {
   background: rgba(0,0,0,0.3);
   border-radius: 50%;

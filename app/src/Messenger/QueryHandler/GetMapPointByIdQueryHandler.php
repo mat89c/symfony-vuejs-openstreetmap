@@ -39,10 +39,16 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
         if (!isset($mapPoint[0]))
             throw new ApiException($this->translator->trans('map_point'), 404);
 
-        $mapPoint[0]['logo'] = $this->baseUrlService->getBaseUrl() . '/' .$this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/' . $mapPoint[0]['logo'];
+        $mapPoint[0]['logo'] = [
+            'src' => $this->baseUrlService->getBaseUrl() . '/' .$this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/' . $mapPoint[0]['logo'],
+            'thumb' => $this->baseUrlService->getBaseUrl() . '/' .$this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/thumb-' . $mapPoint[0]['logo']
+        ];
 
         foreach ($mapPoint[0]['mapPointImage'] as $key => $image) {
-            $mapPoint[0]['mapPointImage'][$key] = $this->baseUrlService->getBaseUrl() . '/' . $this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/' . $image['name'];
+            $mapPoint[0]['mapPointImage'][$key] = [
+                'src' => $this->baseUrlService->getBaseUrl() . '/' . $this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/' . $image['name'],
+                'thumb' => $this->baseUrlService->getBaseUrl() . '/' . $this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/thumb-' . $image['name']
+            ];
         }
 
         return $mapPoint[0];

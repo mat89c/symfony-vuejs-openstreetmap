@@ -31,16 +31,20 @@
       <v-icon v-if="mobileShowMap">mdi-format-list-bulleted-square</v-icon>
       <v-icon v-else>mdi-map</v-icon>
     </v-btn>
+
+    <BottomSheet />
   </v-container>
 </template>
 
 <script>
 import HomePointMap from '@/components/HomePointMap.vue';
+import BottomSheet from '@/components/BottomSheet.vue';
 
 export default {
   name: 'HomePage',
   components: {
     HomePointMap,
+    BottomSheet,
   },
   methods: {
     toggleMobileView() {

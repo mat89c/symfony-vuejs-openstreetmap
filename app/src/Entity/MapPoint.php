@@ -101,10 +101,22 @@ class MapPoint
      */
     private $mapPointCategories;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="mapPoint")
+     */
+    private $reviews;
+
     public function __construct()
     {
         $this->mapPointImage = new ArrayCollection();
         $this->mapPointCategories = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -308,6 +320,49 @@ class MapPoint
     {
         if ($this->mapPointCategories->contains($mapPointCategory)) {
             $this->mapPointCategories->removeElement($mapPointCategory);
+        }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Review[]
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): self
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews[] = $review;
+            $review->setMapPoint($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): self
+    {
+        if ($this->reviews->contains($review)) {
+            $this->reviews->removeElement($review);
+            // set the owning side to null (unless already changed)
+            if ($review->getMapPoint() === $this) {
+                $review->setMapPoint(null);
+            }
         }
 
         return $this;
