@@ -37,10 +37,10 @@ services:
         resource: '../src/Messenger/CommandHandler'
         autoconfigure: false
         tags: [{ name: messenger.message_handler, bus: command.bus }]
-    # App\Messenger\QueryHandler\:
-    #     resource: '../src/Messenger/QueryHandler'
-    #     autoconfigure: false
-    #     tags: [{ name: messenger.message_handler, bus: query.bus }]
+    App\Messenger\QueryHandler\:
+        resource: '../src/Messenger/QueryHandler'
+        autoconfigure: false
+        tags: [{ name: messenger.message_handler, bus: message.bus }]
     App\Messenger\EventHandler\:
         resource: '../src/Messenger/EventHandler'
         autoconfigure: false

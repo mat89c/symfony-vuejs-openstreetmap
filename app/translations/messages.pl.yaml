@@ -49,13 +49,19 @@ email:
     header: Ta wiadomość została wysłana ponieważ zmieniono hasło na stronie %appName%.
 
   review:
-    created: Dodano nową opinię na %appName%
-    title: Dodano nową opinię
-    content: Dla punktu o nazwie %mapPointName% dodano nową opinię. Kliknij poniżej, aby wyświetlić stronę.
+    created:
+      subject: Dodano nową opinię na %appName%
+      title: Dodano nową opinię
+      content: Dla punktu o nazwie %mapPointName% dodano nową opinię. Kliknij poniżej, aby wyświetlić stronę.
+    updated:
+      subject: Zaktualizowano opinię na %appName%
+      title: Zaktualizowano opinię
+      content: Zaktualizowano opinię punktu o nazwie %mapPointName%. Kliknij poniżej, aby wyświetlić stronę.
     btn: Zobacz punkt
     rating: Wystawiona ocena %rating% na 10.
     review: '%review%'
-    createdBy: Dodano przez '%createdBy%'
+    createdBy: Dodano przez %createdBy%
+    updatedBy: Zaktualizowano przez %updatedBy%
 
 map_point:
   created:
@@ -74,3 +80,7 @@ review:
   created:
     title: Dodano nową opinię.
     message: Dodałeś nową opinię. Zostanie wyświetlona po weryfikacji administratora.
+  updated:
+    title: Zaktualizowano opinię.
+    message: Zaktualizowałeś opinię. Do czasu weryfikacji przez administratora nie będzie wyświetlana.
+  not_found: Nie znaleziono opinii.

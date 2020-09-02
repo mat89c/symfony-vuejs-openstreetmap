@@ -16,7 +16,7 @@ use App\Messenger\Command\CreateReviewCommand;
 /**
  * @Route("/api/review/create", methods={"POST"})
  */
-final class CreateReview extends AbstractController
+final class CreateReviewController extends AbstractController
 {
     private $translator;
 

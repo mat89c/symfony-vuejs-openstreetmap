@@ -38,7 +38,7 @@
       <h3>Opinie i oceny użytkowników</h3>
       <v-divider class="mb-2"></v-divider>
       <MapPointReviewCreate v-if="allowCreateReview"/>
-      <MapPointReview v-if="reviews.length" :reviews="reviews"/>
+      <MapPointReview v-if="reviews.length" :reviews="reviews" @onReviewUpdated="onReviewUpdated"/>
       <span v-else>Brak</span>
     </v-col>
 
@@ -88,6 +88,9 @@ export default {
     }),
     openImage(id) {
       this.$refs.lightbox.showImage(id);
+    },
+    onReviewUpdated(index) {
+      this.$delete(this.reviews, index);
     },
   },
   created() {

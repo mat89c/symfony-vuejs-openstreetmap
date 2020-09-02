@@ -74,11 +74,30 @@ class MailerService
         $email = (new TemplatedEmail())
             ->from(new Address($this->sender, $this->appName))
             ->to(new Address($this->sender, $this->appName))
-            ->subject($this->translator->trans('email.review.created', ['%appName%' => $this->appName]))
+            ->subject($this->translator->trans('email.review.created.subject', ['%appName%' => $this->appName]))
             ->htmlTemplate('email/review_created.html.twig')
             ->context([
                 'appName' => $this->appName,
                 'createdBy' => $review->getUser()->getEmail(),
+                'mapPointName' => $review->getMapPoint()->getTitle(),
+                'mapPointUrl' => $this->appUrl . '/point/' . $review->getMapPoint()->getId(),
+                'rating' => $review->getRating(),
+                'review' => $review->getContent()
+            ]);
+
+        $this->mailer->send($email);
+    }
+
+    public function reviewUpdated(Review $review): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->sender, $this->appName))
+            ->to(new Address($this->sender, $this->appName))
+            ->subject($this->translator->trans('email.review.updated.subject', ['%appName%' => $this->appName]))
+            ->htmlTemplate('email/review_updated.html.twig')
+            ->context([
+                'appName' => $this->appName,
+                'updatedBy' => $review->getUser()->getEmail(),
                 'mapPointName' => $review->getMapPoint()->getTitle(),
                 'mapPointUrl' => $this->appUrl . '/point/' . $review->getMapPoint()->getId(),
                 'rating' => $review->getRating(),
