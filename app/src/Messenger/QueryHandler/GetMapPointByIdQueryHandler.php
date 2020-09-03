@@ -13,20 +13,16 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
 {
     private $mapPointRepository;
 
-    private $uploadsDir;
-
     private $baseUrlService;
 
     private $translator;
 
     public function __construct(
         MapPointRepository $mapPointRepository,
-        string $uploadsDir,
         BaseUrlService $baseUrlService,
         TranslatorInterface $translator)
     {
         $this->mapPointRepository = $mapPointRepository;
-        $this->uploadsDir = $uploadsDir;
         $this->baseUrlService = $baseUrlService;
         $this->translator = $translator;
     }
@@ -36,21 +32,31 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
 
         $mapPoint = $this->mapPointRepository->getMapPointById($getMapPointByIdQuery->getId());
 
-        if (!isset($mapPoint[0]))
+        if (!isset($mapPoint))
             throw new ApiException($this->translator->trans('map_point'), 404);
 
-        $mapPoint[0]['logo'] = [
-            'src' => $this->baseUrlService->getBaseUrl() . '/' .$this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/' . $mapPoint[0]['logo'],
-            'thumb' => $this->baseUrlService->getBaseUrl() . '/' .$this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/thumb-' . $mapPoint[0]['logo']
+        $mapPoint['logo'] = [
+            'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $mapPoint['logo']),
+            'thumb' => $this->baseUrlService->getThumbnailUrl($mapPoint['uploadDir'], $mapPoint['logo'])
         ];
 
-        foreach ($mapPoint[0]['mapPointImage'] as $key => $image) {
-            $mapPoint[0]['mapPointImage'][$key] = [
-                'src' => $this->baseUrlService->getBaseUrl() . '/' . $this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/' . $image['name'],
-                'thumb' => $this->baseUrlService->getBaseUrl() . '/' . $this->uploadsDir . '/' . $mapPoint[0]['uploadDir'] . '/thumb-' . $image['name']
+        foreach ($mapPoint['mapPointImage'] as $key => $image) {
+            $mapPoint['mapPointImage'][$key] = [
+                'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $image['name']),
+                'thumb' => $this->baseUrlService->getThumbnailUrl($mapPoint['uploadDir'], $image['name'])
             ];
         }
 
-        return $mapPoint[0];
+        foreach ($mapPoint['reviews'] as $i => $review) {
+            foreach($review['reviewImages'] as $j => $image) {
+                $mapPoint['reviews'][$i]['reviewImages'][$j] = [
+                    'id' => $image['id'],
+                    'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $image['name']),
+                    'thumb' => $this->baseUrlService->getThumbnailUrl($mapPoint['uploadDir'], $image['name'])
+                ];
+            }
+        }
+
+        return $mapPoint;
     }
 }

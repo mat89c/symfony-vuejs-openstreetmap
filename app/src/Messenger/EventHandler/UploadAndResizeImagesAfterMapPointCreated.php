@@ -4,15 +4,15 @@ namespace App\Messenger\EventHandler;
 
 use App\Messenger\Event\MapPointCreatedEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use App\Service\MapPointFileService;
+use App\Service\ImageService;
 
 class UploadAndResizeImagesAfterMapPointCreated implements MessageHandlerInterface
 {
-    private $mapPointFileService;
+    private $imageService;
 
-    public function __construct(MapPointFileService $mapPointFileService)
+    public function __construct(ImageService $imageService)
     {
-        $this->mapPointFileService = $mapPointFileService;
+        $this->imageService = $imageService;
     }
 
     public function __invoke(MapPointCreatedEvent $mapPointCreatedEvent): void
@@ -21,7 +21,7 @@ class UploadAndResizeImagesAfterMapPointCreated implements MessageHandlerInterfa
         $mapPointLogo = $mapPointCreatedEvent->getMapPointLogo();
         $mapPointImages = $mapPointCreatedEvent->getMapPointImages();
 
-        $this->mapPointFileService->handleLogo($mapPoint, $mapPointLogo);
-        $this->mapPointFileService->handleImages($mapPoint, $mapPointImages);
+        $this->imageService->handleImage($mapPoint, $mapPointLogo);
+        $this->imageService->handleImages($mapPoint, $mapPointImages);
     }
 }

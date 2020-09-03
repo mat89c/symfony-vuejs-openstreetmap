@@ -84,3 +84,7 @@ review:
     title: Zaktualizowano opinię.
     message: Zaktualizowałeś opinię. Do czasu weryfikacji przez administratora nie będzie wyświetlana.
   not_found: Nie znaleziono opinii.
+  image:
+    deleted: Zdjęcie zostało usunięte.
+    not_found: Nie znaleziono zdjęcia.
+    cant_delete: Nie można usunąć zdjęcia.

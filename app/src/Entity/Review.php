@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReviewRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -53,9 +55,15 @@ class Review
      */
     private $isActive;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ReviewImage::class, mappedBy="review", cascade={"persist"})
+     */
+    private $reviewImages;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->reviewImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +139,37 @@ class Review
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ReviewImage[]
+     */
+    public function getReviewImages(): Collection
+    {
+        return $this->reviewImages;
+    }
+
+    public function addReviewImage(ReviewImage $reviewImage): self
+    {
+        if (!$this->reviewImages->contains($reviewImage)) {
+            $this->reviewImages[] = $reviewImage;
+            $reviewImage->setReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReviewImage(ReviewImage $reviewImage): self
+    {
+        if ($this->reviewImages->contains($reviewImage)) {
+            $this->reviewImages->removeElement($reviewImage);
+            // set the owning side to null (unless already changed)
+            if ($reviewImage->getReview() === $this) {
+                $reviewImage->setReview(null);
+            }
+        }
 
         return $this;
     }

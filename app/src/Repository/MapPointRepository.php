@@ -40,17 +40,18 @@ class MapPointRepository extends ServiceEntityRepository
     public function getMapPointById(int $id)
     {
         return $this->createQueryBuilder('m')
-            ->select('m', 'i', 'partial u.{id, name}', 'partial c.{id, name}', 'partial r.{id, content, rating, createdAt}', 'partial ru.{id, name}')
+            ->select('m', 'i', 'partial u.{id, name}', 'partial c.{id, name}', 'partial r.{id, content, rating, createdAt}', 'partial ru.{id, name}', 'ri')
             ->innerJoin('m.user', 'u')
             ->leftJoin('m.mapPointImage', 'i')
             ->leftJoin('m.mapPointCategories', 'c', 'WITH', 'c.isActive = 1')
             ->leftJoin('m.reviews', 'r', 'WITH', 'r.isActive = 1')
             ->leftJoin('r.user', 'ru')
+            ->leftJoin('r.reviewImages', 'ri')
             ->where('m.id = :id')
             ->andWhere('m.isActive = 1')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getArrayResult()
+            ->getSingleResult(Query::HYDRATE_ARRAY)
         ;
     }
 

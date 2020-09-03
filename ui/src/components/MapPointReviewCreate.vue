@@ -17,6 +17,16 @@
         v-model="review"
         :config="editorConfig"
       ></ckeditor>
+      <v-file-input
+        class="mt-10"
+        label="Dodaj zdjęcia"
+        accept="image/*"
+        @change="processImages"
+        counter
+        multiple
+        show-size
+        :rules="$rules.imagesSize"
+      ></v-file-input>
     </v-card-text>
     <v-card-actions class="justify-end">
       <v-btn @click="onCreateReview()">
@@ -51,6 +61,7 @@ export default {
       isCreating: false,
       rating: 5,
       review: '',
+      reviewImages: [],
       editor: ClassicEditor,
       editorConfig: {
         alignment: {
@@ -75,7 +86,7 @@ export default {
     onCreateReview() {
       this.$store.dispatch('dialogloader/show', 'Trwa dodawanie opinii...');
 
-      createReview(this.rating, this.review, this.$route.params.id)
+      createReview(this.rating, this.review, this.reviewImages, this.$route.params.id)
         .then((response) => {
           this.$store.dispatch('dialogpopup/show', {
             title: response.data.title,
@@ -88,6 +99,9 @@ export default {
         .finally(() => {
           this.$store.dispatch('dialogloader/hide');
         });
+    },
+    processImages(event) {
+      this.reviewImages = event;
     },
   },
 };

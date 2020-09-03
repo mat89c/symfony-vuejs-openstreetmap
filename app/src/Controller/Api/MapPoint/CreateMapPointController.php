@@ -7,15 +7,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Entity\MapPoint;
 use App\Entity\MapPointImage;
+use App\Helper\MapPointImage as Image;
+use App\Helper\MapPointImages as Images;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Helper\MapPointFile;
-use App\Helper\MapPointFiles;
 use App\Service\ValidatorService;
 use App\Messenger\Command\CreateMapPointCommand;
 use App\Entity\MapPointCategory;
-use App\Exception\ApiException;
 use App\Repository\MapPointCategoryRepository;
 
 /**
@@ -58,33 +57,26 @@ final class CreateMapPointController extends AbstractController
         $mapPoint->setUploadDir(uniqid());
         $mapPoint->setIsActive(false);
 
-        $mapPointLogo = new MapPointFile($request->files->get('logo'));
-        $mapPointImages = new MapPointFiles($request->files->get('images'));
+        $mapPointLogo = new Image($request->files->get('logo'));
+        $mapPointImages = new Images($request->files->get('images'));
 
         $mapPoint->setLogo($mapPointLogo->getName());
 
-        foreach ($mapPointImages->getFiles() as $item) {
+        foreach ($mapPointImages->getImages() as $image) {
             $mapPointImage = new MapPointImage();
-            $mapPointImage->setName($item->getName());
+            $mapPointImage->setName($image->getName());
             $mapPointImage->setMapPoint($mapPoint);
 
             $mapPoint->addMapPointImage($mapPointImage);
         }
 
         $categories = $request->request->get('categories');
-
-        if (!$categories)
-            throw new ApiException($this->translator->trans('category.not_blank'), 400);
-
-        if (count($categories) > 5)
-            throw new ApiException($this->translator->trans('category.max_qty'), 400);
-
+        $this->validatorService->validateMapPointCategories($categories);
 
         foreach ($categories as $category) {
             if (is_array($category)) {
                 $mapPointCategory = $this->mapPointCategoryRepository->findOneBy(['id' => $category['id']]);
-                if (!$mapPointCategory)
-                    throw new ApiException($this->translator->trans('category.not_found'), 400);
+                $this->validatorService->validateMapPointCategory($mapPointCategory);
             } else {
                 $mapPointCategory = new MapPointCategory();
                 $mapPointCategory->setName($category);
@@ -96,8 +88,8 @@ final class CreateMapPointController extends AbstractController
         }
 
         $this->validatorService->validate($mapPoint);
-        $this->validatorService->validateMapPointFile($mapPointLogo);
-        $this->validatorService->validateMapPointFiles($mapPointImages);
+        $this->validatorService->validateImage($mapPointLogo);
+        $this->validatorService->validateImages($mapPointImages);
 
         $this->commandBus->dispatch(new CreateMapPointCommand($mapPoint, $mapPointLogo, $mapPointImages));
 

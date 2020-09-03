@@ -3,13 +3,15 @@
 namespace App\Service;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Exception\ApiException;
-use App\Helper\MapPointFile;
-use App\Helper\MapPointFiles;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\User;
 use App\Entity\MapPoint;
 use App\Repository\ReviewRepository;
+use App\Entity\MapPointCategory;
+use App\Entity\ReviewImage;
+use App\Helper\ImageInterface;
+use App\Helper\ImagesInterface;
 
 class ValidatorService
 {
@@ -18,6 +20,7 @@ class ValidatorService
     private $translator;
 
     private $reviewRepository;
+
 
     public function __construct(
         ValidatorInterface $validator,
@@ -38,14 +41,14 @@ class ValidatorService
         }
     }
 
-    public function validateMapPointFile(MapPointFile $mapPointFile):void
+    public function validateImage(ImageInterface $image):void
     {
-        $violations = $this->validator->validate($mapPointFile->getFile(), [
+        $violations = $this->validator->validate($image->getImage(), [
             new File([
                 'maxSize' => 2097152,
-                'maxSizeMessage' => $this->translator->trans('map_point.file.max_size'),
+                'maxSizeMessage' => $this->translator->trans('image.max_size'),
                 'mimeTypes' => ['image/png', 'image/jpg', 'image/jpeg'],
-                'mimeTypesMessage' => $this->translator->trans('map_point.file.mime_types')
+                'mimeTypesMessage' => $this->translator->trans('image.mime_types')
             ])
         ]);
 
@@ -54,10 +57,10 @@ class ValidatorService
         }
     }
 
-    public function validateMapPointFiles(MapPointFiles $mapPointFiles): void
+    public function validateImages(ImagesInterface $images): void
     {
-        foreach ($mapPointFiles->getFiles() as $file) {
-            $this->validateMapPointFile($file);
+        foreach ($images->getImages() as $image) {
+            $this->validateImage($image);
         }
     }
 
@@ -70,5 +73,29 @@ class ValidatorService
 
         if ($review)
             throw new ApiException($this->translator->trans('error.review.exists'), 400);
+    }
+
+    public function validateMapPointCategories(array $categories): void
+    {
+        if (!$categories)
+            throw new ApiException($this->translator->trans('category.not_blank'), 400);
+
+        if (count($categories) > 5)
+            throw new ApiException($this->translator->trans('category.max_qty'), 400);
+    }
+
+    public function validateMapPointCategory(?MapPointCategory $mapPointCategory): void
+    {
+        if (!$mapPointCategory)
+            throw new ApiException($this->translator->trans('category.not_found'), 400);
+    }
+
+    public function validateUserCanDeleteReviewImage(ReviewImage $reviewImage, User $user): void
+    {
+        if (!$reviewImage)
+            throw new ApiException($this->translator->trans('review.image.not_found'), 404);
+
+        if ($reviewImage->getReview()->getUser()->getId() !== $user->getId())
+            throw new ApiException($this->translator->trans('review.image.cant_delete'), 400);
     }
 }

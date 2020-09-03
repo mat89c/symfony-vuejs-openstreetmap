@@ -113,9 +113,12 @@ map_point:
     not_blank: Pole ulica nie może być puste.
   logo:
     not_blank: Zdjęcie główne jest wymagane.
-  file:
-    max_size: Wielkość pliku nie może być większa niż 2MB.
-    mime_types: Nieprawidłowy format pliku. Prześlij jpg, jpeg lub png.
+
+
+
+image:
+  max_size: Wielkość pliku nie może być większa niż 2MB.
+  mime_types: Nieprawidłowy format pliku. Prześlij jpg, jpeg lub png.
 
 
 

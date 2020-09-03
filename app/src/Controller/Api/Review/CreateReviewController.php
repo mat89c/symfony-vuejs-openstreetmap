@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\Review;
+use App\Entity\ReviewImage;
+use App\Helper\ReviewImages;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Service\ValidatorService;
 use App\Repository\MapPointRepository;
@@ -40,22 +42,32 @@ final class CreateReviewController extends AbstractController
 
     public function __invoke(Request $request): ApiResponse
     {
-        $params = json_decode($request->getContent(), true);
-
-        $mapPoint = $this->mapPointRepository->findOneBy(['id' => $params['mapPointId']]);
+        $mapPoint = $this->mapPointRepository->findOneBy(['id' => $request->request->get('mapPointId')]);
         $user = $this->getUser();
 
-        $review = new Review();
-        $review->setIsActive(true);
-        $review->setUser($user);
-        $review->setMapPoint($mapPoint);
-        $review->setRating($params['rating']);
-        $review->setContent($params['review']);
-
-        $this->validatorService->validate($review);
         $this->validatorService->validateUserAlreadyPublishedReview($user, $mapPoint);
 
-        $this->commandBus->dispatch(new CreateReviewCommand($review));
+        $review = new Review();
+        $review->setIsActive(false);
+        $review->setUser($user);
+        $review->setMapPoint($mapPoint);
+        $review->setRating($request->request->get('rating'));
+        $review->setContent($request->request->get('review'));
+
+        $reviewImages = new ReviewImages($request->files->get('reviewImages'));
+        $this->validatorService->validateImages($reviewImages);
+
+        foreach ($reviewImages->getImages() as $image) {
+            $reviewImage = new ReviewImage();
+            $reviewImage->setName($image->getName());
+            $reviewImage->setReview($review);
+
+            $review->addReviewImage($reviewImage);
+        }
+
+        $this->validatorService->validate($review);
+
+        $this->commandBus->dispatch(new CreateReviewCommand($review, $reviewImages));
 
         return new ApiResponse(
             $this->translator->trans('review.created.message'),

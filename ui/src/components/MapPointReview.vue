@@ -34,6 +34,40 @@
             :config="editorConfig"
           ></ckeditor>
           <em v-else v-html="review.content"></em>
+          <v-row>
+            <v-col v-for="(img, index) in review.reviewImages" cols="12" md="2" :key="index">
+              <v-img
+                class="point-image"
+                :src="img.thumb"
+                aspect-radio="1"
+                @click.stop="openImage(index, review)"
+              >
+                <v-btn
+                  v-if="isEditing"
+                  x-small
+                  absolute
+                  right
+                  fab
+                  color="gray"
+                  class="mt-1"
+                  @click.stop="onDeleteReviewImage(img.id, index, review)"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </v-img>
+            </v-col>
+          </v-row>
+          <v-file-input
+            v-if="isEditing && isEditable(review)"
+            class="mt-10"
+            label="Dodaj zdjęcia"
+            accept="image/*"
+            @change="processImages"
+            counter
+            multiple
+            show-size
+            :rules="$rules.imagesSize"
+          ></v-file-input>
         </v-card-text>
         <v-card-actions v-if="isEditing && isEditable(review)" class="justify-end">
           <v-btn @click="onUpdateReview(review, index)">
@@ -44,18 +78,37 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+
+      <LightBox
+      ref="lightbox"
+      :media="reviewImages"
+      :show-light-box="false"
+      :show-thumbs="false"
+    ></LightBox>
+
+    <DialogConfirm ref="confirm"/>
     </div>
 </template>
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import updateReview from '@/api/review/updateReview';
+import LightBox from 'vue-image-lightbox';
+import '../../node_modules/vue-image-lightbox/dist/vue-image-lightbox.min.css';
+import DialogConfirm from '@/components/DialogConfirm.vue';
+import deleteReviewImage from '@/api/review/deleteReviewImage';
 
 export default {
   name: 'MapPointReview',
+  components: {
+    LightBox,
+    DialogConfirm,
+  },
   data() {
     return {
       isEditing: false,
+      reviewImages: [],
+      newReviewImages: [],
       updatedReview: '',
       editor: ClassicEditor,
       editorConfig: {
@@ -85,22 +138,49 @@ export default {
     isEditable(review) {
       return this.$store.getters['user/id'] === review.user.id;
     },
+    openImage(index, review) {
+      this.reviewImages = review.reviewImages;
+      this.$refs.lightbox.showImage(index);
+    },
     onUpdateReview(review, index) {
       this.$store.dispatch('dialogloader/show', 'Trwa aktualizowanie opinii...');
 
-      updateReview(this.updatedReview, review.rating, review.id)
+      updateReview(this.updatedReview, review.rating, review.id, this.newReviewImages)
         .then((response) => {
           this.$store.dispatch('dialogpopup/show', {
             title: response.data.title,
             message: response.data.message,
           });
           this.isEditing = false;
-          console.log(review);
           this.$emit('onReviewUpdated', index);
         })
         .finally(() => {
           this.$store.dispatch('dialogloader/hide');
         });
+    },
+    onDeleteReviewImage(imageId, index, review) {
+      this.$refs.confirm.open('Usuń zdjęcie', 'Czy usunąć zdjęcie?')
+        .then((confirm) => {
+          if (confirm) {
+            this.reviewImages = review.reviewImages;
+            this.$store.dispatch('dialogloader/show', 'Trwa usuwanie zdjęcia...');
+
+            deleteReviewImage(imageId)
+              .then((response) => {
+                this.$delete(this.reviewImages, index);
+                this.$store.dispatch('dialogpopup/show', {
+                  title: response.data.title,
+                  message: response.data.message,
+                });
+              })
+              .finally(() => {
+                this.$store.dispatch('dialogloader/hide');
+              });
+          }
+        });
+    },
+    processImages(event) {
+      this.newReviewImages = event;
     },
   },
   props: {

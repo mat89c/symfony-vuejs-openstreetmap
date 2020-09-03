@@ -11,9 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Helper\ReviewImages;
+use App\Entity\ReviewImage;
 
 /**
- * @Route("/api/review/{id}/update", methods={"PATCH"})
+ * @Route("/api/review/{id}/update", methods={"POST"})
  */
 final class UpdateReviewController
 {
@@ -39,15 +41,25 @@ final class UpdateReviewController
 
     public function __invoke(int $id, Request $request): ApiResponse
     {
-        $params = json_decode($request->getContent(), true);
         $review = $this->queryBus->query(new GetReviewByIdQuery($id));
-        $review->setRating($params['rating']);
-        $review->setContent($params['review']);
+        $review->setRating($request->request->get('rating'));
+        $review->setContent($request->request->get('review'));
         $review->setIsActive(false);
+
+        $reviewImages = new ReviewImages($request->files->get('reviewImages'));
+        $this->validatorService->validateImages($reviewImages);
+
+        foreach ($reviewImages->getImages() as $image) {
+            $reviewImage = new ReviewImage();
+            $reviewImage->setName($image->getName());
+            $reviewImage->setReview($review);
+
+            $review->addReviewImage($reviewImage);
+        }
 
         $this->validatorService->validate($review);
 
-        $this->commandBus->dispatch(new UpdateReviewCommand($review));
+        $this->commandBus->dispatch(new UpdateReviewCommand($review, $reviewImages));
 
         return new ApiResponse(
             $this->translator->trans('review.updated.message'),

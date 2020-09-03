@@ -3,8 +3,8 @@
 namespace App\Messenger\Command;
 
 use App\Entity\MapPoint;
-use App\Helper\MapPointFile;
-use App\Helper\MapPointFiles;
+use App\Helper\MapPointImage;
+use App\Helper\MapPointImages;
 
 class CreateMapPointCommand
 {
@@ -14,7 +14,7 @@ class CreateMapPointCommand
 
     private $mapPointImages;
 
-    public function __construct(MapPoint $mapPoint, MapPointFile $mapPointLogo, MapPointFiles $mapPointImages)
+    public function __construct(MapPoint $mapPoint, MapPointImage $mapPointLogo, MapPointImages $mapPointImages)
     {
         $this->mapPoint = $mapPoint;
         $this->mapPointLogo = $mapPointLogo;
@@ -26,12 +26,12 @@ class CreateMapPointCommand
         return $this->mapPoint;
     }
 
-    public function getMapPointLogo(): MapPointFile
+    public function getMapPointLogo(): MapPointImage
     {
         return $this->mapPointLogo;
     }
 
-    public function getMapPointImages(): MapPointFiles
+    public function getMapPointImages(): MapPointImages
     {
         return $this->mapPointImages;
     }

@@ -23,9 +23,10 @@ class UpdateReviewCommandHandler implements MessageHandlerInterface
     public function __invoke(UpdateReviewCommand $updateReviewCommand)
     {
         $review = $updateReviewCommand->getReview();
+        $reviewImages = $updateReviewCommand->getReviewImages();
 
         $this->em->flush($review);
 
-        $this->eventBus->dispatch(new ReviewUpdatedEvent($review));
+        $this->eventBus->dispatch(new ReviewUpdatedEvent($review, $reviewImages));
     }
 }

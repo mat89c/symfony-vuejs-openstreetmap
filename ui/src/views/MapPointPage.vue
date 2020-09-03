@@ -75,7 +75,7 @@ export default {
       loading: 'point/loading',
     }),
     allowCreateReview() {
-      return !this.reviews.some((review) => review.user.id === this.$store.getters['user/id']) && this.$store.getters['user/id'] !== '';
+      return Array.isArray(this.reviews) && !this.reviews.some((review) => review.user.id === this.$store.getters['user/id']) && this.$store.getters['user/id'] !== '';
     },
   },
   methods: {

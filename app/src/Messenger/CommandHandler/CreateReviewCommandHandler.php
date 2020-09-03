@@ -23,10 +23,11 @@ class CreateReviewCommandHandler implements MessageHandlerInterface
     public function __invoke(CreateReviewCommand $createReviewCommand): void
     {
         $review = $createReviewCommand->getReview();
+        $reviewImages = $createReviewCommand->getReviewImages();
 
         $this->em->persist($review);
         $this->em->flush();
 
-        $this->eventBus->dispatch(new ReviewCreatedEvent($review));
+        $this->eventBus->dispatch(new ReviewCreatedEvent($review, $reviewImages));
     }
 }
