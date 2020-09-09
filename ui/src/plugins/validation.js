@@ -21,7 +21,7 @@ export default {
         (files) => !files || !files.some((file) => file.size > 2097152) || 'Wielkość każdego pliku nie powinna przekraczać 2MB.',
       ],
       comboboxRequired: [
-        (v) => v.length !== 0 || 'Proszę wybrać kategorię.',
+        (v) => v.length !== 0 || 'Proszę wybrać conajmniej jeden tag.',
       ],
     };
     /* eslint-enable no-param-reassign */

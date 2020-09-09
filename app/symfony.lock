@@ -99,6 +99,9 @@
     "egulias/email-validator": {
         "version": "2.1.19"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },

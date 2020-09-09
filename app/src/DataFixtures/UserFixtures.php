@@ -2,12 +2,11 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\User;
 
-class UserFixtures extends Fixture
+class UserFixtures extends BaseFixtures
 {
     private $userPasswordEncoder;
 
@@ -16,7 +15,7 @@ class UserFixtures extends Fixture
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    public function load(ObjectManager $manager)
+    protected function loadData(ObjectManager $manager)
     {
         $user = new User();
         $user->setEmail('admin@example.com');
@@ -25,9 +24,8 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setRoles(['ROLE_ADMIN']);
         $user->setIsActive(true);
-
         $manager->persist($user);
-        $manager->flush();
+        $this->addReference('App\Entity\User_0', $user);
 
         $user = new User();
         $user->setEmail('user@example.com');
@@ -36,8 +34,29 @@ class UserFixtures extends Fixture
         $user->setPassword($password);
         $user->setRoles(['ROLE_USER']);
         $user->setIsActive(true);
-
         $manager->persist($user);
+        $this->addReference('App\Entity\User_1', $user);
+
+        $user = new User();
+        $user->setEmail('mat@example.com');
+        $user->setName('Mat');
+        $password = $this->userPasswordEncoder->encodePassword($user, 'mat1234');
+        $user->setPassword($password);
+        $user->setRoles(['ROLE_USER']);
+        $user->setIsActive(true);
+        $manager->persist($user);
+        $this->addReference('App\Entity\User_2', $user);
+
+        $user = new User();
+        $user->setEmail('doe@example.com');
+        $user->setName('John Doe');
+        $password = $this->userPasswordEncoder->encodePassword($user, 'doe1234');
+        $user->setPassword($password);
+        $user->setRoles(['ROLE_USER']);
+        $user->setIsActive(true);
+        $manager->persist($user);
+        $this->addReference('App\Entity\User_3', $user);
+
         $manager->flush();
     }
 }

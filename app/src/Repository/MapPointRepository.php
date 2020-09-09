@@ -6,6 +6,7 @@ use App\Entity\MapPoint;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method MapPoint|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,18 +16,23 @@ use Doctrine\ORM\Query;
  */
 class MapPointRepository extends ServiceEntityRepository
 {
+    private $limit = 30;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MapPoint::class);
     }
 
-    public function getAllMapPoints(?array $checkedCategories)
+    public function getAllMapPoints(?array $checkedCategories, ?array $mapBounds, int $page)
     {
         $query =  $this->createQueryBuilder('m')
-            ->select('partial m.{id, title, description, lat, lng, color, logo, uploadDir}', 'partial u.{id}', 'partial c.{id, name}')
+            ->select('partial m.{id, title, description, lat, lng, color, logo, uploadDir, rating, numberOfReviews}', 'partial u.{id}', 'partial c.{id, name}')
             ->innerJoin('m.user', 'u')
             ->leftJoin('m.mapPointCategories', 'c', 'WITH', 'c.isActive = 1')
             ->where('m.isActive = 1')
+            ->orderBy('m.id', 'DESC')
+            ->setFirstResult($this->limit * ($page -1))
+            ->setMaxResults($this->limit)
         ;
 
         if (!empty($checkedCategories)) {
@@ -34,19 +40,31 @@ class MapPointRepository extends ServiceEntityRepository
             $query->setParameter('categories', $checkedCategories);
         }
 
-        return $query->getQuery()->getArrayResult();
+        if (!empty($mapBounds)) {
+            $query->andWhere('m.lat > :southWestLat AND m.lat < :northEastLat');
+            $query->andWhere('m.lng > :southWestLng AND m.lng < :northEastLng');
+            $query->setParameter('southWestLat', $mapBounds['southWest']['lat']);
+            $query->setParameter('southWestLng', $mapBounds['southWest']['lng']);
+            $query->setParameter('northEastLat', $mapBounds['northEast']['lat']);
+            $query->setParameter('northEastLng', $mapBounds['northEast']['lng']);
+        }
+
+        $queryHydrateArray = $query->getQuery()->setHydrationMode(Query::HYDRATE_ARRAY);
+
+        $paginator = new Paginator($queryHydrateArray, true);
+        $iterator = $paginator->getIterator();
+
+        /** @var ArrayIterator $iterator */
+        return $iterator->getArrayCopy();
     }
 
     public function getMapPointById(int $id)
     {
         return $this->createQueryBuilder('m')
-            ->select('m', 'i', 'partial u.{id, name}', 'partial c.{id, name}', 'partial r.{id, content, rating, createdAt}', 'partial ru.{id, name}', 'ri')
+            ->select('m', 'i', 'partial u.{id, name}', 'partial c.{id, name}')
             ->innerJoin('m.user', 'u')
             ->leftJoin('m.mapPointImage', 'i')
             ->leftJoin('m.mapPointCategories', 'c', 'WITH', 'c.isActive = 1')
-            ->leftJoin('m.reviews', 'r', 'WITH', 'r.isActive = 1')
-            ->leftJoin('r.user', 'ru')
-            ->leftJoin('r.reviewImages', 'ri')
             ->where('m.id = :id')
             ->andWhere('m.isActive = 1')
             ->setParameter('id', $id)

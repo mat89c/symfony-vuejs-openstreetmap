@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss">
   .left-side, .right-side {
-    transition: width 0.5s ease, max-width 0.5s ease, flex 0.5s ease;
+    transition: width 1s ease, max-width 1s ease, flex 1s ease;
   }
   .wide {
     width: 60%;

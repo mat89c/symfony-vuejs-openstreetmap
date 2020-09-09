@@ -24,7 +24,9 @@ final class GetAllMapPointsController extends AbstractController
     public function __invoke(Request $request): ApiResponse
     {
         $checkedCategories = $request->query->get('checkedCategories');
-        $mapPoints = $this->queryBus->query(new GetAllMapPointsQuery($checkedCategories));
+        $mapBounds = json_decode($request->query->get('mapBounds'), true);
+        $page = $request->query->get('page');
+        $mapPoints = $this->queryBus->query(new GetAllMapPointsQuery($checkedCategories, $mapBounds, $page));
 
         return new ApiResponse(
             '',

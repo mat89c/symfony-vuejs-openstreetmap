@@ -6,11 +6,12 @@ const getters = {
   loading: (state) => state.loading,
   point: (state) => state.point,
   latlng: (state) => state.latlng,
+  page: (state) => state.page,
 };
 
 const actions = {
-  async getAllMapPoints({ commit }, checkedCategories) {
-    const response = await apiGetAllMapPoints(checkedCategories);
+  async getAllMapPoints({ commit }, { checkedCategories, mapBounds, page }) {
+    const response = await apiGetAllMapPoints(checkedCategories, mapBounds, page);
 
     if (response) {
       commit('SET_POINTS', response.data.data);
@@ -26,6 +27,21 @@ const actions = {
       commit('SET_POINT', response.data.data);
     }
   },
+  setPage({ commit }, page) {
+    commit('SET_PAGE', page);
+  },
+  async appendMapPointsOnScroll({ commit }, { checkedCategories, mapBounds, page }) {
+    const response = await apiGetAllMapPoints(checkedCategories, mapBounds, page);
+    if (response) {
+      commit('APPEND_POINTS', response.data.data);
+    }
+
+    if (response && response.data.data.length) {
+      return true;
+    }
+
+    return false;
+  },
 };
 
 const mutations = {
@@ -38,12 +54,21 @@ const mutations = {
   SET_POINT: (state, point) => {
     state.point = point;
   },
+  SET_PAGE: (state, page) => {
+    state.page = page;
+  },
+  APPEND_POINTS: (state, points) => {
+    if (points.length > 0) {
+      state.points = state.points.concat(points);
+    }
+  },
 };
 
 const state = {
   points: [],
   loading: false,
   point: {},
+  page: 1,
 };
 
 export default {

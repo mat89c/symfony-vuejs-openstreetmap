@@ -1,93 +1,104 @@
 <template>
     <div>
-      <v-card v-for="(review, index) in reviews" :key="index" class="mb-3">
-        <v-card-title class="pb-0 justify-space-between">
-          <span v-if="isEditable(review)">
-            Twoja opinia
-            <v-btn
-              small
-              @click="onEdit(review)"
-            >
-              Edytuj
-            </v-btn>
-          </span>
-          <span v-else>
-            {{ review.user.name }}
-          </span>
-          <em><small class="text-caption">Dodano: {{ review.createdAt | date }}</small></em>
-        </v-card-title>
-        <v-card-text>
-          <v-rating
-            v-model="review.rating"
-            class="mb-1"
-            color="amber"
-            length="10"
-            dense
-            background-color="grey  "
-            :readonly="!isEditing"
-            size="20"
-          ></v-rating>
-          <ckeditor
-            v-if="isEditing && isEditable(review)"
-            :editor="editor"
-            v-model="updatedReview"
-            :config="editorConfig"
-          ></ckeditor>
-          <em v-else v-html="review.content"></em>
-          <v-row>
-            <v-col v-for="(img, index) in review.reviewImages" cols="12" md="2" :key="index">
-              <v-img
-                class="point-image"
-                :src="img.thumb"
-                aspect-radio="1"
-                @click.stop="openImage(index, review)"
+      <div v-if="reviews.length">
+        <v-card v-for="(review, index) in reviews" :key="index" class="mb-3">
+          <v-card-title class="pb-0 justify-space-between">
+            <span v-if="isEditable(review)">
+              Twoja opinia
+              <v-btn
+                small
+                @click="onEdit(review, index)"
               >
-                <v-btn
-                  v-if="isEditing"
-                  x-small
-                  absolute
-                  right
-                  fab
-                  color="gray"
-                  class="mt-1"
-                  @click.stop="onDeleteReviewImage(img.id, index, review)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-img>
-            </v-col>
-          </v-row>
-          <v-file-input
-            v-if="isEditing && isEditable(review)"
-            class="mt-10"
-            label="Dodaj zdjęcia"
-            accept="image/*"
-            @change="processImages"
-            counter
-            multiple
-            show-size
-            :rules="$rules.imagesSize"
-          ></v-file-input>
-        </v-card-text>
-        <v-card-actions v-if="isEditing && isEditable(review)" class="justify-end">
-          <v-btn @click="onUpdateReview(review, index)">
-            Zaktualizuj opinię
-          </v-btn>
-          <v-btn @click="isEditing = false">
-            Anuluj
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+                Edytuj
+              </v-btn>
+            </span>
+            <span v-else>
+              {{ review.user.name }}
+            </span>
+            <em><small class="text-caption">Dodano: {{ review.createdAt | date }}</small></em>
+          </v-card-title>
+          <v-card-text>
+            <v-rating
+              v-model="review.rating"
+              class="mb-1"
+              color="amber"
+              length="10"
+              dense
+              background-color="grey  "
+              :readonly="!isEditing"
+              size="20"
+            ></v-rating>
+            <ckeditor
+              v-if="isEditing && isEditable(review) && reviewIndex === index"
+              :editor="editor"
+              v-model="updatedReview"
+              :config="editorConfig"
+            ></ckeditor>
+            <em v-else v-html="review.content"></em>
+            <v-row>
+              <v-col
+                v-for="(img, index) in review.reviewImages"
+                class="d-flex child-flex"
+                :key="index"
+                cols="12"
+                md="2">
+                <v-card flat tile class="d-flex">
+                  <v-img
+                    class="point-image"
+                    :src="img.thumb"
+                    aspect-radio="1"
+                    @click.stop="openImage(index, review)"
+                  >
+                    <v-btn
+                      v-if="isEditing"
+                      x-small
+                      absolute
+                      right
+                      fab
+                      color="gray"
+                      class="mt-1"
+                      @click.stop="onDeleteReviewImage(img.id, index, review)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </v-img>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-file-input
+              v-if="isEditing && isEditable(review) && reviewIndex === index"
+              class="mt-10"
+              label="Dodaj zdjęcia"
+              accept="image/*"
+              @change="processImages"
+              counter
+              multiple
+              show-size
+              :rules="$rules.imagesSize"
+            ></v-file-input>
+          </v-card-text>
+          <v-card-actions
+            v-if="isEditing && isEditable(review) && reviewIndex === index" class="justify-end"
+          >
+            <v-btn @click="onUpdateReview(review, index)">
+              Zaktualizuj opinię
+            </v-btn>
+            <v-btn @click="isEditing = false">
+              Anuluj
+            </v-btn>
+          </v-card-actions>
+        </v-card>
 
-      <LightBox
-      ref="lightbox"
-      :media="reviewImages"
-      :show-light-box="false"
-      :show-thumbs="false"
-    ></LightBox>
+        <LightBox
+        ref="lightbox"
+        :media="reviewImages"
+        :show-light-box="false"
+        :show-thumbs="false"
+      ></LightBox>
 
-    <DialogConfirm ref="confirm"/>
+      <DialogConfirm ref="confirm"/>
     </div>
+  </div>
 </template>
 
 <script>
@@ -107,6 +118,7 @@ export default {
   data() {
     return {
       isEditing: false,
+      reviewIndex: null,
       reviewImages: [],
       newReviewImages: [],
       updatedReview: '',
@@ -131,9 +143,10 @@ export default {
     };
   },
   methods: {
-    onEdit(review) {
+    onEdit(review, index) {
       this.updatedReview = review.content;
       this.isEditing = true;
+      this.reviewIndex = index;
     },
     isEditable(review) {
       return this.$store.getters['user/id'] === review.user.id;
@@ -186,7 +199,7 @@ export default {
   props: {
     reviews: {
       type: Array,
-      required: true,
+      reqiured: true,
     },
   },
 };

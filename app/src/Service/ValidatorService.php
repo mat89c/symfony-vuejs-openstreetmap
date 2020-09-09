@@ -75,7 +75,7 @@ class ValidatorService
             throw new ApiException($this->translator->trans('error.review.exists'), 400);
     }
 
-    public function validateMapPointCategories(array $categories): void
+    public function validateMapPointCategories(?array $categories): void
     {
         if (!$categories)
             throw new ApiException($this->translator->trans('category.not_blank'), 400);
@@ -97,5 +97,11 @@ class ValidatorService
 
         if ($reviewImage->getReview()->getUser()->getId() !== $user->getId())
             throw new ApiException($this->translator->trans('review.image.cant_delete'), 400);
+    }
+
+    public function validateMapPoint(?MapPoint $mapPoint): void
+    {
+        if(!$mapPoint)
+            throw new ApiException($this->translator->trans('map_point.not_found'));
     }
 }

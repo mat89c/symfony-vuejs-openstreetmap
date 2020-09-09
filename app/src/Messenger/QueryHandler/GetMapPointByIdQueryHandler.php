@@ -8,6 +8,7 @@ use App\Repository\MapPointRepository;
 use App\Service\BaseUrlService;
 use App\Exception\ApiException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\ReviewService;
 
 class GetMapPointByIdQueryHandler implements MessageHandlerInterface
 {
@@ -17,14 +18,18 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
 
     private $translator;
 
+    private $reviewService;
+
     public function __construct(
         MapPointRepository $mapPointRepository,
         BaseUrlService $baseUrlService,
-        TranslatorInterface $translator)
+        TranslatorInterface $translator,
+        ReviewService $reviewService)
     {
         $this->mapPointRepository = $mapPointRepository;
         $this->baseUrlService = $baseUrlService;
         $this->translator = $translator;
+        $this->reviewService = $reviewService;
     }
 
     public function __invoke(GetMapPointByIdQuery $getMapPointByIdQuery): array
@@ -45,16 +50,6 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
                 'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $image['name']),
                 'thumb' => $this->baseUrlService->getThumbnailUrl($mapPoint['uploadDir'], $image['name'])
             ];
-        }
-
-        foreach ($mapPoint['reviews'] as $i => $review) {
-            foreach($review['reviewImages'] as $j => $image) {
-                $mapPoint['reviews'][$i]['reviewImages'][$j] = [
-                    'id' => $image['id'],
-                    'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $image['name']),
-                    'thumb' => $this->baseUrlService->getThumbnailUrl($mapPoint['uploadDir'], $image['name'])
-                ];
-            }
         }
 
         return $mapPoint;

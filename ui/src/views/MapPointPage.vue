@@ -18,28 +18,61 @@
       ></v-img>
     </v-col>
     <v-col cols="12">
-      <h1>{{ point.title }}</h1>
-      <p>{{ point.postcode }} {{ point.city }}, {{ point.street }}</p>
-      <v-divider></v-divider>
+      <div class="d-flex justify-space-between">
+        <div>
+          <h1>{{ point.title }}</h1>
+          <p>{{ point.postcode }} {{ point.city }}, {{ point.street }}</p>
+        </div>
+        <div v-if="point.avg !== 0" class="text-center">
+          <v-avatar color="#1E1E1E" size="80" class="flex-column align-center">
+            <span class="text-h4 grey--text rating-info">{{ point.rating }}</span>
+            <v-icon class="rating-icon" color="amber">mdi-star</v-icon>
+          </v-avatar>
+          <em class="d-block text-caption mt-1">na podstawie {{ point.numberOfReviews }} opinii</em>
+        </div>
+      </div>
+      <v-divider fluid></v-divider>
     </v-col>
     <v-col cols="12">
       <p v-html="point.description"></p>
+      <v-chip
+        x-small
+        class="mr-1 mt-1"
+        v-for="category in point.mapPointCategories"
+        :key="category.id"
+      >{{ category.name }}</v-chip>
     </v-col>
-    <v-col v-for="(img, index) in point.mapPointImage" cols="12" md="4" :key="index">
-      <v-img
-        class="point-image"
-        :src="img.thumb"
-        aspect-radio="1"
-        @click="openImage(index)"
-      ></v-img>
+
+    <v-col
+       v-for="(img, index) in point.mapPointImage"
+      :key="index"
+      class="d-flex child-flex"
+      cols="12"
+      md="4"
+    >
+      <v-card flat tile class="d-flex">
+        <v-img
+          class="point-image"
+          :src="img.thumb"
+          aspect-radio="1"
+          @click="openImage(index)"
+        ></v-img>
+      </v-card>
     </v-col>
 
     <v-col cols="12">
       <h3>Opinie i oceny użytkowników</h3>
       <v-divider class="mb-2"></v-divider>
       <MapPointReviewCreate v-if="allowCreateReview"/>
-      <MapPointReview v-if="reviews.length" :reviews="reviews" @onReviewUpdated="onReviewUpdated"/>
-      <span v-else>Brak</span>
+      <MapPointReview :reviews="reviews" @onReviewUpdated="onReviewUpdated"/>
+      <v-card
+        v-if="showLoader"
+        v-intersect="infiniteScrolling"
+      >
+        <v-progress-linear
+          indeterminate
+        ></v-progress-linear>
+      </v-card>
     </v-col>
 
     <LightBox
@@ -57,6 +90,7 @@ import LightBox from 'vue-image-lightbox';
 import '../../node_modules/vue-image-lightbox/dist/vue-image-lightbox.min.css';
 import MapPointReviewCreate from '@/components/MapPointReviewCreate.vue';
 import MapPointReview from '@/components/MapPointReview.vue';
+import getReviews from '@/api/review/getReviews';
 
 export default {
   name: 'MapPointPage',
@@ -66,6 +100,8 @@ export default {
       username: '',
       logo: '',
       reviews: [],
+      showLoader: true,
+      page: 1,
     };
   },
   computed: {
@@ -92,6 +128,22 @@ export default {
     onReviewUpdated(index) {
       this.$delete(this.reviews, index);
     },
+    infiniteScrolling(entries, observer, isIntersecting) {
+      if (!this.isReviewsLoading && isIntersecting) {
+        this.isReviewsLoading = true;
+        getReviews(this.$route.params.id, this.page)
+          .then((response) => {
+            if (response.data.data.length === 0) {
+              this.showLoader = false;
+              return;
+            }
+
+            this.reviews = this.reviews.concat(response.data.data);
+            this.page += 1;
+          })
+          .finally(() => { this.isReviewsLoading = false; });
+      }
+    },
   },
   created() {
     this.mapNarrow(true);
@@ -103,7 +155,6 @@ export default {
         this.images = this.point.mapPointImage;
         this.username = this.point.user.name;
         this.logo = this.point.logo;
-        this.reviews = this.point.reviews;
       });
     this.setActive(this.$route.params.id);
     this.mapZoom(16);
@@ -140,5 +191,15 @@ export default {
 
 .point-image {
   cursor: pointer
+}
+
+.rating-icon {
+  position: absolute!important;
+  top: 20px;
+}
+
+.rating-info {
+  position: relative;
+  top: -6px;
 }
 </style>

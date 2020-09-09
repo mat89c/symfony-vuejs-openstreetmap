@@ -57,6 +57,7 @@
               persistent-hint
               small-chips
               class="mt-8"
+              :rules="$rules.comboboxRequired"
             >
               <template v-slot:no-data>
                 <v-list-item>

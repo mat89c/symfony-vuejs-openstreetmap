@@ -15,7 +15,6 @@
       </div>
       <v-chip-group
         v-model="checkedCategories"
-        column
         multiple
         class="px-5 categories-sheet"
         @click="getMapPointsByCategory()"
@@ -50,9 +49,14 @@ export default {
     checkedCategories: {
       get() { return this.$store.getters['categories/checkedCategories']; },
       set(value) {
+        this.$store.dispatch('point/setPage', 1);
         this.$store.dispatch('categories/setCheckedCategories', value);
         this.$store.dispatch('point/loading', true);
-        this.$store.dispatch('point/getAllMapPoints', this.checkedCategories).then(() => this.$store.dispatch('point/loading', false));
+        this.$store.dispatch('point/getAllMapPoints', {
+          checkedCategories: this.checkedCategories,
+          mapBounds: this.$store.getters['map/bounds'],
+          page: this.$store.getters['point/page'],
+        }).then(() => this.$store.dispatch('point/loading', false));
       },
     },
     visibility: {

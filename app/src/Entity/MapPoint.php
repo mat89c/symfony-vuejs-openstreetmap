@@ -111,6 +111,16 @@ class MapPoint
      */
     private $reviews;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $rating;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numberOfReviews;
+
     public function __construct()
     {
         $this->mapPointImage = new ArrayCollection();
@@ -364,6 +374,30 @@ class MapPoint
                 $review->setMapPoint(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(float $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function getNumberOfReviews(): ?int
+    {
+        return $this->numberOfReviews;
+    }
+
+    public function setNumberOfReviews(int $numberOfReviews): self
+    {
+        $this->numberOfReviews = $numberOfReviews;
 
         return $this;
     }

@@ -7,42 +7,51 @@
       v-if="loading"
       indeterminate
     ></v-progress-linear>
-    <v-progress-linear
-      v-if="loading"
-      indeterminate
-    ></v-progress-linear>
-    <v-list-item
-      v-else
-      class="py-0"
-      three-line
-      link
-      v-for="point in points"
-      :key="point.id"
-      @mouseenter="setActive(point.id)"
-      @mouseleave="setActive(null)"
-      :to="{ name: 'MapPointPage', params: { id: point.id } }"
-    >
-      <v-list-item-content>
-        <v-list-item-title>{{ point.title }}</v-list-item-title>
-          <v-list-item-subtitle>{{ point.description | stripTags }}</v-list-item-subtitle>
-          <v-list-item-subtitle>
-            <v-chip
-              x-small
-              class="mr-1"
-              v-for="category in point.mapPointCategories"
-              :key="category.id"
-            >{{ category.name }}</v-chip>
-          </v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
+    <div v-else>
+      <v-list-item
+        class="py-0"
+        three-line
+        link
+        v-for="point in points"
+        :key="point.id"
+        @mouseenter="setActive(point.id)"
+        @mouseleave="setActive(null)"
+        :to="{ name: 'MapPointPage', params: { id: point.id } }"
+      >
+        <v-list-item-content>
+          <v-list-item-title>{{ point.title }}</v-list-item-title>
+            <v-list-item-subtitle>{{ point.description | stripTags }}</v-list-item-subtitle>
+            <v-list-item-subtitle class="d-flex justify-space-between">
+              <div class="list-tag-wrapper">
+                <v-chip
+                  x-small
+                  class="mr-1 mt-1"
+                  v-for="category in point.mapPointCategories"
+                  :key="category.id"
+                >{{ category.name }}</v-chip>
+              </div>
+              <div v-if="point.rating !== 0" class="flex flex-nowrap align-center">
+                <v-icon color="amber" small>mdi-star</v-icon>
+                <span class="text-caption list-point-rate">{{ point.rating }}</span>
+              </div>
+            </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <HomePointListInfiniteScroll />
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+import HomePointListInfiniteScroll from '@/components/HomePointListInfiniteScroll.vue';
 
 export default {
   name: 'HomePointList',
+  components: {
+    HomePointListInfiniteScroll,
+  },
   methods: {
     ...mapActions({
       setActive: 'mapmarker/setActive',
@@ -62,6 +71,9 @@ export default {
       get() { return this.$store.getters['point/loading']; },
       set(value) { this.$store.dispatch('point/loading', value); },
     },
+    page: {
+      get() { return this.$store.getters['point/page']; },
+    },
   },
   created() {
     this.$store.dispatch('categories/showBtn');
@@ -74,12 +86,6 @@ export default {
   },
   destroyed() {
     this.$store.dispatch('categories/hideBtn');
-  },
-  filters: {
-    stripTags: (value) => {
-      if (!value) return '';
-      return value.replace(/(<([^>]+)>)/ig, '');
-    },
   },
 };
 </script>
@@ -94,5 +100,15 @@ export default {
 
 .home-point-list {
   max-height: calc(100vh - 48px);
+}
+
+.list-point-rate {
+  position: relative;
+  top: 1px;
+}
+
+.list-tag-wrapper {
+  width: 100%;
+  max-width: calc(100% - 40px);
 }
 </style>

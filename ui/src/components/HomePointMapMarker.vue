@@ -14,27 +14,30 @@
             <div :style="{'--bg-color': point.color}" class='pin'></div>
               <div
                 :style="{'--bg-color': point.color}"
-                class='pulse' :class="{active: active == point.id}"
+                class='pulse'
+                :class="{active: active === point.id}"
               ></div>
           </div>
         </LIcon>
         <LTooltip class="tooltip">
+          <div>
             <img
               class="tooltip__image"
               :data-src="point.logo.thumb"
               :alt="point.title"
               :id="imageId(point.id)"
             >
-            <div class="tooltip__info">
-              {{ point.title }}
-              <br>
-              <v-chip
-                x-small
-                class="mr-1"
-                v-for="category in point.mapPointCategories"
-                :key="category.id"
-              >{{ category.name }}</v-chip>
-            </div>
+          </div>
+          <div class="tooltip__info">
+            {{ point.title }}
+            <br>
+            <v-chip
+              x-small
+              class="mr-1"
+              v-for="category in point.mapPointCategories"
+              :key="category.id"
+            >{{ category.name }}</v-chip>
+          </div>
         </LTooltip>
       </LMarker>
   </div>
@@ -108,7 +111,6 @@ export default {
 
   &__image {
     width: 60px;
-    height: 60px;
     margin-right: 10px;
   }
 

@@ -33,6 +33,7 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "fzaninotto/faker": "^1.9",
         "symfony/maker-bundle": "^1.20",
         "symfony/stopwatch": "^5.1",
         "symfony/twig-bundle": "^5.1",

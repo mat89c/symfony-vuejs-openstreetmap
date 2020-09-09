@@ -4,8 +4,8 @@
       class="home-point-map"
       :zoom="zoom"
       :center="center"
-      @update:bounds="boundsUpdated"
-      :fadeAnimation="fadeAnimation"
+      @update:bounds="onBoundsUpdated()"
+      @update:zoom="onZoomUpdated($event)"
     >
       <LTileLayer :url="url" :attribution="attribution"></LTileLayer>
       <HomePointMapMarker />
@@ -26,13 +26,46 @@ export default {
   },
   computed: {
     ...mapGetters({
-      zoom: 'map/zoom',
       center: 'map/center',
       checkedCategories: 'categories/checkedCategories',
+      mapBounds: 'map/bounds',
+      page: 'point/page',
     }),
+    zoom: {
+      get() { return this.$store.getters['map/zoom']; },
+      set(zoom) { this.$store.dispatch('map/mapZoom', zoom); },
+    },
   },
   methods: {
-    boundsUpdated() {
+    onBoundsUpdated() {
+      this.updateBounds();
+      this.fixMapSize();
+    },
+    onZoomUpdated(zoom) {
+      if (this.$route.name === 'HomePointList' && this.zoom !== zoom) {
+        this.zoom = zoom;
+        this.updateBounds();
+        this.refreshMapPoints();
+      }
+    },
+    refreshMapPoints() {
+      this.$store.dispatch('point/loading', true);
+      this.$store.dispatch('point/getAllMapPoints', {
+        checkedCategories: this.checkedCategories,
+        mapBounds: this.mapBounds,
+        page: this.page,
+      }).finally(() => this.$store.dispatch('point/loading', false));
+    },
+    updateBounds() {
+      const bounds = this.$refs.map.mapObject.getBounds();
+      this.$store.dispatch('map/setBounds', {
+        southWest: bounds.getSouthWest(),
+        northEast: bounds.getNorthEast(),
+      });
+
+      this.$store.dispatch('point/setPage', 1);
+    },
+    fixMapSize() {
       if (this.timeout) clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         if (typeof this.$refs.map !== 'undefined') {
@@ -49,8 +82,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch('point/loading', true);
-    this.$store.dispatch('point/getAllMapPoints', this.checkedCategories).then(() => this.$store.dispatch('point/loading', false));
+    this.refreshMapPoints();
   },
 };
 </script>

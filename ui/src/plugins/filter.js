@@ -9,6 +9,10 @@ export default {
       }
       return '';
     });
+    Vue.filter('stripTags', (value) => {
+      if (!value) return '';
+      return value.replace(/(<([^>]+)>)/ig, '');
+    });
     /* eslint-enable no-param-reassign */
   },
 };
