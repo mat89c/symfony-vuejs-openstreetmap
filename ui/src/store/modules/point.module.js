@@ -42,6 +42,9 @@ const actions = {
 
     return false;
   },
+  setPoint({ commit }, point) {
+    commit('SET_POINT', point);
+  },
 };
 
 const mutations = {

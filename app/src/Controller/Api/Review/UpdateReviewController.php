@@ -13,6 +13,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Helper\ReviewImages;
 use App\Entity\ReviewImage;
+use App\Messenger\Query\GetMapPointByIdQuery;
 
 /**
  * @Route("/api/review/{id}/update", methods={"POST"})
@@ -61,10 +62,12 @@ final class UpdateReviewController
 
         $this->commandBus->dispatch(new UpdateReviewCommand($review, $reviewImages));
 
+        $mapPoint = $this->queryBus->query(new GetMapPointByIdQuery($review->getMapPoint()->getId()));
+
         return new ApiResponse(
             $this->translator->trans('review.updated.message'),
             $this->translator->trans('review.updated.title'),
-            null,
+            $mapPoint,
             [],
             201
         );

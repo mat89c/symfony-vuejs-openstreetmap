@@ -25,7 +25,8 @@ class UpdateReviewCommandHandler implements MessageHandlerInterface
         $review = $updateReviewCommand->getReview();
         $reviewImages = $updateReviewCommand->getReviewImages();
 
-        $this->em->flush($review);
+        $this->em->persist($review);
+        $this->em->flush();
 
         $this->eventBus->dispatch(new ReviewUpdatedEvent($review, $reviewImages));
     }

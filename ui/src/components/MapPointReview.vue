@@ -165,7 +165,7 @@ export default {
             message: response.data.message,
           });
           this.isEditing = false;
-          this.$emit('onReviewUpdated', index);
+          this.$emit('onReviewUpdated', index, response.data.data);
         })
         .finally(() => {
           this.$store.dispatch('dialogloader/hide');

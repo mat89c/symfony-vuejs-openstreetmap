@@ -121,12 +121,14 @@ export default {
       setActive: 'mapmarker/setActive',
       mapZoom: 'map/mapZoom',
       mapCenter: 'map/mapCenter',
+      setPoint: 'point/setPoint',
     }),
     openImage(id) {
       this.$refs.lightbox.showImage(id);
     },
-    onReviewUpdated(index) {
+    onReviewUpdated(index, point) {
       this.$delete(this.reviews, index);
+      this.setPoint(point);
     },
     infiniteScrolling(entries, observer, isIntersecting) {
       if (!this.isReviewsLoading && isIntersecting) {
