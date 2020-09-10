@@ -34,6 +34,15 @@ security:
         main:
             anonymous: lazy
 
+            json_login:
+                check_path: admin_login
+                username_path: email
+                password_path: password
+
+            logout:
+                path: logout
+                target: login_page
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -44,3 +53,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/check-reset-password-token, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/dashboard, roles: ROLE_ADMIN }
+        - { path: ^/login, roles: ROLE_ADMIN }

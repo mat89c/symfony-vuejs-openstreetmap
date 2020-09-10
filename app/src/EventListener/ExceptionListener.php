@@ -6,6 +6,7 @@ use App\Exception\ApiException;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use App\Response\ApiResponse;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class ExceptionListener
 {
@@ -13,7 +14,7 @@ class ExceptionListener
     {
         $exception = $event->getThrowable();
 
-        if ($exception instanceof ApiException || $exception instanceof HandlerFailedException) {
+        if ($exception instanceof ApiException || $exception instanceof HandlerFailedException || $exception instanceof AccessDeniedHttpException) {
 
             if ($exception->getCode() === 0)
                 return;
