@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\MapPointCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method MapPointCategory|null find($id, $lockMode = null, $lockVersion = null)
@@ -28,6 +29,44 @@ class MapPointCategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getArrayResult()
         ;
+    }
+
+    public function countInactiveCategories()
+    {
+        return $this->createQueryBuilder('m')
+            ->select('count(m.id)')
+            ->where('m.isActive = 0')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function getAllTags(int $page, ?bool $status)
+    {
+        $itemsPerPage = 10;
+
+        $query = $this->createQueryBuilder('c')
+            ->select('c.id, c.name, c.isActive, count(m.id) as countMapPoint')
+            ->leftJoin('c.mapPoints', 'm')
+            ->groupBy('c.id')
+            ->setFirstResult($itemsPerPage * ($page -1))
+            ->setMaxResults($itemsPerPage)
+        ;
+
+        if (!is_null($status)) {
+            $query->andWhere('c.isActive = :status');
+            $query->setParameter('status', $status);
+        }
+
+        $paginator = new Paginator($query, true);
+        $paginator->setUseOutputWalkers(false);
+        $totalItems = $paginator->count();
+
+        return [
+            'tags' => $query->getQuery()->getResult(),
+            'itemsPerPage' => $itemsPerPage,
+            'totalItems' => $totalItems,
+        ];
     }
 
     // /**

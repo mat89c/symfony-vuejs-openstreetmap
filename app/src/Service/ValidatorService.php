@@ -101,7 +101,13 @@ class ValidatorService
 
     public function validateMapPoint(?MapPoint $mapPoint): void
     {
-        if(!$mapPoint)
+        if (!$mapPoint)
             throw new ApiException($this->translator->trans('map_point.not_found'));
+    }
+
+    public function validateUserExists(?User $user): void
+    {
+        if (!$user)
+            throw new ApiException($this->translator->trans('user.not_found'));
     }
 }

@@ -67,4 +67,9 @@ class ImageService
         $this->filesystem->remove($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/' . $imageName);
         $this->filesystem->remove($this->uploadsPath . '/' . $mapPoint->getUploadDir() . '/thumb-' . $imageName);
     }
+
+    public function deleteImageDirectoryWithImages(MapPoint $mapPoint): void
+    {
+        $this->filesystem->remove($this->uploadsPath . '/' . $mapPoint->getUploadDir());
+    }
 }

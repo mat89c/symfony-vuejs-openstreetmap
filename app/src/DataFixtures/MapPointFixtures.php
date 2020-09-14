@@ -16,7 +16,7 @@ class MapPointFixtures extends BaseFixtures implements DependentFixtureInterface
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(MapPoint::class, 100, function(MapPoint $mapPoint) {
-            $mapPoint->setTitle($this->faker->sentence(6, true));
+            $mapPoint->setTitle($this->faker->sentence(3, true));
             $mapPoint->setDescription($this->faker->paragraph(8, true));
             $mapPoint->setLng($this->faker->randomFloat(14, 16, 22));
             $mapPoint->setLat($this->faker->randomFloat(14, 50, 54));
@@ -34,11 +34,6 @@ class MapPointFixtures extends BaseFixtures implements DependentFixtureInterface
             $rand = rand(1, 5);
             for($i=0; $i <= $rand; $i++) {
                 $mapPoint->addMapPointCategory($this->getRandomReference(MapPointCategory::class));
-            }
-
-            $rand = rand(0, 20);
-            for ($i = 0; $i <= $rand; $i++) {
-                $mapPoint->addMapPointImage($this->getRandomReference(MapPointImage::class));
             }
         });
 

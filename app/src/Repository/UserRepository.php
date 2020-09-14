@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,6 +36,44 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    public function countInactiveUsers()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->where('u.isActive = 0')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function getAllUsers(int $page, ?bool $status)
+    {
+        $itemsPerPage = 10;
+
+        $query = $this->createQueryBuilder('u')
+            ->select('u.id, u.name, u.email, u.roles, u.isActive')
+            ->addSelect('(SELECT count(m.id) FROM App\Entity\MapPoint m WHERE u.id = m.user) as countMapPoint')
+            ->addSelect('(SELECT count(r.id) FROM App\Entity\Review r WHERE u.id = r.user) as countReview')
+            ->setFirstResult($itemsPerPage * ($page -1))
+            ->setMaxResults($itemsPerPage)
+        ;
+
+        if (!is_null($status)) {
+            $query->andWhere('u.isActive = :status');
+            $query->setParameter('status', $status);
+        }
+
+        $paginator = new Paginator($query, true);
+        $paginator->setUseOutputWalkers(false);
+        $totalItems = $paginator->count();
+
+        return [
+            'users' => $query->getQuery()->getResult(),
+            'itemsPerPage' => $itemsPerPage,
+            'totalItems' => $totalItems,
+        ];
     }
 
     // /**

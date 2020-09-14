@@ -66,12 +66,12 @@ class User implements UserInterface
     private $token;
 
     /**
-     * @ORM\OneToMany(targetEntity=MapPoint::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=MapPoint::class, mappedBy="user", cascade={"remove"})
      */
     private $mapPoint;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="user", cascade={"remove"})
      */
     private $reviews;
 

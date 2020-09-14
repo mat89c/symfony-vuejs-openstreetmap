@@ -4,46 +4,25 @@ namespace App\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\MapPointImage;
+use App\Entity\MapPoint;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class MapPointImageFixtures extends BaseFixtures
+class MapPointImageFixtures extends BaseFixtures implements DependentFixtureInterface
 {
+    private $images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
+
     public function loadData(ObjectManager $manager)
     {
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('1.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_0', $mapPointImage);
-
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('2.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_1', $mapPointImage);
-
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('3.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_2', $mapPointImage);
-
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('4.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_3', $mapPointImage);
-
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('5.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_4', $mapPointImage);
-
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('6.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_5', $mapPointImage);
-
-        $mapPointImage = new MapPointImage();
-        $mapPointImage->setName('7.jpg');
-        $manager->persist($mapPointImage);
-        $this->addReference('App\Entity\MapPointImage_6', $mapPointImage);
+        $this->createMany(MapPointImage::class, 200, function(MapPointImage $mapPointImage) {
+            $mapPointImage->setName($this->faker->randomElement($this->images));
+            $mapPointImage->setMapPoint($this->getRandomReference(MapPoint::class));
+        });
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [MapPointFixtures::class];
     }
 }

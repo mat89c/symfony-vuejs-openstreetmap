@@ -97,7 +97,7 @@ class MapPoint
     private $isActive;
 
     /**
-     * @ORM\ManyToMany(targetEntity=MapPointCategory::class, inversedBy="mapPoints", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity=MapPointCategory::class, inversedBy="mapPoints", cascade={"persist", "remove"})
      */
     private $mapPointCategories;
 
@@ -107,7 +107,7 @@ class MapPoint
     private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="mapPoint")
+     * @ORM\OneToMany(targetEntity=Review::class, mappedBy="mapPoint", cascade={"persist", "remove"})
      */
     private $reviews;
 

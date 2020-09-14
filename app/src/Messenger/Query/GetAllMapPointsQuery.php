@@ -4,31 +4,23 @@ namespace App\Messenger\Query;
 
 class GetAllMapPointsQuery
 {
-    private $checkedCategories;
-
-    private $mapBounds;
-
     private $page;
 
-    public function __construct(?array $checkedCategories, ?array $mapBounds, int $page)
+    private $status;
+
+    public function __construct(int $page, ?int $status)
     {
-        $this->checkedCategories = $checkedCategories;
-        $this->mapBounds = $mapBounds;
         $this->page = $page;
-    }
-
-    public function getCheckedCategories(): ?array
-    {
-        return $this->checkedCategories;
-    }
-
-    public function getMapBounds(): ?array
-    {
-        return $this->mapBounds;
+        $this->status = $status;
     }
 
     public function getPage(): int
     {
         return $this->page;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
     }
 }

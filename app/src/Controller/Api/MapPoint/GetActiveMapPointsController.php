@@ -3,7 +3,7 @@
 namespace App\Controller\Api\MapPoint;
 
 use App\MessageBus\QueryBus;
-use App\Messenger\Query\GetAllMapPointsQuery;
+use App\Messenger\Query\GetActiveMapPointsQuery;
 use App\Response\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/api/points/", methods={"GET"})
  */
-final class GetAllMapPointsController extends AbstractController
+final class GetActiveMapPointsController extends AbstractController
 {
     private $queryBus;
 
@@ -26,7 +26,7 @@ final class GetAllMapPointsController extends AbstractController
         $checkedCategories = $request->query->get('checkedCategories');
         $mapBounds = json_decode($request->query->get('mapBounds'), true);
         $page = $request->query->get('page');
-        $mapPoints = $this->queryBus->query(new GetAllMapPointsQuery($checkedCategories, $mapBounds, $page));
+        $mapPoints = $this->queryBus->query(new GetActiveMapPointsQuery($checkedCategories, $mapBounds, $page));
 
         return new ApiResponse(
             '',

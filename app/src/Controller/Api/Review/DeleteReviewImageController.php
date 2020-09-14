@@ -53,7 +53,7 @@ final class DeleteReviewImageController extends AbstractController
             $this->translator->trans('review.image.deleted'),
             null,
             [],
-            201
+            200
         );
     }
 }

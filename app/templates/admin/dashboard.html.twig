@@ -9,7 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     </head>
     <body>
-        <div id="app"></div>
+        <div id="app" data-user="{{ user|json_encode() }}"></div>
 
         {% block javascripts %}
             {{ encore_entry_script_tags('dashboard') }}

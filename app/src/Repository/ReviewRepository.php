@@ -16,8 +16,6 @@ use Doctrine\ORM\Query;
  */
 class ReviewRepository extends ServiceEntityRepository
 {
-    private $limit = 30;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Review::class);
@@ -25,6 +23,7 @@ class ReviewRepository extends ServiceEntityRepository
 
     public function getMapPointReviews(int $mapPointId, int $page)
     {
+        $itemsPerPage = 30;
         $query = $this->createQueryBuilder('r')
             ->select('partial r.{id, content, rating, createdAt}', 'partial u.{id, name}', 'ri')
             ->innerJoin('r.user', 'u')
@@ -32,8 +31,8 @@ class ReviewRepository extends ServiceEntityRepository
             ->where('r.isActive = 1')
             ->andWhere('r.mapPoint = :mapPointId')
             ->setParameter('mapPointId', $mapPointId)
-            ->setFirstResult($this->limit * ($page -1))
-            ->setMaxResults($this->limit)
+            ->setFirstResult($this->itemsPerPage * ($page -1))
+            ->setMaxResults($this->itemsPerPage)
         ;
 
         $queryHydrateArray = $query->getQuery()->setHydrationMode(Query::HYDRATE_ARRAY);
@@ -43,6 +42,48 @@ class ReviewRepository extends ServiceEntityRepository
 
         /** @var ArrayIterator $iterator */
         return $iterator->getArrayCopy();
+    }
+
+    public function countInactiveReviews()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->where('r.isActive = 0')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
+    public function getAllReviews(int $page, ?bool $status)
+    {
+        $itemsPerPage = 10;
+        $query = $this->createQueryBuilder('r')
+            ->select('partial r.{id, content, rating, createdAt, isActive}, partial u.{id, name}, partial m.{id, title}')
+            ->innerJoin('r.user', 'u')
+            ->innerJoin('r.mapPoint', 'm')
+            ->setFirstResult($itemsPerPage * ($page -1))
+            ->setMaxResults($itemsPerPage)
+        ;
+
+        if (!is_null($status)) {
+            $query->andWhere('r.isActive = :status');
+            $query->setParameter('status', $status);
+        }
+
+        $queryHydrateArray = $query->getQuery()->setHydrationMode(Query::HYDRATE_ARRAY);
+
+
+        $paginator = new Paginator($queryHydrateArray, true);
+        $iterator = $paginator->getIterator();
+        $totalItems = $paginator->count();
+
+         /** @var ArrayIterator $iterator */
+         $reviews = $iterator->getArrayCopy();
+        return [
+            'reviews' => $reviews,
+            'itemsPerPage' => $itemsPerPage,
+            'totalItems' => $totalItems,
+        ];
     }
 
     // /**

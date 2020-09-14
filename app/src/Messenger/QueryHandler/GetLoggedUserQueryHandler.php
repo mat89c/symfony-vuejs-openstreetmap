@@ -19,9 +19,13 @@ class GetLoggedUserQueryHandler implements MessageHandlerInterface
     public function __invoke(GetLoggedUserQuery $getLoggedUserQuery): array
     {
         $user = $getLoggedUserQuery->getUser();
-        $token = $this->security->getToken();
-        $jws = JWS::load($token->getCredentials());
-        $expiriesDate = $jws->getPayload()['exp'];
+
+        $expiriesDate = '';
+        if ($this->security->getToken()->getCredentials()) {
+            $token = $this->security->getToken();
+            $jws = JWS::load($token->getCredentials());
+            $expiriesDate = $jws->getPayload()['exp'];
+        }
 
         return [
             'id' => $user->getId(),

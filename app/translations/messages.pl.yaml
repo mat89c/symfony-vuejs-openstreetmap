@@ -2,6 +2,7 @@ user:
   account_activated: Konto użytkownika zostało aktywowane.
   not_logged: Użytkownik nie jest zalogowany.
   not_found: Nie znaleziono użytkownika.
+  deleted: Użytkownik został usunięty.
 
 
 error:
@@ -68,6 +69,7 @@ map_point:
     title: Dodano nowy punkt.
     message: Dodałeś nowy punkt. Po weryfikacji przez administratora zostanie wyświetlony na mapie.
   not_found: Nie znaleziono punktu.
+  deleted: Punkt został usunięty.
 
 
 category:

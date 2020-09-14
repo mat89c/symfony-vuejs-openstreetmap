@@ -56,7 +56,7 @@ class Review
     private $isActive;
 
     /**
-     * @ORM\OneToMany(targetEntity=ReviewImage::class, mappedBy="review", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=ReviewImage::class, mappedBy="review", cascade={"persist", "remove"})
      */
     private $reviewImages;
 

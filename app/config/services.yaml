@@ -50,3 +50,11 @@ services:
     App\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    App\EventListener\AdminLogoutListener:
+        tags:
+           - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LogoutEvent, dispatcher: security.event_dispatcher.main }
+
+    App\EventListener\Redirect404ToDashboardListener:
+        tags:
+         - { name: kernel.event_listener, event: kernel.exception }
