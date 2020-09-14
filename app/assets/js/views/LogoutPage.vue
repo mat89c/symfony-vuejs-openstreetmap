@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-
-  </v-container>
+  <v-container></v-container>
 </template>
 
 <script>
@@ -14,6 +12,7 @@ export default {
 
     logout()
       .then((response) => {
+        console.log(response);
         window.location = response.data.redirect;
       })
   },

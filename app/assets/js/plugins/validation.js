@@ -8,6 +8,9 @@ export default {
       email: [
         (v) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'Nieprawidłowy adres e-mail.',
       ],
+      imagesSize: [
+        (files) => !files || !files.some((file) => file.size > 2097152) || 'Wielkość każdego pliku nie powinna przekraczać 2MB.',
+      ],
     };
     /* eslint-enable no-param-reassign */
   },

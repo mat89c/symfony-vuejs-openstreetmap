@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\MapPoint;
 use App\Repository\ReviewRepository;
 use App\Entity\MapPointCategory;
+use App\Entity\Review;
 use App\Entity\ReviewImage;
 use App\Helper\ImageInterface;
 use App\Helper\ImagesInterface;
@@ -109,5 +110,11 @@ class ValidatorService
     {
         if (!$user)
             throw new ApiException($this->translator->trans('user.not_found'));
+    }
+
+    public function validateReviewExists(?Review $review): void
+    {
+        if (!$review)
+            throw new ApiException($this->translator->trans('review.not_found'));
     }
 }

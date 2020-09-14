@@ -31,7 +31,7 @@ const routes = [
       },
       {
         path: 'wyloguj',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/LogoutPage.vue'),
+        component: () => import(/* webpackChunkName: 'logout' */'../views/LogoutPage.vue'),
       },
       {
         path: '404',
