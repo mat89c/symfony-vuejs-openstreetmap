@@ -48,6 +48,7 @@ Encore
     .setOutputPath('public/build/dashboard')
     .setPublicPath('/build/dashboard')
 
+    .addStyleEntry('styles', './assets/css/app.scss')
     .addEntry('dashboard', './assets/js/app.js')
 
     .splitEntryChunks()
@@ -64,11 +65,6 @@ Encore
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
         config.corejs = 3;
-    })
-
-    .copyFiles({
-        from: './assets/images',
-        to: '../uploads/[path][name].[ext]'
     })
 
     .enableVueLoader(() => {}, { runtimeCompilerBuild: false })

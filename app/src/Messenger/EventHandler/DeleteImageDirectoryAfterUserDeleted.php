@@ -22,6 +22,5 @@ class DeleteImageDirectoryAfterUserDeleted implements MessageHandlerInterface
         foreach ($userMapPoints as $mapPoint) {
             $this->imageService->deleteImageDirectoryWithImages($mapPoint);
         }
-
     }
 }

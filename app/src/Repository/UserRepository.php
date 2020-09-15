@@ -56,6 +56,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->select('u.id, u.name, u.email, u.roles, u.isActive')
             ->addSelect('(SELECT count(m.id) FROM App\Entity\MapPoint m WHERE u.id = m.user) as countMapPoint')
             ->addSelect('(SELECT count(r.id) FROM App\Entity\Review r WHERE u.id = r.user) as countReview')
+            ->orderBy('u.id', 'DESC')
             ->setFirstResult($itemsPerPage * ($page -1))
             ->setMaxResults($itemsPerPage)
         ;
@@ -74,6 +75,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             'itemsPerPage' => $itemsPerPage,
             'totalItems' => $totalItems,
         ];
+    }
+
+    public function searchUserByIdOrEmail(string $value)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.id, u.name, u.email')
+            ->where('u.id LIKE :value OR u.email LIKE :value')
+            ->setMaxResults(5)
+            ->setParameter('value', '%'.$value.'%')
+            ->getQuery()
+            ->getArrayResult();
     }
 
     // /**

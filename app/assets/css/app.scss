@@ -1,0 +1,32 @@
+@import '../../node_modules/vue-image-lightbox/dist/vue-image-lightbox.min.css';
+
+.ck-content {
+    background-color: transparent!important;
+  }
+
+.ck.ck-toolbar {
+    background-color: #363636!important;
+}
+
+.ck.ck-button {
+    color: rgba(255, 255, 255, 0.7)!important;
+    &:hover, &:focus, &.ck-on {
+        background-color: #666!important;
+    }
+}
+
+.ck-editor__title {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+
+.ck.ck-list {
+    background-color: #363636!important ;
+}
+
+.statuses {
+    position: relative!important;
+    top: 12px!important;
+    max-width: 250px!important;
+}

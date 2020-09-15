@@ -18,9 +18,6 @@ class DeleteImageDirectoryAfterMapPointDeleted implements MessageHandlerInterfac
     public function __invoke(MapPointDeletedEvent $mapPointDeletedEvent): void
     {
         $mapPoint = $mapPointDeletedEvent->getMapPoint();
-        /**
-         * Prevents the deletion images directory
-         * $this->imageService->deleteImageDirectoryWithImages($mapPoint);
-         */
+        $this->imageService->deleteImageDirectoryWithImages($mapPoint);
     }
 }

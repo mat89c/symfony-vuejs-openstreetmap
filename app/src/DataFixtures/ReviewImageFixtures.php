@@ -9,13 +9,14 @@ use Doctrine\Persistence\ObjectManager;
 
 class ReviewImageFixtures extends BaseFixtures implements DependentFixtureInterface
 {
-    private $images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
-
     public function loadData(ObjectManager $manager)
     {
         $this->createMany(ReviewImage::class, 100, function(ReviewImage $reviewImage) {
-            $reviewImage->setName($this->faker->randomElement($this->images));
-            $reviewImage->setReview($this->getRandomReference(Review::class));
+            $review = $this->getRandomReference(Review::class);
+            $reviewImage->setName(uniqid() . '.jpg');
+            $reviewImage->setReview($review);
+
+            $this->generateImages($reviewImage->getName(), $review->getMapPoint()->getUploadDir());
         });
 
         $manager->flush();

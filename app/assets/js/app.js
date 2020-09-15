@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+import VueLazyLoad from 'vue-lazyload';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -11,6 +13,8 @@ import Http from './service/http';
 Vue.use(validation);
 Vue.use(filter);
 Vue.use(Vuex);
+Vue.use(CKEditor);
+Vue.use(VueLazyLoad);
 
 window.$http = new Http(store);
 

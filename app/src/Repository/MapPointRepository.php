@@ -132,6 +132,18 @@ class MapPointRepository extends ServiceEntityRepository
         ];
     }
 
+    public function searchMapPointByIdOrName(string $value)
+    {
+        return $this->createQueryBuilder('m')
+            ->select('m.id, m.title')
+            ->where('m.id LIKE :value OR m.title LIKE :value')
+            ->setParameter('value', '%'.$value.'%')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
     // /**
     //  * @return MapPoint[] Returns an array of MapPoint objects
     //  */

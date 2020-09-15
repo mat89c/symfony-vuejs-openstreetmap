@@ -6,13 +6,10 @@ use Doctrine\Persistence\ObjectManager;
 use App\Entity\MapPoint;
 use App\Entity\User;
 use App\Entity\MapPointCategory;
-use App\Entity\MapPointImage;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class MapPointFixtures extends BaseFixtures implements DependentFixtureInterface
 {
-    private $images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
-
     protected function loadData(ObjectManager $manager)
     {
         $this->createMany(MapPoint::class, 100, function(MapPoint $mapPoint) {
@@ -24,12 +21,14 @@ class MapPointFixtures extends BaseFixtures implements DependentFixtureInterface
             $mapPoint->setPostcode($this->faker->postcode());
             $mapPoint->setCity($this->faker->city());
             $mapPoint->setStreet($this->faker->streetName());
-            $mapPoint->setLogo($this->faker->randomElement($this->images));
-            $mapPoint->setUploadDir('fixtures');
-            $mapPoint->setIsActive(true);
+            $mapPoint->setLogo(uniqid() . '.jpg');
+            $mapPoint->setUploadDir(uniqid());
+            $mapPoint->setIsActive($this->faker->numberBetween(0,1));
             $mapPoint->setUser($this->getRandomReference(User::class));
             $mapPoint->setRating(0);
             $mapPoint->setNumberOfReviews(0);
+
+            $this->generateImages($mapPoint->getLogo(), $mapPoint->getUploadDir());
 
             $rand = rand(1, 5);
             for($i=0; $i <= $rand; $i++) {

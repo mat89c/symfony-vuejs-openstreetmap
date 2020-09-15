@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/api/reviews/{mapPointId}/{page}", methods={"GET"})
  */
-final class GetMapPointReviews
+final class GetMapPointReviewsController
 {
     private $queryBus;
 

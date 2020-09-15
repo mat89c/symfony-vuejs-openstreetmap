@@ -20,7 +20,7 @@
             <v-toolbar flat>
               <v-toolbar-title>Lista opinii</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn>
+              <v-btn :to="{ name: 'ReviewCreatePage' }">
                 <v-icon left>mdi-account</v-icon>
                 Dodaj
               </v-btn>
@@ -52,7 +52,7 @@
 
           <template v-slot:item.actions="{ item }">
             <div class="d-flex flex-nowrap">
-              <v-btn icon small>
+              <v-btn :to="{ name: 'ReviewUpdatePage', params: { id: item.id } }"  icon small>
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
 

@@ -9,13 +9,14 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class MapPointImageFixtures extends BaseFixtures implements DependentFixtureInterface
 {
-    private $images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg'];
-
     public function loadData(ObjectManager $manager)
     {
         $this->createMany(MapPointImage::class, 200, function(MapPointImage $mapPointImage) {
-            $mapPointImage->setName($this->faker->randomElement($this->images));
-            $mapPointImage->setMapPoint($this->getRandomReference(MapPoint::class));
+            $mapPoint = $this->getRandomReference(MapPoint::class);
+            $mapPointImage->setName(uniqid() . 'jpg');
+            $mapPointImage->setMapPoint($mapPoint);
+
+            $this->generateImages($mapPointImage->getName(), $mapPoint->getUploadDir());
         });
 
         $manager->flush();

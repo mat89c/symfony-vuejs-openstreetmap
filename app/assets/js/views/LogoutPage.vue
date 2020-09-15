@@ -12,7 +12,6 @@ export default {
 
     logout()
       .then((response) => {
-        console.log(response);
         window.location = response.data.redirect;
       })
   },

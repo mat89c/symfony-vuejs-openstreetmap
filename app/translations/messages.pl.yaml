@@ -91,3 +91,7 @@ review:
     not_found: Nie znaleziono zdjęcia.
     cant_delete: Nie można usunąć zdjęcia.
   deleted: Opinia została usunięta.
+
+
+value:
+  required: Wartość jest wymagana.

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Controller\Admin\Tag;
+namespace App\Controller\Admin\MapPoint;
 
 use App\MessageBus\QueryBus;
-use App\Messenger\Query\GetAllTagsQuery;
+use App\Messenger\Query\SearchMapPointByIdOrNameQuery;
 use App\Response\ApiResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/tags", methods={"GET"})
+ * @Route("/point/search", methods={"GET"})
  * @Security("is_granted('ROLE_ADMIN')")
  */
-final class GetAllTagsController
+class SearchMapPointByIdOrNameController
 {
     private $queryBus;
 
@@ -24,15 +24,16 @@ final class GetAllTagsController
 
     public function __invoke(Request $request): ApiResponse
     {
-        $page = $request->query->get('page');
-        $status = $request->query->get('status');
+        $value = $request->query->get('value');
+        if (!$value)
+            $value = '';
 
-        $tags = $this->queryBus->query(new GetAllTagsQuery($page, $status));
+        $mapPoints = $this->queryBus->query(new SearchMapPointByIdOrNameQuery($value));
 
         return new ApiResponse(
             '',
             '',
-            $tags,
+            $mapPoints,
             [],
             200
         );

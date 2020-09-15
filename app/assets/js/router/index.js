@@ -11,23 +11,34 @@ const routes = [
     children: [
       {
         path: 'dashboard',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/HomePage.vue'),
+        component: () => import(/* webpackChunkName: 'admin-home' */'../views/HomePage.vue'),
       },
       {
         path: 'punkty',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/MapPointsPage.vue'),
+        component: () => import(/* webpackChunkName: 'points' */'../views/MapPointsPage.vue'),
       },
       {
         path: 'uzytkownicy',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/UsersPage.vue'),
+        component: () => import(/* webpackChunkName: 'users' */'../views/UsersPage.vue'),
       },
       {
         path: 'tagi',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/TagsPage.vue'),
+        component: () => import(/* webpackChunkName: 'tags' */'../views/TagsPage.vue'),
       },
       {
+        name: 'ReviewsPage',
         path: 'opinie',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/ReviewsPage.vue'),
+        component: () => import(/* webpackChunkName: 'reviews' */'../views/ReviewsPage.vue'),
+      },
+      {
+        name: 'ReviewCreatePage',
+        path: 'opinie/dodaj',
+        component: () => import(/* webpackChunkName: 'review-create' */'../views/Review/ReviewCreatePage.vue'),
+      },
+      {
+        name: 'ReviewUpdatePage',
+        path: 'opinie/edytuj/:id',
+        component: () => import(/* webpackChunkName: 'review-update' */'../views/Review/ReviewUpdatePage.vue'),
       },
       {
         path: 'wyloguj',
@@ -35,7 +46,7 @@ const routes = [
       },
       {
         path: '404',
-        component: () => import(/* webpackChunkName: 'admin' */'../views/NotFoundPage.vue'),
+        component: () => import(/* webpackChunkName: 'not-found' */'../views/NotFoundPage.vue'),
       },
     ],
   },

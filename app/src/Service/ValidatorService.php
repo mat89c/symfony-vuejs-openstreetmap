@@ -103,18 +103,30 @@ class ValidatorService
     public function validateMapPoint(?MapPoint $mapPoint): void
     {
         if (!$mapPoint)
-            throw new ApiException($this->translator->trans('map_point.not_found'));
+            throw new ApiException($this->translator->trans('map_point.not_found'), 404);
     }
 
     public function validateUserExists(?User $user): void
     {
         if (!$user)
-            throw new ApiException($this->translator->trans('user.not_found'));
+            throw new ApiException($this->translator->trans('user.not_found'), 404);
     }
 
     public function validateReviewExists(?Review $review): void
     {
         if (!$review)
-            throw new ApiException($this->translator->trans('review.not_found'));
+            throw new ApiException($this->translator->trans('review.not_found'), 404);
+    }
+
+    public function validateReviewImageExists(?ReviewImage $reviewImage): void
+    {
+        if (!$reviewImage)
+            throw new ApiException($this->translator->trans('review.image.not_found'), 404);
+    }
+
+    public function validateValueExists($value): void
+    {
+        if (!$value)
+            throw new ApiException($this->translator->trans('value.required'), 400);
     }
 }

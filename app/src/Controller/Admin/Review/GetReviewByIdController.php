@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Controller\Admin\Tag;
+namespace App\Controller\Admin\Review;
 
 use App\MessageBus\QueryBus;
-use App\Messenger\Query\GetAllTagsQuery;
+use App\Messenger\Query\GetReviewByIdQuery;
 use App\Response\ApiResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * @Route("/tags", methods={"GET"})
+ * @Route("/review/{id}", methods={"GET"})
  * @Security("is_granted('ROLE_ADMIN')")
  */
-final class GetAllTagsController
+final class GetReviewByIdController
 {
     private $queryBus;
 
@@ -22,17 +21,14 @@ final class GetAllTagsController
         $this->queryBus = $queryBus;
     }
 
-    public function __invoke(Request $request): ApiResponse
+    public function __invoke(int $id): ApiResponse
     {
-        $page = $request->query->get('page');
-        $status = $request->query->get('status');
-
-        $tags = $this->queryBus->query(new GetAllTagsQuery($page, $status));
+        $review = $this->queryBus->query(new GetReviewByIdQuery($id));
 
         return new ApiResponse(
             '',
             '',
-            $tags,
+            $review,
             [],
             200
         );

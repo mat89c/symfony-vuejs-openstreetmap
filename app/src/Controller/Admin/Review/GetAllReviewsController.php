@@ -7,9 +7,11 @@ use App\Messenger\Query\GetAllReviewsQuery;
 use App\Response\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/reviews/", methods={"GET"})
+ * @Security("is_granted('ROLE_ADMIN')")
  */
 final class GetAllReviewsController
 {

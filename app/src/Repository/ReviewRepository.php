@@ -30,9 +30,10 @@ class ReviewRepository extends ServiceEntityRepository
             ->leftJoin('r.reviewImages', 'ri')
             ->where('r.isActive = 1')
             ->andWhere('r.mapPoint = :mapPointId')
+            ->orderBy('r.id', 'DESC')
             ->setParameter('mapPointId', $mapPointId)
-            ->setFirstResult($this->itemsPerPage * ($page -1))
-            ->setMaxResults($this->itemsPerPage)
+            ->setFirstResult($itemsPerPage * ($page -1))
+            ->setMaxResults($itemsPerPage)
         ;
 
         $queryHydrateArray = $query->getQuery()->setHydrationMode(Query::HYDRATE_ARRAY);
@@ -61,6 +62,7 @@ class ReviewRepository extends ServiceEntityRepository
             ->select('partial r.{id, content, rating, createdAt, isActive}, partial u.{id, name}, partial m.{id, title}')
             ->innerJoin('r.user', 'u')
             ->innerJoin('r.mapPoint', 'm')
+            ->orderBy('r.id', 'DESC')
             ->setFirstResult($itemsPerPage * ($page -1))
             ->setMaxResults($itemsPerPage)
         ;
@@ -84,6 +86,31 @@ class ReviewRepository extends ServiceEntityRepository
             'itemsPerPage' => $itemsPerPage,
             'totalItems' => $totalItems,
         ];
+    }
+
+    public function getReviewById(int $id)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('partial r.{id, content, rating, createdAt, isActive}', 'partial u.{id, name, email}', 'ri', 'partial m.{id, title, uploadDir}')
+            ->innerJoin('r.user', 'u')
+            ->leftJoin('r.reviewImages', 'ri')
+            ->leftJoin('r.mapPoint', 'm')
+            ->where('r.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult(Query::HYDRATE_ARRAY)
+        ;
+    }
+
+    public function countReviewsByMapPoint(int $mapPointId)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('count(r.id)')
+            ->where('r.mapPoint = :mapPointId AND r.isActive = 1')
+            ->setParameter('mapPointId', $mapPointId)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 
     // /**

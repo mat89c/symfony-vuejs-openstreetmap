@@ -72,4 +72,14 @@ class ImageService
     {
         $this->filesystem->remove($this->uploadsPath . '/' . $mapPoint->getUploadDir());
     }
+
+    public function moveImageToNewDirectory(string $imageName, string $oldDir, string $newDir)
+    {
+        if ($this->filesystem->exists($this->uploadsPath . '/' . $oldDir . '/' . $imageName))
+            $this->filesystem->rename($this->uploadsPath . '/' . $oldDir . '/' . $imageName, $this->uploadsPath . '/' . $newDir . '/' . $imageName, true);
+
+        if ($this->filesystem->exists($this->uploadsPath . '/' . $oldDir . '/thumb-' . $imageName))
+            $this->filesystem->rename($this->uploadsPath . '/' . $oldDir . '/thumb-' . $imageName, $this->uploadsPath . '/' . $newDir . '/thumb-' . $imageName, true);
+
+    }
 }

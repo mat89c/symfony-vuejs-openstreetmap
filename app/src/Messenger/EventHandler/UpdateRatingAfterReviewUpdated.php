@@ -21,14 +21,13 @@ class UpdateRatingAfterReviewUpdated implements MessageHandlerInterface
         $this->em = $em;
         $this->reviewService = $reviewService;
         $this->reviewRepository = $reviewRepository;
-
     }
 
     public function __invoke(ReviewUpdatedEvent $reviewUpdatedEvent): void
     {
         $review = $reviewUpdatedEvent->getReview();
         $mapPoint = $review->getMapPoint();
-        $mapPoint->setNumberOfReviews($mapPoint->getNumberOfReviews() - 1);
+        $mapPoint->setNumberOfReviews($this->reviewRepository->countReviewsByMapPoint($mapPoint->getId()));
         $activeReviews = $this->reviewRepository->findBy(['mapPoint' => $mapPoint, 'isActive' => true]);
         $rating = $this->reviewService->getAvgRating($activeReviews);
         $mapPoint->setRating($rating);
