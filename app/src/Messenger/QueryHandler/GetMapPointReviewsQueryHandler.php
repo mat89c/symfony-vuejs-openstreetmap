@@ -24,6 +24,7 @@ class GetMapPointReviewsQueryHandler implements MessageHandlerInterface
     {
         $mapPoint = $getMapPointReviewsQuery->getMapPoint();
         $page = $getMapPointReviewsQuery->getPage();
+
         $reviews = $this->reviewRepository->getMapPointReviews($mapPoint->getId(), $page);
 
         foreach ($reviews as $i => $review) {

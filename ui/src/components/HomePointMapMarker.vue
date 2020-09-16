@@ -15,7 +15,7 @@
               <div
                 :style="{'--bg-color': point.color}"
                 class='pulse'
-                :class="{active: active === point.id}"
+                :id="`marker-${point.id}`"
               ></div>
           </div>
         </LIcon>

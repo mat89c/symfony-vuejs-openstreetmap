@@ -32,7 +32,7 @@ class ReviewRepository extends ServiceEntityRepository
             ->andWhere('r.mapPoint = :mapPointId')
             ->orderBy('r.id', 'DESC')
             ->setParameter('mapPointId', $mapPointId)
-            ->setFirstResult($itemsPerPage * ($page -1))
+            ->setFirstResult($itemsPerPage * ($page - 1))
             ->setMaxResults($itemsPerPage)
         ;
 
@@ -73,7 +73,6 @@ class ReviewRepository extends ServiceEntityRepository
         }
 
         $queryHydrateArray = $query->getQuery()->setHydrationMode(Query::HYDRATE_ARRAY);
-
 
         $paginator = new Paginator($queryHydrateArray, true);
         $iterator = $paginator->getIterator();

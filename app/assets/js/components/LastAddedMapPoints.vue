@@ -22,7 +22,7 @@
     </v-card-text>
 
     <v-card-actions class="text-right">
-      <v-btn small>
+      <v-btn small :to="{ name: 'PointUpdatePage', params: { id: point.id } }">
         <v-icon left>mdi-eye</v-icon>
         Zobacz
       </v-btn>

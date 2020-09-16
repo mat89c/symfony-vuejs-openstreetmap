@@ -54,11 +54,22 @@ export default {
   },
   methods: {
     ...mapActions({
-      setActive: 'mapmarker/setActive',
       mapNarrow: 'map/mapNarrow',
       mapZoom: 'map/mapZoom',
       mapCenter: 'map/mapCenter',
     }),
+    setActive(pointId) {
+      const markers = document.getElementsByClassName('pulse');
+      if (markers) {
+        markers.forEach((marker) => {
+          marker.classList.remove('active');
+        });
+      }
+      const marker = document.getElementById(`marker-${pointId}`);
+      if (marker) {
+        marker.classList.add('active');
+      }
+    },
   },
   computed: {
     points: {

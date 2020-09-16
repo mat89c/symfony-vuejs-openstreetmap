@@ -17,6 +17,7 @@ const routes = [
         name: 'PointsPage',
         path: 'punkty',
         component: () => import(/* webpackChunkName: 'points' */'../views/MapPoint/MapPointsPage.vue'),
+        props: true,
       },
       {
         name: 'PointCreatePage',
@@ -29,17 +30,22 @@ const routes = [
         component: () => import(/* webpackChunkName: 'point-update' */'../views/MapPoint/MapPointUpdatePage.vue'),
       },
       {
+        name: 'UsersPage',
         path: 'uzytkownicy',
         component: () => import(/* webpackChunkName: 'users' */'../views/User/UsersPage.vue'),
+        props: true,
       },
       {
+        name: 'TagsPage',
         path: 'tagi',
         component: () => import(/* webpackChunkName: 'tags' */'../views/TagsPage.vue'),
+        props: true,
       },
       {
         name: 'ReviewsPage',
         path: 'opinie',
         component: () => import(/* webpackChunkName: 'reviews' */'../views/Review/ReviewsPage.vue'),
+        props: true,
       },
       {
         name: 'ReviewCreatePage',

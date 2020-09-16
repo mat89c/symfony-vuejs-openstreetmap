@@ -81,6 +81,13 @@ export default {
   components: {
     DialogConfirm,
   },
+  props: {
+    isActive: {
+      type: Number,
+      required: false,
+      default: null
+    },
+  },
   data () {
     return {
       page: 1,
@@ -105,6 +112,9 @@ export default {
   },
   created() {
     this.statuses = statuses;
+    if (this.isActive !== null) {
+      this.status = this.isActive;
+    }
     this.fetchReviews(this.page, this.status);
   },
   methods: {

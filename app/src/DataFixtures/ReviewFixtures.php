@@ -27,7 +27,7 @@ class ReviewFixtures extends BaseFixtures implements DependentFixtureInterface
             $review->setContent($this->faker->sentence(10, true));
             $review->setRating($rating);
             $review->setUser($this->getRandomReference(User::class));
-            $review->setIsActive($this->faker->numberBetween(0,1));
+            $review->setIsActive(true);
             $review->setMapPoint($mapPoint);
 
             $numberOfReviews = $mapPoint->getNumberOfReviews() + 1;

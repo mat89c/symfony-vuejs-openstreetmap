@@ -1,11 +1,11 @@
 const statuses = [
   {
     text: 'Aktywny',
-    value: '1',
+    value: 1,
   },
   {
     text: 'Nieaktywny',
-    value: '0',
+    value: 0,
   },
 ];
 

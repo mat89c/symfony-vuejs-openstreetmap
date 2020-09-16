@@ -111,6 +111,13 @@ export default {
   components: {
     DialogConfirm,
   },
+  props: {
+    isActive: {
+      type: Number,
+      required: false,
+      default: null
+    },
+  },
   computed: {
     dialogTitle() {
       return this.editedIndex === -1 ? 'Dodaj tag' : 'Edytuj tag'
@@ -154,6 +161,9 @@ export default {
   },
   created() {
     this.statuses = statuses;
+    if (this.isActive !== null) {
+      this.status = this.isActive;
+    }
     this.fetchTags(this.page, this.status);
   },
   methods: {

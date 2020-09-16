@@ -20,6 +20,7 @@
         right
         small
         class="mt-2"
+        :to="{ name: route, params: { isActive: 0 } }"
       >
         <v-icon left>mdi-eye</v-icon>
         Zobacz
@@ -43,7 +44,11 @@ export default {
     icon: {
       type: String,
       required: true,
-    }
+    },
+    route: {
+      type: String,
+      required: true,
+    },
   },
 };
 </script>

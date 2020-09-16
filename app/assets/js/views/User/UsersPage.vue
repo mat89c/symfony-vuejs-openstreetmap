@@ -164,6 +164,13 @@ export default {
     DialogConfirm,
     DialogEmailMessage,
   },
+  props: {
+    isActive: {
+      type: Number,
+      required: false,
+      default: null
+    },
+  },
   computed: {
     isEditing() {
       return this.editedIndex !== -1;
@@ -234,6 +241,9 @@ export default {
   },
   created() {
     this.statuses = statuses;
+    if (this.isActive !== null) {
+      this.status = this.isActive;
+    }
     this.fetchUsers(this.page, this.status);
   },
   methods: {

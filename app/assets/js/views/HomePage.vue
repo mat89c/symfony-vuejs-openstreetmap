@@ -6,6 +6,7 @@
           :inactives="inactiveUsers"
           :title="cardItems.inactiveUsers.title"
           :icon="cardItems.inactiveUsers.icon"
+          :route="cardItems.inactiveUsers.route"
         />
       </v-col>
 
@@ -14,6 +15,7 @@
           :inactives="inactiveMapPoints"
           :title="cardItems.inactiveMapPoints.title"
           :icon="cardItems.inactiveMapPoints.icon"
+          :route="cardItems.inactiveMapPoints.route"
         />
       </v-col>
 
@@ -22,6 +24,7 @@
           :inactives="inactiveReviews"
           :title="cardItems.inactiveReviews.title"
           :icon="cardItems.inactiveReviews.icon"
+          :route="cardItems.inactiveReviews.route"
         />
       </v-col>
 
@@ -30,6 +33,7 @@
           :inactives="inactiveCategories"
           :title="cardItems.inactiveCategories.title"
           :icon="cardItems.inactiveCategories.icon"
+          :route="cardItems.inactiveCategories.route"
         />
       </v-col>
     </v-row>
