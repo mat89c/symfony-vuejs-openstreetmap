@@ -8,7 +8,6 @@ const pages = [
     title: 'Dodaj punkt',
     path: '/dodaj-punkt',
     icon: 'mdi-map-marker-plus',
-    showIfUserLogged: false,
   },
   {
     title: 'Zaloguj się',

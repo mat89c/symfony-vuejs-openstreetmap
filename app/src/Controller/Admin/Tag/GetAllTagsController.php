@@ -2,37 +2,32 @@
 
 namespace App\Controller\Admin\Tag;
 
-use App\MessageBus\QueryBus;
-use App\Messenger\Query\GetAllTagsQuery;
 use App\Response\ApiResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Repository\MapPointCategoryRepository;
 
 /**
- * @Route("/tags", methods={"GET"})
+ * @Route("/tags/all", methods={"GET"})
  * @Security("is_granted('ROLE_ADMIN')")
  */
 final class GetAllTagsController
 {
-    private $queryBus;
+    private $mapPointCategoryRepository;
 
-    public function __construct(QueryBus $queryBus)
+    public function __construct(MapPointCategoryRepository $mapPointCategoryRepository)
     {
-        $this->queryBus = $queryBus;
+        $this->mapPointCategoryRepository = $mapPointCategoryRepository;
     }
 
-    public function __invoke(Request $request): ApiResponse
+    public function __invoke(): ApiResponse
     {
-        $page = $request->query->get('page');
-        $status = $request->query->get('status');
-
-        $tags = $this->queryBus->query(new GetAllTagsQuery($page, $status));
+        $categories = $this->mapPointCategoryRepository->getAllCategories();
 
         return new ApiResponse(
             '',
             '',
-            $tags,
+            $categories,
             [],
             200
         );

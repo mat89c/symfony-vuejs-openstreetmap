@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Entity\MapPoint;
 use App\Repository\ReviewRepository;
 use App\Entity\MapPointCategory;
+use App\Entity\MapPointImage;
 use App\Entity\Review;
 use App\Entity\ReviewImage;
 use App\Helper\ImageInterface;
@@ -21,7 +22,6 @@ class ValidatorService
     private $translator;
 
     private $reviewRepository;
-
 
     public function __construct(
         ValidatorInterface $validator,
@@ -88,7 +88,7 @@ class ValidatorService
     public function validateMapPointCategory(?MapPointCategory $mapPointCategory): void
     {
         if (!$mapPointCategory)
-            throw new ApiException($this->translator->trans('category.not_found'), 400);
+            throw new ApiException($this->translator->trans('category.not_found'), 404);
     }
 
     public function validateUserCanDeleteReviewImage(ReviewImage $reviewImage, User $user): void
@@ -124,9 +124,33 @@ class ValidatorService
             throw new ApiException($this->translator->trans('review.image.not_found'), 404);
     }
 
+    public function validateMapPointImageExists(?MapPointImage $mapPointImage): void
+    {
+        if (!$mapPointImage)
+            throw new ApiException($this->translator->trans('map_point.image.not_found'), 404);
+    }
+
     public function validateValueExists($value): void
     {
         if (!$value)
             throw new ApiException($this->translator->trans('value.required'), 400);
+    }
+
+    public function preventChangesOnAdminAccount(User $user):void
+    {
+        if ($user->getEmail() === 'admin@example.com')
+            throw new ApiException($this->translator->trans('user.admin_account.not_editable'), 400);
+    }
+
+    public function validateEmailMessage(array $message): void
+    {
+        if (empty($message['subject']))
+            throw new ApiException($this->translator->trans('email.message.subject.not_blank'), 400);
+
+        if (empty($message['receiverEmail']))
+            throw new ApiException($this->translator->trans('email.message.receiver_email.not_blank'), 400);
+
+        if (empty($message['receiverName']))
+            throw new ApiException($this->translator->trans('email.message.receiver_name.not_blank'), 400);
     }
 }

@@ -20,7 +20,7 @@
             <v-toolbar flat>
               <v-toolbar-title>Lista punktów</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn>
+              <v-btn :to="{ name: 'PointCreatePage' }">
                 <v-icon left>mdi-map-marker-plus</v-icon>
                 Dodaj
               </v-btn>
@@ -48,7 +48,7 @@
 
           <template v-slot:item.actions="{ item }">
             <div class="d-flex flex-nowrap">
-              <v-btn icon small>
+              <v-btn icon small :to="{ name: 'PointUpdatePage', params: { id: item.id } }">
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
 
@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import getAllMapPoints from '../api/point/getAllMapPoints';
-import DialogConfirm from '../components/DialogConfirm.vue';
-import deleteMapPoint from '../api/point/deleteMapPoint';
-import statuses from '../variables/statuses';
+import getAllMapPoints from '../../api/point/getAllMapPoints';
+import DialogConfirm from '../../components/DialogConfirm.vue';
+import deleteMapPoint from '../../api/point/deleteMapPoint';
+import statuses from '../../variables/statuses';
 
 export default {
   name: 'MapPointsPage',
@@ -148,11 +148,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.statuses {
-    position: relative;
-    top: 12px;
-    max-width: 250px;
-}
-</style>

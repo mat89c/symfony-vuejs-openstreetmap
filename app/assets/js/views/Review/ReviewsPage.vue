@@ -71,10 +71,10 @@
 </template>
 
 <script>
-import statuses from '../variables/statuses';
-import DialogConfirm from '../components/DialogConfirm.vue';
-import getAllReviews from '../api/review/getAllReviews'
-import deleteReview from '../api/review/deleteReview';
+import statuses from '../../variables/statuses';
+import DialogConfirm from '../../components/DialogConfirm.vue';
+import getAllReviews from '../../api/review/getAllReviews'
+import deleteReview from '../../api/review/deleteReview';
 
 export default {
   name: 'ReviewsPage',

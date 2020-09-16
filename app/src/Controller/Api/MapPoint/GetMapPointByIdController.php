@@ -21,7 +21,7 @@ final class GetMapPointByIdController
 
     public function __invoke(int $id): ApiResponse
     {
-        $mapPoint = $this->queryBus->query(new GetMapPointByIdQuery($id));
+        $mapPoint = $this->queryBus->query(new GetMapPointByIdQuery($id, ['isActive' => 1]));
 
         return new ApiResponse(
             '',

@@ -1,6 +1,6 @@
 function searchMapPointByIdOrName(value) {
   return window.$http({
-    url: '/point/search',
+    url: '/point-search',
     methods: 'get',
     params: {
       value,

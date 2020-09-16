@@ -21,6 +21,12 @@ class MapPointRepository extends ServiceEntityRepository
         parent::__construct($registry, MapPoint::class);
     }
 
+    private function isActive($query, bool $isActive)
+    {
+        return $query->andWhere('m.isActive = :isActive')
+            ->setParameter('isActive', $isActive);
+    }
+
     public function getActiveMapPoints(?array $checkedCategories, ?array $mapBounds, int $page)
     {
         $itemsPerPage = 30;
@@ -57,19 +63,24 @@ class MapPointRepository extends ServiceEntityRepository
         return $iterator->getArrayCopy();
     }
 
-    public function getMapPointById(int $id)
+    public function getMapPointById(int $id, ?array $filters = null)
     {
-        return $this->createQueryBuilder('m')
-            ->select('m', 'i', 'partial u.{id, name}', 'partial c.{id, name}')
+        $query =  $this->createQueryBuilder('m')
+            ->select('m', 'i', 'partial u.{id, name, email}', 'partial c.{id, name}')
             ->innerJoin('m.user', 'u')
             ->leftJoin('m.mapPointImage', 'i')
             ->leftJoin('m.mapPointCategories', 'c', 'WITH', 'c.isActive = 1')
             ->where('m.id = :id')
-            ->andWhere('m.isActive = 1')
             ->setParameter('id', $id)
-            ->getQuery()
-            ->getSingleResult(Query::HYDRATE_ARRAY)
         ;
+
+        if ($filters) {
+            foreach ($filters as $filterName => $param) {
+                $this->$filterName($query, $param);
+            }
+        }
+
+        return $query->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
     }
 
     public function countInactiveMapPoints()

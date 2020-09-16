@@ -20,10 +20,46 @@
             <v-toolbar flat>
               <v-toolbar-title>Lista tagów</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn>
-                <v-icon left>mdi-account</v-icon>
-                Dodaj
-              </v-btn>
+
+              <v-dialog v-model="dialog" max-width="500px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon left>mdi-account</v-icon>
+                    Dodaj
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-toolbar dense flat>
+                    <v-toolbar-title>{{ dialogTitle }}</v-toolbar-title>
+                  </v-toolbar>
+
+                  <v-card-text>
+                    <v-text-field
+                      label="Nazwa"
+                      v-model="editedItem.name"
+                      :rules="$rules.required"
+                      autofocus
+                      class="mt-3"
+                    ></v-text-field>
+
+                    <v-switch
+                      class="mt-5"
+                      v-model="editedItem.isActive"
+                      :label="`Status: ${tagStatus}`"
+                    ></v-switch>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="onSaveTag">Zapisz</v-btn>
+                    <v-btn @click="closeDialog">Anuluj</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
               <v-select
                 class="ml-2 statuses"
                 solo
@@ -35,7 +71,6 @@
                 v-model="status"
                 @change="onStatusUpdate"
               ></v-select>
-
             </v-toolbar>
           </template>
 
@@ -45,7 +80,7 @@
 
           <template v-slot:item.actions="{ item }">
             <div class="d-flex flex-nowrap">
-              <v-btn icon small>
+              <v-btn icon small @click="onEdit(item)">
                 <v-icon small>mdi-pencil</v-icon>
               </v-btn>
 
@@ -66,20 +101,44 @@
 <script>
 import statuses from '../variables/statuses';
 import DialogConfirm from '../components/DialogConfirm.vue';
-import getAllTags from '../api/tag/getAllTags';
+import getAllTagsWithPagination from '../api/tag/getAllTagsWithPagination';
 import deleteTag from '../api/tag/deleteTag';
+import createTag from '../api/tag/createTag';
+import updateTag from '../api/tag/updateTag';
 
 export default {
   name: 'TagsPage',
   components: {
     DialogConfirm,
   },
+  computed: {
+    dialogTitle() {
+      return this.editedIndex === -1 ? 'Dodaj tag' : 'Edytuj tag'
+    },
+    tagStatus() {
+      return this.editedItem.isActive ? 'Aktywny' : 'Nieaktywny';
+    },
+  },
   data () {
     return {
+      dialog: false,
+      editedIndex: -1,
       page: 1,
       pageCount: 0,
       itemsPerPage: 0,
       totalItems: 0,
+      editedItem: {
+        id: null,
+        name: '',
+        isActive: false,
+        countMapPoint: 0,
+      },
+      defaultItem: {
+        id: null,
+        name: '',
+        isActive: false,
+        countMapPoint: 0,
+      },
       tags: [],
       status: null,
       loading: true,
@@ -127,7 +186,7 @@ export default {
       this.fetchTags(this.page, this.status);
     },
     fetchTags(page, status) {
-      getAllTags(page, status)
+      getAllTagsWithPagination(page, status)
         .then((response) => {
           this.tags = response.data.data.tags;
           this.itemsPerPage = response.data.data.itemsPerPage;
@@ -136,6 +195,39 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    onSaveTag() {
+      if (this.editedIndex > -1) {
+        this.$store.dispatch('dialogloader/show', 'Trwa aktualizacja...');
+
+        updateTag(this.editedItem)
+          .then((response) => {
+            Object.assign(this.tags[this.editedIndex], response.data.data);
+            this.closeDialog();
+          })
+          .finally(() => this.$store.dispatch('dialogloader/hide'));
+      } else {
+        this.$store.dispatch('dialogloader/show', 'Trwa dodawanie...');
+
+        createTag(this.editedItem)
+          .then((response) => {
+            this.tags.unshift(response.data.data);
+            this.closeDialog();
+          })
+          .finally(() => this.$store.dispatch('dialogloader/hide'));
+      }
+    },
+    onEdit(item) {
+      this.editedIndex = this.tags.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+    closeDialog() {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
     },
   },
 };

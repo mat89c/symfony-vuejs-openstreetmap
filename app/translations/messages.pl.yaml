@@ -3,6 +3,8 @@ user:
   not_logged: Użytkownik nie jest zalogowany.
   not_found: Nie znaleziono użytkownika.
   deleted: Użytkownik został usunięty.
+  admin_account:
+    not_editable: Nie można edytować konta administratora.
 
 
 error:
@@ -27,6 +29,16 @@ reset_password:
 
 
 email:
+  message:
+    sent: Wiadomość została wysłana.
+    subject:
+      not_blank: Tytuł wiadomości jest wymagany.
+    receiver_email:
+      not_blank: Nie wybrano adresu odbiorcy.
+    receiver_name:
+      not_blank: Nie wybrano nazwy odbiorcy.
+
+
   greetings: Pozdrawiamy
   team: Zespół %appName%
 
@@ -68,8 +80,13 @@ map_point:
   created:
     title: Dodano nowy punkt.
     message: Dodałeś nowy punkt. Po weryfikacji przez administratora zostanie wyświetlony na mapie.
+  updated:
+    title: Zaktualizowano punkt.
   not_found: Nie znaleziono punktu.
   deleted: Punkt został usunięty.
+  image:
+    not_found: Nie znaleziono zdjęcia.
+    deleted: Zdjęcie zostało usunięte.
 
 
 category:

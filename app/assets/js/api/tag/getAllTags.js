@@ -1,11 +1,7 @@
-function getAllTags(page, status) {
+function getAllTags() {
   return window.$http({
-    url: '/tags',
+    url: '/tags/all',
     method: 'get',
-    params: {
-      page,
-      status,
-    },
   });
 }
 

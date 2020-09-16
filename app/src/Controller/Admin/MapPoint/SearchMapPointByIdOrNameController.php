@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Route("/point/search", methods={"GET"})
+ * @Route("/point-search", methods={"GET"})
  * @Security("is_granted('ROLE_ADMIN')")
  */
 class SearchMapPointByIdOrNameController

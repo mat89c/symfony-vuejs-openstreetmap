@@ -18,27 +18,24 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
 
     private $translator;
 
-    private $reviewService;
-
     public function __construct(
         MapPointRepository $mapPointRepository,
         BaseUrlService $baseUrlService,
-        TranslatorInterface $translator,
-        ReviewService $reviewService)
+        TranslatorInterface $translator)
     {
         $this->mapPointRepository = $mapPointRepository;
         $this->baseUrlService = $baseUrlService;
         $this->translator = $translator;
-        $this->reviewService = $reviewService;
     }
 
     public function __invoke(GetMapPointByIdQuery $getMapPointByIdQuery): array
     {
-
-        $mapPoint = $this->mapPointRepository->getMapPointById($getMapPointByIdQuery->getId());
+        $id = $getMapPointByIdQuery->getId();
+        $filters = $getMapPointByIdQuery->getFilters();
+        $mapPoint = $this->mapPointRepository->getMapPointById($id, $filters);
 
         if (!isset($mapPoint))
-            throw new ApiException($this->translator->trans('map_point'), 404);
+            throw new ApiException($this->translator->trans('map_point.not_found'), 404);
 
         $mapPoint['logo'] = [
             'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $mapPoint['logo']),
@@ -47,6 +44,7 @@ class GetMapPointByIdQueryHandler implements MessageHandlerInterface
 
         foreach ($mapPoint['mapPointImage'] as $key => $image) {
             $mapPoint['mapPointImage'][$key] = [
+                'id' => $image['id'],
                 'src' => $this->baseUrlService->getImageUrl($mapPoint['uploadDir'], $image['name']),
                 'thumb' => $this->baseUrlService->getThumbnailUrl($mapPoint['uploadDir'], $image['name'])
             ];

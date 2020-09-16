@@ -106,4 +106,19 @@ class MailerService
 
         $this->mailer->send($email);
     }
+
+    public function sendEmailMessage(array $message): void
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address($this->sender, $this->appName))
+            ->to(new Address($message['receiverEmail'], $message['receiverName']))
+            ->subject($message['subject'])
+            ->htmlTemplate('email/message.html.twig')
+            ->context([
+                'appName' => $this->appName,
+                'content' => $message['content']
+            ]);
+
+        $this->mailer->send($email);
+    }
 }

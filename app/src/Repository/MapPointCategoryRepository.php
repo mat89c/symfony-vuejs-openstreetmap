@@ -48,6 +48,7 @@ class MapPointCategoryRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('c')
             ->select('c.id, c.name, c.isActive, count(m.id) as countMapPoint')
             ->leftJoin('c.mapPoints', 'm')
+            ->orderBy('c.id', 'DESC')
             ->groupBy('c.id')
             ->setFirstResult($itemsPerPage * ($page -1))
             ->setMaxResults($itemsPerPage)
@@ -67,6 +68,17 @@ class MapPointCategoryRepository extends ServiceEntityRepository
             'itemsPerPage' => $itemsPerPage,
             'totalItems' => $totalItems,
         ];
+    }
+
+    public function getMapPointCategoryById(int $id)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.id, c.name, c.isActive, count(m.id) as countMapPoint')
+            ->leftJoin('c.mapPoints', 'm')
+            ->where('c.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
     }
 
     // /**

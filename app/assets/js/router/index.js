@@ -14,12 +14,23 @@ const routes = [
         component: () => import(/* webpackChunkName: 'admin-home' */'../views/HomePage.vue'),
       },
       {
+        name: 'PointsPage',
         path: 'punkty',
-        component: () => import(/* webpackChunkName: 'points' */'../views/MapPointsPage.vue'),
+        component: () => import(/* webpackChunkName: 'points' */'../views/MapPoint/MapPointsPage.vue'),
+      },
+      {
+        name: 'PointCreatePage',
+        path: 'punkty/dodaj',
+        component: () => import(/* webpackChunkName: 'point-create' */'../views/MapPoint/MapPointCreatePage.vue'),
+      },
+      {
+        name: 'PointUpdatePage',
+        path: 'punkty/edytuj/:id',
+        component: () => import(/* webpackChunkName: 'point-update' */'../views/MapPoint/MapPointUpdatePage.vue'),
       },
       {
         path: 'uzytkownicy',
-        component: () => import(/* webpackChunkName: 'users' */'../views/UsersPage.vue'),
+        component: () => import(/* webpackChunkName: 'users' */'../views/User/UsersPage.vue'),
       },
       {
         path: 'tagi',
@@ -28,7 +39,7 @@ const routes = [
       {
         name: 'ReviewsPage',
         path: 'opinie',
-        component: () => import(/* webpackChunkName: 'reviews' */'../views/ReviewsPage.vue'),
+        component: () => import(/* webpackChunkName: 'reviews' */'../views/Review/ReviewsPage.vue'),
       },
       {
         name: 'ReviewCreatePage',

@@ -132,7 +132,7 @@ import LightBox from 'vue-image-lightbox';
 import deleteReviewImage from '../api/review/deleteReviewImage'
 import DialogConfirm from '../components/DialogConfirm';
 import searchUserByIdOrEmail from '../api/user/searchUserByIdOrEmail';
-import searchMapPointByIdOrEmail from '../api/point/searchMapPointByIdOrName';
+import searchMapPointByIdOrName from '../api/point/searchMapPointByIdOrName';
 
 export default {
   name: 'ReviewForm',
@@ -304,7 +304,7 @@ export default {
         .finally(() => this.isUserLoading = false);
     },
     onSearchMapPoint(value) {
-      searchMapPointByIdOrEmail(value)
+      searchMapPointByIdOrName(value)
         .then((response) => {
           this.mapPoints = response.data.data.map((mapPoint) => {
             return {

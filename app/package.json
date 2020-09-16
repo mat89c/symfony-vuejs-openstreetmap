@@ -39,6 +39,9 @@
         "vuetify": "^2.3.10",
         "vuex": "^3.5.1",
         "vue-image-lightbox": "^7.1.3",
-        "vue-lazyload": "^1.3.3"
+        "vue-lazyload": "^1.3.3",
+        "vue2-leaflet": "^2.5.2",
+        "vue-the-mask": "^0.11.1",
+        "leaflet": "^1.6.0"
     }
 }

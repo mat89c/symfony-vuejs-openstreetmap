@@ -1,7 +1,6 @@
 <template>
   <v-container class="add-point">
-    <v-form @submit.prevent="onSubmit" ref="form"
-    >
+    <v-form @submit.prevent="onSubmit" ref="form">
       <v-row>
         <v-col>
           <h1 class="add-point__title">Dodaj nowy punkt</h1>
@@ -179,7 +178,6 @@ export default {
   },
   data() {
     return {
-      dialog: true,
       pointName: '',
       pointStreet: '',
       pointPostCode: '',
